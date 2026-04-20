@@ -1,17 +1,14 @@
 name: Auto Publish Article
 
 on:
-  # 毎日 09:00 / 13:00 / 18:00 JST (UTC+9) に自動実行
   schedule:
-    - cron: '0 0 * * *'   # 09:00 JST
-    - cron: '0 4 * * *'   # 13:00 JST
-    - cron: '0 9 * * *'   # 18:00 JST
-
-  # 手動実行も可能（GitHub ActionsのUIからRunボタンで起動）
+    - cron: '0 0 * * *'
+    - cron: '0 4 * * *'
+    - cron: '0 9 * * *'
   workflow_dispatch:
     inputs:
       topic:
-        description: '記事トピック（空白の場合はAIが自動選定）'
+        description: '記事トピック'
         required: false
         default: ''
 
@@ -19,36 +16,28 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # git pushに必要
+      contents: write
 
     steps:
-      # 1. サイトリポジトリをチェックアウト
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
 
-      # 2. Node.js セットアップ
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: content-os/package.json
 
-      # 3. content-osの依存パッケージをインストール
-      - name: Install content-os dependencies
+      - name: Install dependencies
         run: npm ci
-        working-directory: ./content-os
 
-      # 4. Gitの設定
       - name: Configure Git
         run: |
           git config user.name "CellBasedFood Lab Bot"
           git config user.email "bot@cellbasedfood-ishiikaneko.com"
 
-      # 5. 記事生成・Markdown出力・git push
       - name: Generate and publish article
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
