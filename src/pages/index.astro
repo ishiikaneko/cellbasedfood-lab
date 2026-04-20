@@ -34,14 +34,31 @@ const popularPosts = allPosts.slice(0, 3);
     <main class="main-content">
       <div class="inner">
 
-        <!-- ── HERO ── -->
-        <section class="hero">
-          <p class="hero-eye">培養肉研究員による専門情報サイト</p>
-          <h1 class="hero-title">
-            培養肉の技術・規制・市場を、<br />
-            論文・特許・政府レポートから読み解く
-          </h1>
-        </section>
+        <!-- ── HERO（週間人気1位記事） ── -->
+        {latestPosts.length > 0 && (
+          <section class="hero-area" aria-labelledby="hero-heading">
+            <a href={`/blog/${latestPosts[0].slug}`} class="hero-inner">
+              <div class="hero-body">
+                <div class="hero-badge">
+                  <span class={`tag tag-${latestPosts[0].data.category}`}>{latestPosts[0].data.category}</span>
+                  <time datetime={latestPosts[0].data.pubDate.toISOString()} class="hero-date">
+                    {latestPosts[0].data.pubDate.toLocaleDateString('ja-JP', { month: '2-digit', day: '2-digit' }).replace('/', '.')}
+                  </time>
+                </div>
+                <h2 id="hero-heading" class="hero-title">{latestPosts[0].data.title}</h2>
+                <p class="hero-desc">{latestPosts[0].data.description}</p>
+                <span class="hero-read">記事を読む →</span>
+              </div>
+              <div class="hero-thumb" style={latestPosts[0].data.heroImage ? '' : 'background:linear-gradient(135deg,#E1F5EE,#5DCAA5);'}>
+                {latestPosts[0].data.heroImage
+                  ? <img src={latestPosts[0].data.heroImage} alt={latestPosts[0].data.title} />
+                  : <svg viewBox="0 0 64 64" fill="none" width="64" height="64"><circle cx="32" cy="32" r="14" fill="#0F6E56" opacity=".2"/><circle cx="32" cy="32" r="8" fill="#0F6E56" opacity=".4"/><circle cx="14" cy="20" r="5" fill="#1D9E75" opacity=".35"/><circle cx="50" cy="20" r="5" fill="#1D9E75" opacity=".35"/><circle cx="14" cy="44" r="5" fill="#1D9E75" opacity=".35"/><circle cx="50" cy="44" r="5" fill="#1D9E75" opacity=".35"/></svg>
+                }
+                <span class="gen-badge">DALL-E 3</span>
+              </div>
+            </a>
+          </section>
+        )}
 
         <!-- ── LATEST ARTICLES ── -->
         <section class="articles-section" aria-labelledby="latest-heading">
@@ -156,28 +173,65 @@ const popularPosts = allPosts.slice(0, 3);
 .main-content { flex: 1; }
 .inner { max-width: 1200px; margin: 0 auto; }
 
-/* ── HERO ── */
-.hero {
-  padding: 20px 24px 16px;
+/* ── HERO AREA（週間人気記事） ── */
+.hero-area {
   border-bottom: 0.5px solid #e5e4df;
 }
-.hero-eye {
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  text-decoration: none;
+  color: inherit;
+  transition: background .15s;
+  min-height: 180px;
+}
+.hero-inner:hover { background: #f5f4f0; }
+.hero-body {
+  padding: 22px 24px;
+}
+.hero-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.hero-date {
   font-family: 'Space Mono', monospace;
   font-size: 9px;
-  letter-spacing: .12em;
-  color: #0F6E56;
-  text-transform: uppercase;
-  margin-bottom: 6px;
+  color: #888;
 }
 .hero-title {
   font-family: 'Noto Serif JP', serif;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 500;
-  line-height: 1.75;
+  line-height: 1.7;
   color: #1a1a18;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
-.hero-sub { font-size: 12px; color: #888; }
+.hero-desc {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.75;
+}
+.hero-read {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 11px;
+  color: #0F6E56;
+  font-family: 'Space Mono', monospace;
+}
+.hero-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 /* ── SECTION HEAD ── */
 .sec-head {
@@ -386,8 +440,10 @@ const popularPosts = allPosts.slice(0, 3);
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .hero { padding: 16px 16px 14px; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-thumb { height: 160px; }
   .hero-title { font-size: 15px; }
+  .hero-body { padding: 16px; }
   .sec-head { padding: 10px 16px 6px; }
 
   /* 記事：1列 */
