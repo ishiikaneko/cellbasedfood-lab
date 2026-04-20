@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap');
+
+/* ── Variables ── */
+:root {
+  --green-50:  #E1F5EE;
+  --green-100: #9FE1CB;
+  --green-400: #1D9E75;
+  --green-600: #0F6E56;
+  --green-800: #085041;
+  --green-900: #04342C;
+
+  --amber-50:  #FAEEDA;
+  --amber-400: #BA7517;
+  --amber-600: #854F0B;
+
+  --blue-50:   #E6F1FB;
+  --blue-400:  #378ADD;
+  --blue-600:  #185FA5;
+
+  --pink-50:   #FBEAF0;
+  --pink-600:  #993556;
+
+  --gray-50:   #F1EFE8;
+  --gray-200:  #B4B2A9;
+  --gray-600:  #5F5E5A;
+
+  --font-serif: 'Noto Serif JP', serif;
+  --font-sans:  'Noto Sans JP', sans-serif;
+  --font-mono:  'Space Mono', monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --nav-height: 52px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: #fafaf8;
+  color: #1a1a18;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ── Category tag colors ── */
+.tag { font-size: 9px; padding: 2px 7px; border-radius: 20px; font-family: var(--font-mono); white-space: nowrap; }
+.tag-技術      { background: var(--green-50); color: var(--green-600); }
+.tag-規制・政策 { background: var(--blue-50);  color: var(--blue-600); }
+.tag-市場・投資 { background: var(--amber-50); color: var(--amber-600); }
+.tag-ニュース   { background: var(--pink-50);  color: var(--pink-600); }
+.tag-コラム    { background: var(--gray-50);  color: var(--gray-600); }
+
+/* ── AI generated pulse dot ── */
+.ai-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green-600);
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+/* ── DALL-E badge on thumbnails ── */
+.gen-badge {
+  position: absolute; bottom: 3px; right: 4px;
+  background: rgba(15,110,86,0.82);
+  color: #fff;
+  font-size: 8px;
+  font-family: var(--font-mono);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* ── Utility ── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}

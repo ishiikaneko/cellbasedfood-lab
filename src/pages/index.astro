@@ -1,0 +1,420 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+// ── 全記事取得（下書き除外・日付降順） ──
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// ── カテゴリーフィルタ（URLパラメータ対応） ──
+const url = new URL(Astro.request.url);
+const activeCategory = url.searchParams.get('category') ?? 'すべて';
+
+const filtered = activeCategory === 'すべて'
+  ? allPosts
+  : allPosts.filter(p => p.data.category === activeCategory);
+
+// ── トップ9本 ──
+const latestPosts = filtered.slice(0, 9);
+
+// ── タグ一覧（全記事から収集・重複除去・昇順） ──
+const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
+
+// ── 人気記事（本番では analytics から popular.json を読む。現在はダミー） ──
+const popularPosts = allPosts.slice(0, 3);
+---
+
+<BaseLayout>
+  <div class="page-wrapper">
+    <Header />
+
+    <main class="main-content">
+      <div class="inner">
+
+        <!-- ── HERO ── -->
+        <section class="hero">
+          <p class="hero-eye">現役研究員による一次ソース解説</p>
+          <h1 class="hero-title">
+            培養肉の「本当のところ」を、<br />
+            論文・特許・政府レポートから読み解く
+          </h1>
+          <p class="hero-sub">石井金子 ／ 培養肉企業研究員</p>
+        </section>
+
+        <!-- ── LATEST ARTICLES ── -->
+        <section class="articles-section" aria-labelledby="latest-heading">
+          <div class="sec-head">
+            <h2 id="latest-heading" class="sec-label">最新記事</h2>
+            <span class="sec-count">{latestPosts.length} / 全{filtered.length}本</span>
+          </div>
+
+          {latestPosts.length > 0 ? (
+            <div class="art-grid">
+              {latestPosts.map(post => (
+                <ArticleCard
+                  title={post.data.title}
+                  slug={post.slug}
+                  pubDate={post.data.pubDate}
+                  category={post.data.category}
+                  heroImage={post.data.heroImage}
+                  aiGenerated={post.data.aiGenerated}
+                />
+              ))}
+            </div>
+          ) : (
+            <p class="empty-msg">該当する記事がまだありません。</p>
+          )}
+        </section>
+
+        <!-- ── PAGINATION / MORE ── -->
+        {filtered.length > 9 && (
+          <div class="more-zone">
+            <div class="page-dots" aria-hidden="true">
+              <span class="pdot cur"></span>
+              <span class="pdot"></span>
+              <span class="pdot"></span>
+              <span class="pdot"></span>
+              <span class="pdot"></span>
+            </div>
+            <a href="/blog" class="more-btn">以前の記事はこちら →</a>
+            <span class="page-sub">10本 / ページ</span>
+          </div>
+        )}
+
+        <!-- ── TAGS ── -->
+        {allTags.length > 0 && (
+          <section class="tag-area" aria-labelledby="tag-heading">
+            <h2 id="tag-heading" class="tag-head-label">タグ</h2>
+            <div class="tag-pills">
+              {allTags.map(tag => (
+                <a href={`/tag/${encodeURIComponent(tag)}`} class="tag-pill">
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- ── POPULAR ── -->
+        <section class="pop-zone" aria-labelledby="popular-heading">
+          <div class="pop-head">
+            <div class="pop-icon" aria-hidden="true">🔥</div>
+            <h2 id="popular-heading" class="pop-label">人気記事</h2>
+          </div>
+          <div class="pop-grid">
+            {popularPosts.map((post, i) => (
+              <a href={`/blog/${post.slug}`} class="pop-card">
+                <span class="pop-rank" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div class="pop-tag-row">
+                  <span class={`tag tag-${post.data.category}`}>{post.data.category}</span>
+                </div>
+                <p class="pop-title">{post.data.title}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <!-- ── ICON LINKS ── -->
+        <section class="icon-row" aria-label="コンテンツページ">
+          <a href="/column" class="icon-btn">
+            <div class="big-icon" style="background:#E1F5EE;" aria-hidden="true">✍️</div>
+            <span class="icon-btn-label">コラム</span>
+            <span class="icon-btn-sub">研究者目線のエッセイ・考察<br />石井金子による署名記事</span>
+            <span class="icon-arr" aria-hidden="true">専用ページへ →</span>
+          </a>
+          <a href="/links" class="icon-btn">
+            <div class="big-icon" style="background:#E6F1FB;" aria-hidden="true">🔗</div>
+            <span class="icon-btn-label">情報サイトリンク集</span>
+            <span class="icon-btn-sub">論文DB・政府資料・業界団体<br />厳選リソースを一覧で</span>
+            <span class="icon-arr" aria-hidden="true">専用ページへ →</span>
+          </a>
+        </section>
+
+        <!-- ── AFFILIATE ── -->
+        <section class="aff-zone" aria-label="広告・アフィリエイト">
+          <p class="aff-label">Sponsored / Affiliate</p>
+          <div class="aff-slots">
+            <!-- バナー差し替え箇所 -->
+            <div class="aff-slot"><span class="aff-ph">banner 1</span></div>
+            <div class="aff-slot"><span class="aff-ph">banner 2</span></div>
+            <div class="aff-slot"><span class="aff-ph">banner 3</span></div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style>
+/* ── LAYOUT ── */
+.page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; }
+.inner { max-width: 1200px; margin: 0 auto; }
+
+/* ── HERO ── */
+.hero {
+  padding: 20px 24px 16px;
+  border-bottom: 0.5px solid #e5e4df;
+}
+.hero-eye {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: #0F6E56;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.75;
+  color: #1a1a18;
+  margin-bottom: 6px;
+}
+.hero-sub { font-size: 12px; color: #888; }
+
+/* ── SECTION HEAD ── */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 8px;
+}
+.sec-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.sec-count { font-size: 10px; color: #888; }
+
+/* ── ARTICLE GRID ── */
+.art-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 0.5px solid #e5e4df;
+}
+/* 3の倍数カードの右ボーダーを消す */
+.art-grid > :nth-child(3n) { border-right: none; }
+/* 最下行カードの下ボーダーを消す */
+.art-grid > :nth-last-child(-n+3):nth-child(3n+1),
+.art-grid > :nth-last-child(-n+3):nth-child(3n+2),
+.art-grid > :nth-last-child(-n+3):nth-child(3n)  { border-bottom: none; }
+
+.empty-msg {
+  padding: 32px 24px;
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+}
+
+/* ── MORE / PAGINATION ── */
+.more-zone {
+  padding: 14px 24px;
+  border-top: 0.5px solid #e5e4df;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+.page-dots { display: flex; gap: 4px; }
+.pdot { width: 6px; height: 6px; border-radius: 50%; background: #dddbd4; }
+.pdot.cur { background: #0F6E56; }
+.more-btn {
+  font-size: 11px;
+  color: #0F6E56;
+  padding: 6px 20px;
+  border: 0.5px solid #0F6E56;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: background .15s;
+}
+.more-btn:hover { background: #E1F5EE; }
+.page-sub { font-size: 10px; color: #888; font-family: 'Space Mono', monospace; }
+
+/* ── TAGS ── */
+.tag-area {
+  border-top: 0.5px solid #e5e4df;
+  padding: 12px 24px;
+}
+.tag-head-label {
+  font-size: 11px;
+  color: #888;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+.tag-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag-pill {
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 0.5px solid #dddbd4;
+  color: #666;
+  text-decoration: none;
+  transition: all .15s;
+}
+.tag-pill:hover { background: #E1F5EE; color: #0F6E56; border-color: #0F6E56; }
+
+/* ── POPULAR ── */
+.pop-zone { border-top: 0.5px solid #e5e4df; }
+.pop-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 24px 8px;
+}
+.pop-icon { font-size: 15px; }
+.pop-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.pop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 0.5px solid #e5e4df;
+}
+.pop-card {
+  padding: 12px 14px;
+  border-right: 0.5px solid #e5e4df;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: background .15s;
+}
+.pop-card:hover { background: #f5f4f0; }
+.pop-card:last-child { border-right: none; }
+.pop-rank {
+  font-family: 'Space Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: #E1F5EE;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  line-height: 1;
+}
+.pop-tag-row { display: flex; align-items: center; gap: 4px; margin-bottom: 5px; }
+.pop-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.65;
+  color: #1a1a18;
+}
+
+/* ── ICON BUTTONS ── */
+.icon-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 0.5px solid #e5e4df;
+}
+.icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 22px 16px;
+  text-decoration: none;
+  color: inherit;
+  border-right: 0.5px solid #e5e4df;
+  transition: background .15s;
+}
+.icon-btn:last-child { border-right: none; }
+.icon-btn:hover { background: #f5f4f0; }
+.big-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.icon-btn-label {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1a18;
+}
+.icon-btn-sub {
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+  line-height: 1.6;
+}
+.icon-arr { font-size: 10px; color: #0F6E56; font-family: 'Space Mono', monospace; }
+
+/* ── AFFILIATE ── */
+.aff-zone {
+  border-top: 0.5px solid #e5e4df;
+  padding: 12px 24px;
+  background: #f5f4f0;
+}
+.aff-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.aff-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.aff-slot {
+  height: 60px;
+  border: 1px dashed #dddbd4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+.aff-ph { font-size: 9px; color: #aaa; font-family: 'Space Mono', monospace; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero { padding: 16px 16px 14px; }
+  .hero-title { font-size: 15px; }
+  .sec-head { padding: 10px 16px 6px; }
+
+  /* 記事：1列 */
+  .art-grid { grid-template-columns: 1fr; }
+  .art-grid > * { border-right: none !important; }
+
+  /* 人気：1列 */
+  .pop-grid { grid-template-columns: 1fr; }
+  .pop-card { border-right: none; border-bottom: 0.5px solid #e5e4df; }
+  .pop-card:last-child { border-bottom: none; }
+
+  .more-zone { padding: 12px 16px; }
+  .tag-area { padding: 10px 16px; }
+  .pop-head { padding: 10px 16px 8px; }
+
+  /* アフィリエイト：1列 */
+  .aff-slots { grid-template-columns: 1fr; }
+  .aff-zone { padding: 10px 16px; }
+
+  .inner { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  /* アイコンボタン：小さめ */
+  .icon-btn { padding: 16px 12px; gap: 6px; }
+  .big-icon { width: 40px; height: 40px; font-size: 18px; }
+  .icon-btn-label { font-size: 12px; }
+}
+</style>

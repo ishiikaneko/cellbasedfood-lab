@@ -1,0 +1,103 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  pubDate: Date;
+  category: string;
+  heroImage?: string;
+  aiGenerated?: boolean;
+}
+
+const { title, slug, pubDate, category, heroImage, aiGenerated = false } = Astro.props;
+
+const dateStr = pubDate.toLocaleDateString('ja-JP', {
+  month: '2-digit',
+  day: '2-digit',
+}).replace('/', '.');
+---
+
+<a href={`/blog/${slug}`} class="art-card">
+  <div class="art-thumb">
+    {heroImage
+      ? <img src={heroImage} alt={title} loading="lazy" />
+      : <div class="thumb-placeholder" aria-hidden="true">
+          <svg width="30" height="26" viewBox="0 0 30 26">
+            <circle cx="15" cy="13" r="6" fill="#0F6E56" opacity=".2"/>
+            <circle cx="15" cy="13" r="3.5" fill="#0F6E56" opacity=".4"/>
+            <circle cx="7" cy="8" r="2.2" fill="#1D9E75" opacity=".35"/>
+            <circle cx="23" cy="8" r="2.2" fill="#1D9E75" opacity=".35"/>
+            <circle cx="7" cy="18" r="2.2" fill="#1D9E75" opacity=".35"/>
+            <circle cx="23" cy="18" r="2.2" fill="#1D9E75" opacity=".35"/>
+          </svg>
+        </div>
+    }
+    <span class="gen-badge" aria-label="AI生成画像">DALL-E 3</span>
+  </div>
+
+  <div class="art-meta">
+    <span class={`tag tag-${category}`}>{category}</span>
+    {aiGenerated && <span class="ai-dot" aria-label="AI生成記事" />}
+    <time datetime={pubDate.toISOString()} class="art-date">{dateStr}</time>
+  </div>
+
+  <p class="art-title">{title}</p>
+</a>
+
+<style>
+.art-card {
+  display: block;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: background .15s;
+  border-right: 0.5px solid #e5e4df;
+  border-bottom: 0.5px solid #e5e4df;
+}
+.art-card:hover { background: #f5f4f0; }
+
+/* サムネイル */
+.art-thumb {
+  width: 100%;
+  height: 52px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  position: relative;
+  background: #f0ede6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.art-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #E1F5EE, #9FE1CB);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* メタ */
+.art-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.art-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: #888;
+}
+
+/* タイトル */
+.art-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.65;
+  color: #1a1a18;
+}
+</style>
