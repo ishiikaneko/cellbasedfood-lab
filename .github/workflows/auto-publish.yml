@@ -30,8 +30,9 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      - name: Install content-os dependencies
         run: npm install
+        working-directory: ./content-os
 
       - name: Configure Git
         run: |
