@@ -1,0 +1,556 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// 関連記事（同カテゴリー・自分以外・最大2件）
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const related = allPosts
+  .filter(p => p.slug !== post.slug && p.data.category === post.data.category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
+
+// 人気記事（本番では popular.json から取得。現在は新着順）
+const popularPosts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+// 全タグ
+const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
+
+const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
+  year: 'numeric', month: '2-digit', day: '2-digit'
+}).replace(/\//g, '.');
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  ogImage={post.data.heroImage}
+>
+  <div class="page-wrapper">
+    <Header />
+
+    <main class="main-content">
+      <div class="inner">
+
+        <!-- BREADCRUMB -->
+        <nav class="breadcrumb" aria-label="パンくずリスト">
+          <a href="/">トップ</a>
+          <span aria-hidden="true"> › </span>
+          <a href={`/?category=${encodeURIComponent(post.data.category)}`}>{post.data.category}</a>
+          <span aria-hidden="true"> › </span>
+          <span>{post.data.title}</span>
+        </nav>
+
+        <!-- ARTICLE LAYOUT -->
+        <div class="article-wrap">
+
+          <!-- ── MAIN ── -->
+          <article class="article-main">
+
+            <!-- ヒーロー画像 -->
+            <div class="art-hero-img">
+              {post.data.heroImage
+                ? <img src={post.data.heroImage} alt={post.data.title} />
+                : <div class="hero-placeholder">
+                    <svg viewBox="0 0 64 64" fill="none" width="72" height="72">
+                      <circle cx="32" cy="32" r="14" fill="#0F6E56" opacity=".2"/>
+                      <circle cx="32" cy="32" r="8"  fill="#0F6E56" opacity=".4"/>
+                      <circle cx="14" cy="20" r="5"  fill="#1D9E75" opacity=".35"/>
+                      <circle cx="50" cy="20" r="5"  fill="#1D9E75" opacity=".35"/>
+                      <circle cx="14" cy="44" r="5"  fill="#1D9E75" opacity=".35"/>
+                      <circle cx="50" cy="44" r="5"  fill="#1D9E75" opacity=".35"/>
+                    </svg>
+                  </div>
+              }
+              <span class="gen-badge">DALL-E 3</span>
+            </div>
+
+            <!-- 記事ヘッダー -->
+            <header class="art-header">
+              <div class="art-meta-row">
+                <span class={`tag tag-${post.data.category}`}>{post.data.category}</span>
+                {post.data.aiGenerated && <span class="ai-dot" aria-label="AI生成記事" />}
+                <time datetime={post.data.pubDate.toISOString()} class="art-date">{dateStr}</time>
+              </div>
+              <h1 class="art-title">{post.data.title}</h1>
+              <p class="art-desc">{post.data.description}</p>
+              {post.data.tags.length > 0 && (
+                <div class="art-tags">
+                  {post.data.tags.map(tag => (
+                    <a href={`/tag/${encodeURIComponent(tag)}`} class="tag-pill">#{tag}</a>
+                  ))}
+                </div>
+              )}
+            </header>
+
+            <!-- 本文 -->
+            <div class="art-body prose">
+              <Content />
+            </div>
+
+            <!-- 引用文献・関連記事はMarkdown内に含む -->
+
+          </article>
+
+          <!-- ── SIDEBAR ── -->
+          <aside class="sidebar" aria-label="サイドバー">
+
+            <!-- 目次（JS で生成） -->
+            <div class="sb-section" id="toc-section">
+              <div class="sb-label">目次</div>
+              <nav id="toc" aria-label="目次"></nav>
+            </div>
+
+            <!-- 人気記事 -->
+            <div class="sb-section">
+              <div class="sb-label">人気記事</div>
+              {popularPosts.map((p, i) => (
+                <a href={`/blog/${p.slug}`} class="sb-pop-item">
+                  <span class="sb-pop-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="sb-pop-title">{p.data.title}</span>
+                </a>
+              ))}
+            </div>
+
+            <!-- タグ -->
+            <div class="sb-section">
+              <div class="sb-label">タグ</div>
+              <div class="sb-tag-wrap">
+                {allTags.map(tag => (
+                  <a href={`/tag/${encodeURIComponent(tag)}`} class="sb-tag">#{tag}</a>
+                ))}
+              </div>
+            </div>
+
+            <!-- サイドバーバナー -->
+            <div class="sb-section">
+              <div class="sb-label">Sponsored</div>
+              <div class="sb-banner-slot">
+                <span class="sb-banner-ph">banner</span>
+              </div>
+            </div>
+
+          </aside>
+        </div>
+
+        <!-- 関連記事（記事下・フル幅） -->
+        {related.length > 0 && (
+          <section class="related-zone" aria-labelledby="related-heading">
+            <h2 id="related-heading" class="related-label">関連記事</h2>
+            <div class="related-grid">
+              {related.map(p => (
+                <a href={`/blog/${p.slug}`} class="related-card">
+                  <div class="related-thumb">
+                    {p.data.heroImage
+                      ? <img src={p.data.heroImage} alt={p.data.title} loading="lazy" />
+                      : <div class="related-thumb-placeholder"></div>
+                    }
+                  </div>
+                  <div class="related-body">
+                    <div class="related-meta">
+                      <span class={`tag tag-${p.data.category}`}>{p.data.category}</span>
+                      <time datetime={p.data.pubDate.toISOString()} class="art-date">
+                        {p.data.pubDate.toLocaleDateString('ja-JP', { month: '2-digit', day: '2-digit' }).replace('/', '.')}
+                      </time>
+                    </div>
+                    <p class="related-title">{p.data.title}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style>
+/* ── LAYOUT ── */
+.page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; }
+.inner { max-width: 1200px; margin: 0 auto; }
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  padding: 8px 24px;
+  font-size: 10px;
+  color: #888;
+  font-family: 'Space Mono', monospace;
+  border-bottom: 0.5px solid #e5e4df;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.breadcrumb a { color: #0F6E56; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+
+/* ── ARTICLE + SIDEBAR GRID ── */
+.article-wrap {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+}
+
+/* ── MAIN ── */
+.article-main { border-right: 0.5px solid #e5e4df; }
+
+/* ── HERO IMAGE ── */
+.art-hero-img {
+  width: 100%;
+  height: 260px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.art-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+.hero-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #E1F5EE, #5DCAA5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gen-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  background: rgba(15,110,86,.82);
+  color: #fff;
+  font-size: 8px;
+  font-family: 'Space Mono', monospace;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* ── ARTICLE HEADER ── */
+.art-header {
+  padding: 22px 28px 18px;
+  border-bottom: 0.5px solid #e5e4df;
+}
+.art-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.art-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: #888;
+}
+.art-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.75;
+  color: #1a1a18;
+  margin-bottom: 10px;
+}
+.art-desc {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.7;
+}
+.art-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 12px;
+}
+.tag-pill {
+  font-size: 10px;
+  padding: 2px 9px;
+  border-radius: 20px;
+  border: 0.5px solid #dddbd4;
+  color: #666;
+  text-decoration: none;
+  transition: all .15s;
+}
+.tag-pill:hover { background: #E1F5EE; color: #0F6E56; border-color: #0F6E56; }
+
+/* ── ARTICLE BODY ── */
+.art-body {
+  padding: 24px 28px 32px;
+}
+
+/* prose スタイル */
+.prose p {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 15px;
+  line-height: 1.95;
+  color: #1a1a18;
+  margin-bottom: 1.4em;
+}
+.prose h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #1a1a18;
+  margin: 2em 0 0.8em;
+  padding-bottom: 6px;
+  border-bottom: 0.5px solid #e5e4df;
+}
+.prose h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a18;
+  margin: 1.8em 0 0.6em;
+  padding-left: 12px;
+  border-left: 3px solid #0F6E56;
+}
+.prose blockquote {
+  margin: 1.5em 0;
+  padding: 12px 16px;
+  background: #f5f4f0;
+  border: 0.5px solid #e5e4df;
+  border-radius: 8px;
+}
+.prose blockquote p {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 0;
+}
+.prose strong { font-weight: 500; }
+.prose em { font-style: italic; }
+.prose a { color: #0F6E56; text-decoration: underline; }
+.prose ul, .prose ol {
+  padding-left: 1.5em;
+  margin-bottom: 1.4em;
+}
+.prose li {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #1a1a18;
+  margin-bottom: 0.3em;
+}
+.prose hr {
+  border: none;
+  border-top: 0.5px solid #e5e4df;
+  margin: 2em 0;
+}
+/* PRIMARY SOURCE ボックス */
+.prose .source-box,
+.prose blockquote {
+  font-size: 13px;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  padding: 16px;
+  position: sticky;
+  top: 52px;
+  align-self: start;
+  max-height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+.sb-section { margin-bottom: 20px; }
+.sb-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 0.5px solid #e5e4df;
+}
+
+/* 目次 */
+#toc a {
+  display: block;
+  font-size: 11px;
+  color: #888;
+  padding: 4px 0 4px 8px;
+  border-left: 2px solid #e5e4df;
+  margin-bottom: 3px;
+  text-decoration: none;
+  line-height: 1.5;
+  transition: all .15s;
+}
+#toc a:hover,
+#toc a.active { color: #0F6E56; border-left-color: #0F6E56; }
+
+/* 人気記事 */
+.sb-pop-item {
+  display: flex;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 0.5px solid #e5e4df;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity .15s;
+}
+.sb-pop-item:hover { opacity: 0.7; }
+.sb-pop-item:last-child { border-bottom: none; }
+.sb-pop-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #E1F5EE;
+  flex-shrink: 0;
+  width: 18px;
+}
+.sb-pop-title { font-size: 10px; color: #1a1a18; line-height: 1.55; }
+
+/* タグ */
+.sb-tag-wrap { display: flex; flex-wrap: wrap; gap: 4px; }
+.sb-tag {
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  border: 0.5px solid #dddbd4;
+  color: #666;
+  text-decoration: none;
+  transition: all .15s;
+}
+.sb-tag:hover { background: #E1F5EE; color: #0F6E56; border-color: #0F6E56; }
+
+/* サイドバーバナー */
+.sb-banner-slot {
+  width: 100%;
+  height: 200px;
+  border: 1px dashed #dddbd4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafaf8;
+}
+.sb-banner-ph {
+  font-size: 9px;
+  color: #aaa;
+  font-family: 'Space Mono', monospace;
+}
+
+/* ── RELATED ARTICLES ── */
+.related-zone {
+  padding: 20px 24px 28px;
+  border-top: 0.5px solid #e5e4df;
+}
+.related-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+.related-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.related-card {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border: 0.5px solid #e5e4df;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: background .15s;
+}
+.related-card:hover { background: #f5f4f0; }
+.related-thumb {
+  width: 72px;
+  height: 54px;
+  border-radius: 5px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #E1F5EE, #9FE1CB);
+}
+.related-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.related-thumb-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #FAEEDA, #FAC775); }
+.related-body { flex: 1; }
+.related-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+.related-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: #1a1a18;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .article-wrap { grid-template-columns: 1fr; }
+  .sidebar { position: static; max-height: none; border-top: 0.5px solid #e5e4df; }
+  .article-main { border-right: none; }
+}
+
+@media (max-width: 600px) {
+  .art-title { font-size: 18px; }
+  .art-hero-img { height: 200px; }
+  .art-header { padding: 16px; }
+  .art-body { padding: 16px; }
+  .related-grid { grid-template-columns: 1fr; }
+  .breadcrumb { padding: 8px 16px; }
+}
+</style>
+
+<script>
+// 目次を自動生成
+const article = document.querySelector('.prose');
+const toc = document.getElementById('toc');
+const tocSection = document.getElementById('toc-section');
+
+if (article && toc) {
+  const headings = article.querySelectorAll('h2, h3');
+  if (headings.length === 0 && tocSection) {
+    tocSection.style.display = 'none';
+  } else {
+    headings.forEach((h, i) => {
+      const id = `heading-${i}`;
+      h.id = id;
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = h.textContent ?? '';
+      if (h.tagName === 'H3') a.style.paddingLeft = '16px';
+      toc.appendChild(a);
+    });
+  }
+}
+
+// スクロール追従ハイライト
+const tocLinks = document.querySelectorAll('#toc a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`#toc a[href="#${entry.target.id}"]`);
+      active?.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+document.querySelectorAll('.prose h2, .prose h3').forEach(h => observer.observe(h));
+</script>
