@@ -76,13 +76,13 @@ After completing all searches, output the sources JSON block.`;
   for (let turn = 0; turn < 8; turn++) {
     const response = await c.messages.create(
       {
-        model: 'claude-opus-4-6',
-        max_tokens: 16000,
+        model: 'claude-opus-4-7',
+        max_tokens: 4000,
         tools: [{ type: 'web_search_20260209', name: 'web_search' }],
         system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
         messages,
       },
-      { headers: { 'anthropic-beta': 'web-search-2026-02-09' } }
+      { headers: { 'anthropic-beta': 'web-search-2025-03-05' } }
     );
 
     // Print progress and collect text
