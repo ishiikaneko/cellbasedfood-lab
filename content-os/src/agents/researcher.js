@@ -50,7 +50,7 @@ Do not include any text before or after the JSON code block in your final respon
 
 export async function researchTopic(topic, { outputDir = 'content/sources' } = {}) {
   requireConfig('ANTHROPIC_API_KEY');
-  const c = new Anthropic({ apiKey: config.ANTHROPIC_API_KEY });
+  const c = new Anthropic({ apiKey: config.ANTHROPIC_API_KEY, timeout: 120000 });
 
   const today = new Date().toISOString().slice(0, 10);
   const userMessage = `Research the following topic and find all available primary sources.
