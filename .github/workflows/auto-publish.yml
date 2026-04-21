@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       topic:
-        description: '記事トピック'
+        description: 記事トピック
         required: false
         default: ''
 
@@ -29,27 +29,33 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install content-os dependencies
+      - name: Install dependencies
         run: npm install
         working-directory: ./content-os
 
-      - name: Create .env file
+      - name: Create env file
         run: |
           echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" > content-os/.env
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> content-os/.env
 
-      - name: Test API connection
-        run: curl -s -w "\nAPI Status:%{http_code}\n" -X POST https://api.anthropic.com/v1/messages -H "x-api-key: ${{ secrets.ANTHROPIC_API_KEY }}" -H "anthropic-version: 2023-06-01" -H "content-type: application/json" -d '{"model":"claude-haiku-4-5-20251001","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}'
+      - name: Test API
+        run: |
+          echo "Testing Anthropic API..."
+          curl -s -X POST https://api.anthropic.com/v1/messages \
+            -H "x-api-key: ${{ secrets.ANTHROPIC_API_KEY }}" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{"model":"claude-haiku-4-5-20251001","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}' \
+            | head -c 200
 
       - name: Configure Git
         run: |
           git config user.name "CellBasedFood Lab Bot"
           git config user.email "bot@cellbasedfood-ishiikaneko.com"
 
-      - name: Generate and publish article
+      - name: Publish article
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SITE_REPO_PATH: ${{ github.workspace }}
-          TOPIC: ${{ github.event.inputs.topic }}
-        run: node content-os/src/index.js publish
+          TOPIC: ${{ github.event.inp
