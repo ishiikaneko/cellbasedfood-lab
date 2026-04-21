@@ -39,6 +39,17 @@ jobs:
           echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" > content-os/.env
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> content-os/.env
 
+- name: Test API connection
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{"model":"claude-haiku-4-5-20251001","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}' \
+            https://api.anthropic.com/v1/messages
+
       - name: Configure Git
         run: |
           git config user.name "CellBasedFood Lab Bot"
