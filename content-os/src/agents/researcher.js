@@ -78,11 +78,11 @@ After completing all searches, output the sources JSON block.`;
       {
         model: 'claude-opus-4-6',
         max_tokens: 16000,
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        tools: [{ type: 'web_search_20260209', name: 'web_search' }],
         system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
         messages,
       },
-      { headers: { 'anthropic-beta': 'web-search-2025-03-05' } }
+      { headers: { 'anthropic-beta': 'web-search-2026-02-09' } }
     );
 
     // Print progress and collect text
