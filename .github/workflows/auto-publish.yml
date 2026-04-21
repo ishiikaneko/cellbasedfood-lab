@@ -30,6 +30,8 @@ jobs:
         run: |
           echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" > content-os/.env
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> content-os/.env
+          echo "--- env file check ---"
+          head -c 30 content-os/.env
       - name: Git config
         run: |
           git config user.name "Bot"
