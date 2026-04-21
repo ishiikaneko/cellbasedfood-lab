@@ -76,7 +76,7 @@ After completing all searches, output the sources JSON block.`;
   for (let turn = 0; turn < 8; turn++) {
     const response = await c.messages.create(
       {
-        model: 'claude-opus-4-7',
+        model: 'claude-opus-4-6',
         max_tokens: 16000,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
