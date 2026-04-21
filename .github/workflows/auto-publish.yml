@@ -34,6 +34,11 @@ jobs:
         run: npm install
         working-directory: ./content-os
 
+      - name: Create .env file
+        run: |
+          echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" > content-os/.env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> content-os/.env
+
       - name: Configure Git
         run: |
           git config user.name "CellBasedFood Lab Bot"
