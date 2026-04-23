@@ -27,9 +27,6 @@ const popularPosts = allPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-// 全タグ
-const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
-
 const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   year: 'numeric', month: '2-digit', day: '2-digit'
 }).replace(/\//g, '.');
@@ -88,21 +85,14 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
               </div>
               <h1 class="art-title">{post.data.title}</h1>
               <p class="art-desc">{post.data.description}</p>
-              {post.data.tags.length > 0 && (
-                <div class="art-tags">
-                  {post.data.tags.map(tag => (
-                    <a href={`/tag/${encodeURIComponent(tag)}`} class="tag-pill">#{tag}</a>
-                  ))}
-                </div>
-              )}
             </header>
 
             <!-- 本文 -->
-            <div class="art-body prose">
-              <Content />
+            <div class="art-body">
+              <div class="prose">
+                <Content />
+              </div>
             </div>
-
-            <!-- 引用文献・関連記事はMarkdown内に含む -->
 
           </article>
 
@@ -124,16 +114,6 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
                   <span class="sb-pop-title">{p.data.title}</span>
                 </a>
               ))}
-            </div>
-
-            <!-- タグ -->
-            <div class="sb-section">
-              <div class="sb-label">タグ</div>
-              <div class="sb-tag-wrap">
-                {allTags.map(tag => (
-                  <a href={`/tag/${encodeURIComponent(tag)}`} class="sb-tag">#{tag}</a>
-                ))}
-              </div>
             </div>
 
             <!-- サイドバーバナー -->
@@ -244,14 +224,16 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 
 /* ── ARTICLE HEADER ── */
 .art-header {
-  padding: 22px 28px 18px;
+  padding: 28px 40px 22px;
   border-bottom: 0.5px solid #e5e4df;
+  max-width: 800px;
+  margin: 0 auto;
 }
 .art-meta-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   flex-wrap: wrap;
 }
 .art-date {
@@ -261,100 +243,138 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 .art-title {
   font-family: 'Noto Serif JP', serif;
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1.75;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.65;
   color: #1a1a18;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
 }
 .art-desc {
-  font-size: 13px;
-  color: #888;
-  line-height: 1.7;
-}
-.art-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 12px;
-}
-.tag-pill {
-  font-size: 10px;
-  padding: 2px 9px;
-  border-radius: 20px;
-  border: 0.5px solid #dddbd4;
+  font-size: 14px;
   color: #666;
-  text-decoration: none;
-  transition: all .15s;
+  line-height: 1.85;
+  letter-spacing: 0.02em;
 }
-.tag-pill:hover { background: #E1F5EE; color: #0F6E56; border-color: #0F6E56; }
 
 /* ── ARTICLE BODY ── */
 .art-body {
-  padding: 24px 28px 32px;
+  padding: 40px 40px 48px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-/* prose スタイル */
-.prose p {
+/* prose スタイル（読みやすさ重視）*/
+.prose {
   font-family: 'Noto Serif JP', serif;
-  font-size: 15px;
-  line-height: 1.95;
-  color: #1a1a18;
-  margin-bottom: 1.4em;
 }
+
+.prose p {
+  font-size: 16px;
+  line-height: 2.0;
+  color: #1a1a18;
+  margin: 0 0 1.8em;
+  letter-spacing: 0.03em;
+}
+
 .prose h2 {
   font-family: 'Noto Serif JP', serif;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 22px;
+  font-weight: 600;
   color: #1a1a18;
-  margin: 2em 0 0.8em;
-  padding-bottom: 6px;
-  border-bottom: 0.5px solid #e5e4df;
+  margin: 3em 0 1.2em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e4df;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
 }
+
+.prose h2:first-child {
+  margin-top: 0;
+}
+
 .prose h3 {
   font-family: 'Noto Serif JP', serif;
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 17px;
+  font-weight: 600;
   color: #1a1a18;
-  margin: 1.8em 0 0.6em;
-  padding-left: 12px;
+  margin: 2.4em 0 1em;
+  padding-left: 14px;
   border-left: 3px solid #0F6E56;
+  line-height: 1.7;
 }
+
 .prose blockquote {
-  margin: 1.5em 0;
-  padding: 12px 16px;
+  margin: 2em 0;
+  padding: 18px 22px;
   background: #f5f4f0;
-  border: 0.5px solid #e5e4df;
-  border-radius: 8px;
+  border-left: 3px solid #0F6E56;
+  border-radius: 0 8px 8px 0;
 }
+
 .prose blockquote p {
-  font-size: 13px;
+  font-size: 14px;
   color: #555;
   margin-bottom: 0;
+  line-height: 1.85;
 }
-.prose strong { font-weight: 500; }
-.prose em { font-style: italic; }
-.prose a { color: #0F6E56; text-decoration: underline; }
-.prose ul, .prose ol {
-  padding-left: 1.5em;
-  margin-bottom: 1.4em;
+
+.prose strong {
+  font-weight: 700;
+  color: #0a0a09;
 }
+
+.prose em {
+  font-style: italic;
+}
+
+.prose a {
+  color: #0F6E56;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: opacity .15s;
+}
+
+.prose a:hover {
+  opacity: 0.65;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.8em;
+  margin: 1.5em 0 2em;
+}
+
 .prose li {
   font-family: 'Noto Serif JP', serif;
-  font-size: 15px;
-  line-height: 1.9;
+  font-size: 16px;
+  line-height: 1.95;
   color: #1a1a18;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.8em;
+  padding-left: 0.3em;
+  letter-spacing: 0.03em;
 }
+
+.prose li:last-child {
+  margin-bottom: 0;
+}
+
+.prose li p {
+  margin-bottom: 0.5em;
+}
+
 .prose hr {
   border: none;
-  border-top: 0.5px solid #e5e4df;
-  margin: 2em 0;
+  border-top: 1px solid #e5e4df;
+  margin: 3em 0;
 }
-/* PRIMARY SOURCE ボックス */
-.prose .source-box,
-.prose blockquote {
-  font-size: 13px;
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  margin: 2em 0;
+  border-radius: 8px;
 }
 
 /* ── SIDEBAR ── */
@@ -415,19 +435,6 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 .sb-pop-title { font-size: 10px; color: #1a1a18; line-height: 1.55; }
 
-/* タグ */
-.sb-tag-wrap { display: flex; flex-wrap: wrap; gap: 4px; }
-.sb-tag {
-  font-size: 9px;
-  padding: 2px 7px;
-  border-radius: 20px;
-  border: 0.5px solid #dddbd4;
-  color: #666;
-  text-decoration: none;
-  transition: all .15s;
-}
-.sb-tag:hover { background: #E1F5EE; color: #0F6E56; border-color: #0F6E56; }
-
 /* サイドバーバナー */
 .sb-banner-slot {
   width: 100%;
@@ -447,8 +454,10 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 
 /* ── RELATED ARTICLES ── */
 .related-zone {
-  padding: 20px 24px 28px;
+  padding: 24px 40px 32px;
   border-top: 0.5px solid #e5e4df;
+  max-width: 800px;
+  margin: 0 auto;
 }
 .related-label {
   font-family: 'Space Mono', monospace;
@@ -456,7 +465,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   letter-spacing: .1em;
   color: #888;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   font-weight: 400;
 }
 .related-grid {
@@ -508,11 +517,19 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 
 @media (max-width: 600px) {
-  .art-title { font-size: 18px; }
+  .art-title { font-size: 20px; }
   .art-hero-img { height: 200px; }
-  .art-header { padding: 16px; }
-  .art-body { padding: 16px; }
+  .art-header { padding: 18px 20px 16px; }
+  .art-body { padding: 24px 20px 32px; }
+  .prose p,
+  .prose li {
+    font-size: 15px;
+    line-height: 1.9;
+  }
+  .prose h2 { font-size: 19px; }
+  .prose h3 { font-size: 16px; }
   .related-grid { grid-template-columns: 1fr; }
+  .related-zone { padding: 20px 20px 28px; }
   .breadcrumb { padding: 8px 16px; }
 }
 </style>
