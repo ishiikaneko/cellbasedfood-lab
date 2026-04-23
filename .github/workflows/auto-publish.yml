@@ -1,4 +1,5 @@
 name: Auto Publish Article
+
 on:
   schedule:
     - cron: '0 0 * * *'
@@ -7,46 +8,51 @@ on:
   workflow_dispatch:
     inputs:
       topic:
-        description: 記事トピック
+        description: '記事トピック'
         required: false
         default: ''
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install
+
+      - name: Install content-os dependencies
         run: npm install
         working-directory: ./content-os
-      - name: Env
+
+      - name: Create .env file
         run: |
           echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" > content-os/.env
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> content-os/.env
-          echo "--- env file check ---"
-          head -c 30 content-os/.env
-      - name: Curl test
+
+      - name: Test API connection
         run: |
-          echo "--- Testing raw curl ---"
-          curl -v -X POST https://api.anthropic.com/v1/messages \
-            -H "x-api-key: ${{ secrets.ANTHROPIC_API_KEY }}" \
-            -H "anthropic-version: 2023-06-01" \
-            -H "content-type: application/json" \
-            -d '{"model":"claude-haiku-4-5-20251001","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}'
-      - name: Git config
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST https://api.anthropic.com/v1/messages -H "x-api-key: ${{ secrets.ANTHROPIC_API_KEY }}" -H "anthropic-version: 2023-06-01" -H "content-type: application/json" -d '{"model":"claude-haiku-4-5-20251001","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}')
+          echo "API Status: $STATUS"
+
+      - name: Configure Git
         run: |
-          git config user.name "Bot"
-          git config user.email "bot@example.com"
-      - name: Publish
+          git config user.name "CellBasedFood Lab Bot"
+          git config user.email "bot@cellbasedfood-ishiikaneko.com"
+
+      - name: Generate and publish article
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SITE_REPO_PATH: ${{ github.workspace }}
           TOPIC: ${{ github.event.inputs.topic }}
         run: node content-os/src/index.js publish
