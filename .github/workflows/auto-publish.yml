@@ -32,6 +32,14 @@ jobs:
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> content-os/.env
           echo "--- env file check ---"
           head -c 30 content-os/.env
+      - name: Curl test
+        run: |
+          echo "--- Testing raw curl ---"
+          curl -v -X POST https://api.anthropic.com/v1/messages \
+            -H "x-api-key: ${{ secrets.ANTHROPIC_API_KEY }}" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{"model":"claude-haiku-4-5-20251001","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}'
       - name: Git config
         run: |
           git config user.name "Bot"
