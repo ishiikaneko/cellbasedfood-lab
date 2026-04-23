@@ -1,0 +1,110 @@
+{
+  "topic": "培養肉テスト",
+  "searched_at": "2026-04-21",
+  "sources": [
+    {
+      "title": "日本初!「食べられる培養肉」の作製に成功 肉本来の味や食感を持つ「培養ステーキ肉」の実用化に向けて前進",
+      "url": "https://www.nissin.com/jp/company/news/10516/",
+      "type": "press_release",
+      "publisher": "日清食品グループ (Nissin Foods Holdings) / 東京大学",
+      "date": "2022-03-31",
+      "summary": "日清食品ホールディングスと東京大学大学院情報理工学系研究科の竹内昌治教授らによる共同研究グループが、日本で初めて可食部位のみを用いた「食べられる培養肉」の作製に成功したと発表したプレスリリース。厚生労働省等の外部機関の指導・助言を受けた上で、研究倫理委員会の承認を得て試食を実施した。",
+      "key_facts": [
+        "ウシ筋細胞のみを原材料に用いた食用可能な培養肉の作製に成功",
+        "研究倫理委員会の承認のもと試食（テスト）を実施した日本初の事例",
+        "培養ステーキ肉の実用化を目指した産学共同研究の成果"
+      ]
+    },
+    {
+      "title": "【記者発表】培養肉の「味成分」は熟成で増加――分化と熟成がもたらす遊離アミノ酸変化を解明し、味制御へ――",
+      "url": "https://www.iis.u-tokyo.ac.jp/en/news/4782/",
+      "type": "academic",
+      "publisher": "東京大学生産技術研究所 (Institute of Industrial Science, The University of Tokyo)",
+      "date": "2025-06-09",
+      "summary": "竹内昌治特任教授と古橋麻衣大学院生らによる研究グループが、培養筋肉細胞と3次元筋組織の熟成によって、肉の味の鍵となる遊離アミノ酸（FAAs）が顕著に増加することを明らかにした研究発表。熟成後の培養肉は市販の牛肉よりも高いFAAs含有量を持つことが示された。",
+      "key_facts": [
+        "論文はFood Chemistry誌に掲載、DOI: 10.1016/j.foodchem.2025.144753",
+        "培地中のFAAs濃度を変化させることで培養肉の味（甘味、うま味、苦味）を制御できる可能性を提示",
+        "JST未来社会創造事業（JPMJMI20C1）の支援による研究"
+      ]
+    },
+    {
+      "title": "The \"Consortium for Future Innovation by Cultured Meat\" will exhibit actual cultured meat as \"homemade marbled meat\" and a meat maker at the Osaka Healthcare Pavilion at the Osaka-Kansai Expo",
+      "url": "https://www.holdings.toppan.com/en/news/2025/04/newsrelease250407_2.html",
+      "type": "press_release",
+      "publisher": "TOPPAN Holdings Inc. (Consortium for Future Innovation by Cultured Meat)",
+      "date": "2025-04-07",
+      "summary": "大阪大学大学院工学研究科、島津製作所、伊藤ハム米久ホールディングス、TOPPANホールディングス、SIGMAXYZ、ZACROSの6者からなる培養肉未来創造コンソーシアムが、大阪・関西万博の大阪ヘルスケアパビリオンにて実物の培養肉（ホームメイド霜降り肉）とミートメーカー（コンセプトモデル）を展示することを発表したプレスリリース。",
+      "key_facts": [
+        "大阪・関西万博2025の大阪ヘルスケアパビリオン「Future City」エリアで展示",
+        "3Dバイオプリンティング技術による培養肉の社会実装を目指す取り組み",
+        "コンソーシアムはパビリオンのプレミアムパートナーとして参加"
+      ]
+    },
+    {
+      "title": "Consortium for Future Innovation by Cultured Meat (CFICM) 公式サイト",
+      "url": "https://cficm.jp/en/",
+      "type": "industry_report",
+      "publisher": "Consortium for Future Innovation by Cultured Meat",
+      "date": "2023-03-29",
+      "summary": "2023年3月29日に大阪大学工学研究科、島津製作所、伊藤ハム米久、TOPPAN、SIGMAXYZの5社により設立され、2024年5月8日にZACROSが加盟した培養肉コンソーシアムの公式サイト。3Dバイオプリント培養肉の社会実装を目的として活動している。",
+      "key_facts": [
+        "2023年3月29日設立、現在6つのコア会員企業で運営",
+        "3Dバイオプリント培養肉の社会実装に向けた実践的な取り組みを推進",
+        "2024年5月8日にZACROSコーポレーションが加盟"
+      ]
+    },
+    {
+      "title": "いわゆる「培養肉」に係るこれまでの状況等",
+      "url": "https://www.mhlw.go.jp/content/12401000/001204002.pdf",
+      "type": "government",
+      "publisher": "厚生労働省 食品基準審査課",
+      "date": "2024-02-08",
+      "summary": "厚生労働省食品基準審査課が作成した、いわゆる「培養肉」に係る国内外の研究開発・製品申請状況等をまとめた資料。ロンドンでの培養肉ハンバーガー発表（2013年8月）、シンガポール食品庁による鶏の繊維芽細胞由来培養肉の販売承認など海外事例を整理し、日本国内の規制に関する議論の基礎資料として位置付けられている。",
+      "key_facts": [
+        "海外の培養肉研究開発・販売承認状況を厚労省が整理した公式資料",
+        "シンガポール食品庁（SFA）による培養鶏肉の販売承認を把握",
+        "日本における培養肉の規制検討の基礎資料として活用"
+      ]
+    },
+    {
+      "title": "Human Food Made with Cultured Animal Cells",
+      "url": "https://www.fda.gov/food/food-ingredients-packaging/human-food-made-cultured-animal-cells",
+      "type": "government",
+      "publisher": "U.S. Food and Drug Administration (FDA)",
+      "date": null,
+      "summary": "米国FDAが、培養動物細胞を用いた人の食品（培養肉）に関する規制枠組みを説明する公式ページ。FDAとUSDA-FSISが2019年3月に締結した合意に基づき、細胞の採取・細胞バンク・細胞培養をFDAが、食肉・家禽製品の加工・表示をUSDA-FSISが管轄する共同監督体制を示している。",
+      "key_facts": [
+        "FDAとUSDA-FSISが2019年3月に培養肉食品の共同規制枠組みを合意",
+        "FDAが細胞採取、細胞バンク、細胞培養工程を監督",
+        "培養肉メーカーに対してCell Culture Consultation (CCC)プロセスによる事前相談を実施"
+      ]
+    },
+    {
+      "title": "Cell Culture Consultation Notification File: CCC 000002 (UPSIDE Foods cultured chicken)",
+      "url": "https://www.fda.gov/media/163260/download",
+      "type": "regulatory_approval",
+      "publisher": "U.S. Food and Drug Administration (FDA)",
+      "date": "2022-11-16",
+      "summary": "FDAがUPSIDE Foods社の培養鶏肉に対して発出した「No Questions」レターを含む公式CCC 000002通知ファイル。培養動物細胞由来食品として世界で初めてFDAの安全性評価を通過した事例に関する一次規制文書。",
+      "key_facts": [
+        "UPSIDE Foodsの培養鶏細胞製品に対する世界初のFDA \"No Questions\" 判定",
+        "CCC（Cell Culture Consultation）制度第2号として登録",
+        "FDAはUPSIDE社の安全性結論に異議がないことを公式に認めた"
+      ]
+    },
+    {
+      "title": "The \"Consortium for Future Innovation by Cultured Meat\" will hold CULTIVATED MEAT JOURNEY 2025 in the Osaka Healthcare Pavilion at the Osaka-Kansai Expo on July 8",
+      "url": "https://www.shimadzu.com/news/2025/duxtpaihorp0fll8.html",
+      "type": "press_release",
+      "publisher": "Shimadzu Corporation (島津製作所)",
+      "date": "2025-06-24",
+      "summary": "培養肉未来創造コンソーシアムが2025年7月8日に大阪・関西万博の大阪ヘルスケアパビリオンにて「CULTIVATED MEAT JOURNEY 2025」を開催することを発表した島津製作所のプレスリリース。培養肉の社会実装に向けた議論の場として位置付けられている。",
+      "key_facts": [
+        "2025年7月8日、大阪ヘルスケアパビリオンにて開催",
+        "培養肉の未来に関する議論・情報発信イベント",
+        "島津製作所を含むコンソーシアム6社が共同主催"
+      ]
+    }
+  ]
+}
