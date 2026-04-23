@@ -13,17 +13,37 @@ async function run() {
     const { filepath: sourcesFile } = await researchTopic(topic);
     
     console.log('✍️  Step 2/3: Writing...');
-    const { filepath: draftFile, content } = await writeArticle(topic, { sourcesFile });
+    const { content } = await writeArticle(topic, { sourcesFile });
     
     console.log('🚀 Step 3/3: Publishing...');
+    
+    // WriterのJSON出力をパース
+    const match = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    const jsonStr = match ? match[1].trim() : content.trim();
+    
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonStr);
+    } catch (e) {
+      console.error('❌ Failed to parse writer JSON output:', e.message);
+      console.error('Raw content:', content.slice(0, 500));
+      throw e;
+    }
+    
+    // 記事本文から descriptionを抽出（最初の段落）
+    const bodyLines = (parsed.body || '').split('\n').filter(l => l.trim());
+    const firstParagraph = bodyLines.find(l => !l.startsWith('#') && !l.startsWith('---')) || '';
+    const description = firstParagraph.slice(0, 120).replace(/\s+/g, ' ').trim();
+    
     const article = {
-      title: topic,
-      description: content.slice(0, 120),
-      category: '技術',
+      title: parsed.title || topic,
+      description: description,
+      category: Array.isArray(parsed.category) ? parsed.category[0] : (parsed.category || '技術'),
       tags: [],
-      body: content,
+      body: parsed.body || '',
       aiGenerated: true,
     };
+    
     const result = await publish(article);
     console.log(`✅ Done! ${result.filepath}`);
   }
@@ -31,8 +51,6 @@ async function run() {
 
 run().catch(err => {
   console.error('❌ Error:', err.message);
-  console.error('Type:', err.constructor.name);
-  console.error('Cause:', err.cause?.message || 'none');
   console.error('Stack:', err.stack);
   process.exit(1);
 });
