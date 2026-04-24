@@ -13,7 +13,9 @@ export async function researchTopic(topic, { outputDir = 'content/sources' } = {
 
   const prompt = `You are a research specialist on cultured meat and cellular agriculture.
 
-List 3-5 primary sources related to: "${topic}"
+Select the SINGLE BEST primary source related to: "${topic}"
+
+Choose the most specific, informative, and recent source available. Return exactly 1 source.
 
 Acceptable source types:
 - "academic"   : peer-reviewed journal articles (PubMed, bioRxiv, etc.)
@@ -29,10 +31,10 @@ For LinkedIn sources:
 - If the exact post URL is unknown, use the profile/company page URL
 
 Output ONLY a JSON object with this structure, no code blocks, no other text:
-{"topic":"${topic}","searched_at":"${today}","sources":[{"title":"...","url":"https://...","type":"academic","publisher":"...","date":"YYYY-MM-DD","summary":"...","key_facts":["fact1","fact2"]}]}`;
+{"topic":"${topic}","searched_at":"${today}","sources":[{"title":"...","url":"https://...","type":"academic","publisher":"...","date":"YYYY-MM-DD","summary":"...","key_facts":["fact1","fact2","fact3","fact4","fact5"]}]}`;
 
   const response = await c.messages.create({
-    model: 'claude-opus-4-6',
+    model: 'claude-opus-4-7',
     max_tokens: 4000,
     messages: [{ role: 'user', content: prompt }]
   });
