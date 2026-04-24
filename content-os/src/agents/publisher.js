@@ -20,16 +20,17 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // DALL-E 3用（任意）
 
 // カテゴリーの正規化マップ
 const CATEGORY_MAP = {
-  '技術':    '技術',
-  '科学':    '技術',
-  '規制':    '規制・政策',
-  '政策':    '規制・政策',
+  '技術':      '技術',
+  '科学':      '技術',
+  '規制':      '規制・政策',
+  '政策':      '規制・政策',
   '規制・政策': '規制・政策',
-  '市場':    '市場・投資',
-  '投資':    '市場・投資',
+  '市場':      '市場・投資',
+  '投資':      '市場・投資',
   '市場・投資': '市場・投資',
-  'ニュース': 'ニュース',
-  'コラム':  'コラム',
+  'ニュース':  'ニュース',
+  'コラム':    'その他',  // 旧名称（後方互換）
+  'その他':    'その他',
 };
 
 // ── メイン関数 ────────────────────────────────────────────
@@ -138,7 +139,7 @@ function buildImagePrompt(title, category) {
     '規制・政策': 'government documents, policy, law, formal official style,',
     '市場・投資': 'business chart, market data, investment, financial visualization,',
     'ニュース':   'breaking news, global food technology, modern editorial style,',
-    'コラム':    'thoughtful essay, researcher writing, academic atmosphere,',
+    'その他':    'thoughtful essay, researcher writing, academic atmosphere,',
   };
   const base = categoryPrompts[category] ?? '';
   return `${base} cultured meat, cell-based food technology, professional blog thumbnail, minimal clean design, no text, 16:9 ratio. Topic: ${title}`;
