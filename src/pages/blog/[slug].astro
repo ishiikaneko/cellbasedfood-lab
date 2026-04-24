@@ -99,12 +99,6 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
           <!-- ── SIDEBAR ── -->
           <aside class="sidebar" aria-label="サイドバー">
 
-            <!-- 目次（JS で生成） -->
-            <div class="sb-section" id="toc-section">
-              <div class="sb-label">目次</div>
-              <nav id="toc" aria-label="目次"></nav>
-            </div>
-
             <!-- 人気記事 -->
             <div class="sb-section">
               <div class="sb-label">人気記事</div>
@@ -282,7 +276,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   font-size: 22px;
   font-weight: 600;
   color: #1a1a18;
-  margin: 3em 0 1.2em;
+  margin: 4em 0 1.2em;
   padding-bottom: 12px;
   border-bottom: 1px solid #e5e4df;
   line-height: 1.6;
@@ -298,7 +292,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   font-size: 17px;
   font-weight: 600;
   color: #1a1a18;
-  margin: 2.4em 0 1em;
+  margin: 3em 0 1em;
   padding-left: 14px;
   border-left: 3px solid #0F6E56;
   line-height: 1.7;
@@ -397,21 +391,6 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   padding-bottom: 6px;
   border-bottom: 0.5px solid #e5e4df;
 }
-
-/* 目次 */
-#toc a {
-  display: block;
-  font-size: 11px;
-  color: #888;
-  padding: 4px 0 4px 8px;
-  border-left: 2px solid #e5e4df;
-  margin-bottom: 3px;
-  text-decoration: none;
-  line-height: 1.5;
-  transition: all .15s;
-}
-#toc a:hover,
-#toc a.active { color: #0F6E56; border-left-color: #0F6E56; }
 
 /* 人気記事 */
 .sb-pop-item {
@@ -534,40 +513,3 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 </style>
 
-<script>
-// 目次を自動生成
-const article = document.querySelector('.prose');
-const toc = document.getElementById('toc');
-const tocSection = document.getElementById('toc-section');
-
-if (article && toc) {
-  const headings = article.querySelectorAll('h2, h3');
-  if (headings.length === 0 && tocSection) {
-    tocSection.style.display = 'none';
-  } else {
-    headings.forEach((h, i) => {
-      const id = `heading-${i}`;
-      h.id = id;
-      const a = document.createElement('a');
-      a.href = `#${id}`;
-      a.textContent = h.textContent ?? '';
-      if (h.tagName === 'H3') a.style.paddingLeft = '16px';
-      toc.appendChild(a);
-    });
-  }
-}
-
-// スクロール追従ハイライト
-const tocLinks = document.querySelectorAll('#toc a');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      tocLinks.forEach(a => a.classList.remove('active'));
-      const active = document.querySelector(`#toc a[href="#${entry.target.id}"]`);
-      active?.classList.add('active');
-    }
-  });
-}, { rootMargin: '-20% 0px -70% 0px' });
-
-document.querySelectorAll('.prose h2, .prose h3').forEach(h => observer.observe(h));
-</script>
