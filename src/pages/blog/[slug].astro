@@ -258,12 +258,12 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   margin: 0 auto;
 }
 
-/* prose スタイル（読みやすさ重視）*/
-.prose {
+/* prose スタイル — :global() で <Content/> 内にも確実に適用 */
+:global(.prose) {
   font-family: 'Noto Serif JP', serif;
 }
 
-.prose p {
+:global(.prose p) {
   font-size: 16px;
   line-height: 2.0;
   color: #1a1a18;
@@ -271,34 +271,34 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   letter-spacing: 0.03em;
 }
 
-.prose h2 {
+:global(.prose h2) {
   font-family: 'Noto Serif JP', serif;
   font-size: 22px;
   font-weight: 600;
   color: #1a1a18;
-  margin: 0 0 1.2em;
-  padding: 3em 0 12px;
+  margin: 4em 0 1.2em;
+  padding-bottom: 12px;
   border-bottom: 1px solid #e5e4df;
   line-height: 1.6;
   letter-spacing: 0.03em;
 }
 
-.prose h2:first-child {
-  padding-top: 0;
+:global(.prose h2:first-child) {
+  margin-top: 0;
 }
 
-.prose h3 {
+:global(.prose h3) {
   font-family: 'Noto Serif JP', serif;
   font-size: 17px;
   font-weight: 600;
   color: #1a1a18;
-  margin: 0 0 1em;
-  padding: 2.5em 0 0 14px;
+  margin: 3em 0 1em;
+  padding-left: 14px;
   border-left: 3px solid #0F6E56;
   line-height: 1.7;
 }
 
-.prose blockquote {
+:global(.prose blockquote) {
   margin: 2em 0;
   padding: 18px 22px;
   background: #f5f4f0;
@@ -306,19 +306,19 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   border-radius: 0 8px 8px 0;
 }
 
-.prose blockquote p {
+:global(.prose blockquote p) {
   font-size: 14px;
   color: #555;
   margin-bottom: 0;
   line-height: 1.85;
 }
 
-.prose strong {
+:global(.prose strong) {
   font-weight: 700;
   color: #0a0a09;
 }
 
-.prose em {
+:global(.prose em) {
   font-style: italic;
 }
 
@@ -335,13 +335,13 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   opacity: 0.7;
 }
 
-.prose ul,
-.prose ol {
+:global(.prose ul),
+:global(.prose ol) {
   padding-left: 1.8em;
   margin: 1.5em 0 2em;
 }
 
-.prose li {
+:global(.prose li) {
   font-family: 'Noto Serif JP', serif;
   font-size: 16px;
   line-height: 1.95;
@@ -351,21 +351,21 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   letter-spacing: 0.03em;
 }
 
-.prose li:last-child {
+:global(.prose li:last-child) {
   margin-bottom: 0;
 }
 
-.prose li p {
+:global(.prose li p) {
   margin-bottom: 0.5em;
 }
 
-.prose hr {
+:global(.prose hr) {
   border: none;
   border-top: 1px solid #e5e4df;
   margin: 3em 0;
 }
 
-.prose img {
+:global(.prose img) {
   max-width: 100%;
   height: auto;
   margin: 2em 0;
