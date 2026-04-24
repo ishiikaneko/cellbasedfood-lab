@@ -30,10 +30,15 @@ async function run() {
       throw e;
     }
     
-    // 記事本文から descriptionを抽出（最初の段落）
+    // 記事本文から descriptionを抽出（最初の段落・HTMLタグ除去）
     const bodyLines = (parsed.body || '').split('\n').filter(l => l.trim());
-    const firstParagraph = bodyLines.find(l => !l.startsWith('#') && !l.startsWith('---')) || '';
-    const description = firstParagraph.slice(0, 120).replace(/\s+/g, ' ').trim();
+    const firstParagraph = bodyLines.find(l => !l.startsWith('#') && !l.startsWith('---') && !l.startsWith('-') && !l.startsWith('*')) || '';
+    const description = firstParagraph
+      .replace(/<[^>]+>/g, '')   // HTMLタグを除去
+      .replace(/\*\*/g, '')      // Markdownの太字記号を除去
+      .slice(0, 120)
+      .replace(/\s+/g, ' ')
+      .trim();
     
     const article = {
       title: parsed.title || topic,
