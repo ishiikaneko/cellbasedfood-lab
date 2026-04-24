@@ -8,9 +8,6 @@ aiGenerated: true
 draft: false
 ---
 
-シンガポール食品庁（SFA）は2023年、GOOD Meat社（Eat Just傘下）の培養鶏肉製品に対して販売承認を与えた。これは規制当局が培養肉を正式に承認した世界初の事例として、業界に大きなインパクトをもたらしました。
-
-
 ## SFAが示した承認プロセスの骨格
 
 SFAは2019年、「Novel Food」規制フレームワークを整備し、培養肉を含む新規食品の市場参入経路を法制化しました。
@@ -73,8 +70,28 @@ GOOD Meatのシンガポール承認以降、同社は製造規模の拡大と�
 特に国際標準化の動きは、将来の貿易・輸出入ルールに影響するため、研究者・企業・政策担当者いずれの立場からも注視が必要です。
 
 
+## 2026年現在の状況：承認から3年、何が変わったか
+
+GOOD MeatのSFA承認から3年が経過した2026年時点で、培養肉の規制状況は大きく進展しています。
+
+**シンガポールの加速**
+
+SFAは2025年初頭以降、承認ペースを大幅に上げており、2026年4月時点で7品目以上の培養肉製品を承認済みです。豪州スタートアップVow社の培養うずら肉、Parima社の培養鶏肉なども続いて承認を取得しました。また2025年1月には「食品安全保障法（Food Safety and Security Act）」が施行され、Novel Foodフレームワークが法律として明文化されました。GOOD Meat自身は2024年にシンガポール国内での小売販売にも踏み出し、レストラン限定から一般消費者へのアクセスが広がっています。
+
+**米国の明暗**
+
+米国では2023年6月にFDA・USDAがUPSIDE FoodsおよびGOOD Meatへの販売許可を下しましたが、その後スケールアップコストや農業界からの政治的圧力を受け、商業展開は難航しています。GOOD Meatは2024年に米国での一般販売を一時縮小し、製造体制の再構築を進めている状況です。
+
+**日本の現在地**
+
+日本では2024年末、細胞農業研究機構（JACA）が消費者庁・農水省に対して「上市前相談窓口の設置」と「法的手続きの明示化」を求める提言書を提出しました。消費者庁は2025年夏を目処に業界向けガイドライン中間案の公表を予定しており、日本でも具体的な制度整備が始まっています。政府は2025年に「日本成長戦略」の重点分野17項目のひとつにフードテックを指定しており、政策的な追い風は出つつあります。ただし申請・審査の実務ルールが確立するには、さらに数年を要するとみています。
+
+シンガポールの事例が示しているのは、「先に制度を整備した国が、世界の培養肉企業の試験市場になる」という構造です。日本が同じ役割を担えるかどうかは、2025〜2026年の制度整備の速度にかかっています。
+
 ## 引用・参照ソース
 
 - [Singapore Food Agency — Novel Foods](https://www.sfa.gov.sg/food-information/novel-food) — SFAのNovel Foodフレームワーク公式ページ
 - [GOOD Meat Receives Approval to Sell Cultivated Meat](https://goodmeat.co/news/good-meat-receives-approval-to-sell-cultivated-meat/) — GOOD Meat社公式プレスリリース（2023年）
 - [EFSA Scientific Opinion on Cultivated Meat Safety](https://www.efsa.europa.eu/en/topics/topic/novel-foods) — EFSAのNovel Food審査情報（参考）
+- [Where countries stand on cultivated meat regulation in 2026](https://www.foodnavigator-usa.com/Article/2026/02/18/cultivated-meat-regulation-where-countries-stand-in-2026/) — Food Navigator USA（2026年2月）
+- [日本の培養肉市場に明確なルールを：JACAが提言](https://foodtech-japan.com/2024/11/12/jaca/) — Foovo（2024年11月）
