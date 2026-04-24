@@ -84,11 +84,16 @@ body内の末尾に以下2セクションを含める：
 const SOURCES_ADDENDUM = `## ソース制約（重要）
 ユーザーから検証済みの一次ソースが提供されています。以下を厳守：
 - 記事中のすべての事実はこれらのソースに厳密に基づく
-- 具体的な主張をする際はソースを記事内で明記（例：「SFAの発表によると...」）
+- 具体的な主張をする際はソースを記事内で明記（例：「SFAの発表によると...」「Upside FoodsのLinkedIn投稿によると...」）
 - ソースにない事実を追加しない
 - URLやデータを捏造しない
 - ソースのkey_factsとsummaryを事実の骨格として使う
-- 提供されたすべてのソースを引用文献セクションに含める`;
+- 提供されたすべてのソースを引用文献セクションに含める
+
+## LinkedIn ソースの扱い
+- type が "linkedin" のソースは、企業または研究者の公式発信として扱う
+- 「〇〇社のLinkedIn公式アカウントによると」「研究者△△氏がLinkedInで述べたところによると」のように明記する
+- LinkedIn投稿は一次情報だが査読なしのため、断定を避け「発表した」「述べた」などの表現を使う`;
 
 export async function writeArticle(topic, { lang = 'Japanese', outputDir = 'content/drafts', sourcesFile = null } = {}) {
   log.step(`Writing article on: ${topic}`);

@@ -11,7 +11,25 @@ export async function researchTopic(topic, { outputDir = 'content/sources' } = {
   const today = new Date().toISOString().slice(0, 10);
   log.step(`Researching: "${topic}"`);
 
-  const prompt = 'You are a research specialist on cultured meat. List 3-5 primary sources (academic papers, government reports, official press releases) related to: "' + topic + '"\n\nOutput ONLY a JSON object with this structure, no code blocks, no other text:\n{"topic":"' + topic + '","searched_at":"' + today + '","sources":[{"title":"...","url":"https://...","type":"academic","publisher":"...","date":"YYYY-MM-DD","summary":"...","key_facts":["fact1","fact2"]}]}';
+  const prompt = `You are a research specialist on cultured meat and cellular agriculture.
+
+List 3-5 primary sources related to: "${topic}"
+
+Acceptable source types:
+- "academic"   : peer-reviewed journal articles (PubMed, bioRxiv, etc.)
+- "government" : official documents from FDA, USDA, EFSA, 農水省, etc.
+- "report"     : industry reports from GFI, FAO, OECD, etc.
+- "press"      : official press releases from companies (Upside Foods, GOOD Meat, Mosa Meat, etc.)
+- "linkedin"   : posts by company official accounts or leading researchers on LinkedIn
+
+For LinkedIn sources:
+- Only include posts from verified company pages or well-known researchers
+- Use https://www.linkedin.com/company/<company-slug>/ for company pages
+- Use https://www.linkedin.com/in/<profile-slug>/ for researcher profiles
+- If the exact post URL is unknown, use the profile/company page URL
+
+Output ONLY a JSON object with this structure, no code blocks, no other text:
+{"topic":"${topic}","searched_at":"${today}","sources":[{"title":"...","url":"https://...","type":"academic","publisher":"...","date":"YYYY-MM-DD","summary":"...","key_facts":["fact1","fact2"]}]}`;
 
   const response = await c.messages.create({
     model: 'claude-opus-4-6',
