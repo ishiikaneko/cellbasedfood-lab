@@ -1,0 +1,129 @@
+---
+// variant: 'home'（3列）or 'sidebar'（1列）
+const { variant = 'home' } = Astro.props;
+const DISPLAY_COUNT = variant === 'sidebar' ? 1 : 3;
+---
+
+<div class={`sp-banners sp-banners--${variant}`} aria-label="広告">
+  <p class="sp-label">Sponsored</p>
+  <div class="sp-slots">
+    {Array.from({ length: DISPLAY_COUNT }).map(() => (
+      <div class="sp-slot sp-placeholder"></div>
+    ))}
+  </div>
+</div>
+
+<script>
+// ===================================================
+// バナーリスト
+// 運用方法：URLを追加するだけでOK（順番は不問）
+// ページ読み込み時にこの中からランダムに表示されます
+// ===================================================
+const BANNER_URLS = [
+  'https://amzn.to/4e4lE2Q',
+  'https://amzn.to/4cuO3Oq',
+  'https://amzn.to/3Qm6I6x',
+  'https://amzn.to/4sTaH7O',
+  'https://amzn.to/4sTaNMI',
+  'https://amzn.to/4uaxsFv',
+  'https://amzn.to/4udSzXI',
+];
+
+function getRandomItems(arr: string[], count: number): string[] {
+  return [...arr].sort(() => Math.random() - 0.5).slice(0, Math.min(count, arr.length));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll<HTMLElement>('.sp-banners').forEach(container => {
+    const isSidebar = container.classList.contains('sp-banners--sidebar');
+    const count = isSidebar ? 1 : 3;
+    const picks = getRandomItems(BANNER_URLS, count);
+    const slotsEl = container.querySelector('.sp-slots');
+    if (!slotsEl) return;
+    slotsEl.innerHTML = picks.map(url =>
+      `<a
+        href="${url}"
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        class="sp-slot sp-card"
+      >
+        <span class="sp-icon">📦</span>
+        <span class="sp-cta">Amazonで見る →</span>
+      </a>`
+    ).join('');
+  });
+});
+</script>
+
+<style>
+.sp-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ── home: 3列グリッド ── */
+.sp-banners--home .sp-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.sp-banners--home .sp-slot {
+  height: 60px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* ── sidebar: 縦1列 ── */
+.sp-banners--sidebar .sp-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sp-banners--sidebar .sp-slot {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  background: #fafaf8;
+}
+
+/* ── プレースホルダー（JS実行前） ── */
+.sp-placeholder {
+  border: 1px dashed #dddbd4;
+}
+
+/* ── バナーカード（JS実行後） ── */
+.sp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  border: 1px solid #e5e4df;
+  transition: background .15s, border-color .15s;
+}
+.sp-card:hover {
+  background: #f5f4f0;
+  border-color: #d0cfc9;
+}
+.sp-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+.sp-cta {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: #0F6E56;
+  letter-spacing: .05em;
+}
+
+@media (max-width: 768px) {
+  .sp-banners--home .sp-slots {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

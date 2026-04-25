@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import Footer from '../components/Footer.astro';
+import SponsoredBanners from '../components/SponsoredBanners.astro';
 import { getCollection } from 'astro:content';
 
 // ── 全記事取得（下書き除外・日付降順） ──
@@ -159,15 +160,9 @@ const popularPosts = allPosts.slice(0, 3);
           </a>
         </section>
 
-        <!-- ── AFFILIATE ── -->
-        <section class="aff-zone" aria-label="広告・アフィリエイト">
-          <p class="aff-label">Sponsored / Affiliate</p>
-          <div class="aff-slots">
-            <!-- バナー差し替え箇所 -->
-            <div class="aff-slot"><span class="aff-ph">banner 1</span></div>
-            <div class="aff-slot"><span class="aff-ph">banner 2</span></div>
-            <div class="aff-slot"><span class="aff-ph">banner 3</span></div>
-          </div>
+        <!-- ── SPONSORED ── -->
+        <section class="aff-zone">
+          <SponsoredBanners />
         </section>
 
       </div>
@@ -484,25 +479,6 @@ const popularPosts = allPosts.slice(0, 3);
   padding: 12px 24px;
   background: #f5f4f0;
 }
-.aff-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: .1em;
-  color: #888;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.aff-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.aff-slot {
-  height: 60px;
-  border: 1px dashed #dddbd4;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-}
-.aff-ph { font-size: 9px; color: #aaa; font-family: 'Space Mono', monospace; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
