@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "fetch-ogp": "node scripts/fetch-ogp.mjs"
   },
   "dependencies": {
     "astro": "^4.8.0",

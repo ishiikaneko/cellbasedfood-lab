@@ -1,26 +1,10 @@
 ---
-// variant: 'home'（3列）or 'sidebar'（3列縦積み）
+// variant: 'home'（3列グリッド）or 'sidebar'（縦積み）
 const { variant = 'home' } = Astro.props;
 const DISPLAY_COUNT = 3;
 const LABEL = variant === 'sidebar' ? 'BANNERS' : 'Sponsored';
----
 
-<div class={`sp-banners sp-banners--${variant}`} aria-label="広告">
-  <p class="sp-label">{LABEL}</p>
-  <div class="sp-slots">
-    {Array.from({ length: DISPLAY_COUNT }).map(() => (
-      <div class="sp-slot sp-placeholder"></div>
-    ))}
-  </div>
-</div>
-
-<script>
-// ===================================================
-// バナーリスト
-// 運用方法：URLを追加するだけでOK（順番は不問）
-// ページ読み込み時にこの中からランダムに表示されます
-// ===================================================
-const BANNER_URLS = [
+const FALLBACK_URLS = [
   'https://amzn.to/4e4lE2Q',
   'https://amzn.to/4cuO3Oq',
   'https://amzn.to/3Qm6I6x',
@@ -30,32 +14,99 @@ const BANNER_URLS = [
   'https://amzn.to/4udSzXI',
 ];
 
-function getRandomItems(arr: string[], count: number): string[] {
+interface OgpItem {
+  url: string;
+  title: string | null;
+  image: string | null;
+  description: string | null;
+}
+
+let ogpItems: OgpItem[] = [];
+
+try {
+  const { readFileSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const raw = readFileSync(join(process.cwd(), 'src/data/ogp-cache.json'), 'utf-8');
+  ogpItems = (JSON.parse(raw) as { items: OgpItem[] }).items ?? [];
+} catch {
+  ogpItems = FALLBACK_URLS.map(url => ({ url, title: null, image: null, description: null }));
+}
+---
+
+<div
+  class={`sp-banners sp-banners--${variant}`}
+  aria-label="広告"
+  data-ogp={JSON.stringify(ogpItems)}
+>
+  <p class="sp-label">{LABEL}</p>
+  <div class="sp-slots">
+    {Array.from({ length: DISPLAY_COUNT }).map(() => (
+      <div class="sp-slot sp-placeholder" aria-hidden="true"></div>
+    ))}
+  </div>
+</div>
+
+<script>
+interface OgpItem {
+  url: string;
+  title: string | null;
+  image: string | null;
+  description: string | null;
+}
+
+function getRandomItems<T>(arr: T[], count: number): T[] {
   return [...arr].sort(() => Math.random() - 0.5).slice(0, Math.min(count, arr.length));
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function buildCard(item: OgpItem): string {
+  const title       = item.title       ?? 'Amazon商品を見る';
+  const description = item.description ?? '';
+  const imageHtml   = item.image
+    ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(title)}" loading="lazy" />`
+    : `<div class="sp-img-placeholder" aria-hidden="true">📦</div>`;
+
+  return `<a
+    href="${escapeHtml(item.url)}"
+    target="_blank"
+    rel="noopener noreferrer sponsored"
+    class="sp-slot sp-card"
+  >
+    <div class="sp-img">${imageHtml}</div>
+    <div class="sp-body">
+      <p class="sp-title">${escapeHtml(title)}</p>
+      ${description ? `<p class="sp-desc">${escapeHtml(description)}</p>` : ''}
+      <span class="sp-cta">amazon.co.jp ↗</span>
+    </div>
+  </a>`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll<HTMLElement>('.sp-banners').forEach(container => {
-    const count = 3;
-    const picks = getRandomItems(BANNER_URLS, count);
+    const raw = container.dataset.ogp;
+    if (!raw) return;
+
+    let items: OgpItem[] = [];
+    try { items = JSON.parse(raw); } catch { return; }
+
+    const picks   = getRandomItems(items, 3);
     const slotsEl = container.querySelector('.sp-slots');
     if (!slotsEl) return;
-    slotsEl.innerHTML = picks.map(url =>
-      `<a
-        href="${url}"
-        target="_blank"
-        rel="noopener noreferrer sponsored"
-        class="sp-slot sp-card"
-      >
-        <span class="sp-icon">📦</span>
-        <span class="sp-cta">Amazonで見る →</span>
-      </a>`
-    ).join('');
+
+    slotsEl.innerHTML = picks.map(buildCard).join('');
   });
 });
 </script>
 
 <style>
+/* ─── Label ─────────────────────────────────────────────────────────────── */
 .sp-label {
   font-family: 'Space Mono', monospace;
   font-size: 9px;
@@ -65,65 +116,148 @@ document.addEventListener('DOMContentLoaded', () => {
   margin-bottom: 8px;
 }
 
-/* ── home: 3列グリッド ── */
+/* ─── Home: 3列グリッド ──────────────────────────────────────────────────── */
 .sp-banners--home .sp-slots {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
-.sp-banners--home .sp-slot {
-  height: 60px;
-  border-radius: 8px;
-  background: #fff;
-}
 
-/* ── sidebar: 縦3列 ── */
+/* ─── Sidebar: 縦積み ───────────────────────────────────────────────────── */
 .sp-banners--sidebar .sp-slots {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.sp-banners--sidebar .sp-slot {
-  width: 100%;
-  height: 80px;
-  border-radius: 8px;
-  background: #fafaf8;
-}
 
-/* ── プレースホルダー（JS実行前） ── */
+/* ─── プレースホルダー（JS実行前） ─────────────────────────────────────── */
 .sp-placeholder {
+  height: 160px;
+  border-radius: 8px;
+  background: #fff;
   border: 1px dashed #dddbd4;
 }
 
-/* ── バナーカード（JS実行後） ── */
+/* ─── OGPカード ─────────────────────────────────────────────────────────── */
 .sp-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  text-decoration: none;
+  border-radius: 8px;
+  overflow: hidden;
   border: 1px solid #e5e4df;
-  transition: background .15s, border-color .15s;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition: background .15s, border-color .15s, box-shadow .15s;
 }
 .sp-card:hover {
   background: #f5f4f0;
   border-color: #d0cfc9;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
 }
-.sp-icon {
-  font-size: 18px;
+
+/* 画像エリア */
+.sp-img {
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  background: #f0ede6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sp-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.sp-img-placeholder {
+  font-size: 28px;
   line-height: 1;
+  opacity: .6;
 }
+
+/* テキストエリア */
+.sp-body {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sp-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #1a1a18;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.sp-desc {
+  font-size: 10px;
+  color: #888;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
 .sp-cta {
   font-family: 'Space Mono', monospace;
   font-size: 9px;
   color: #0F6E56;
   letter-spacing: .05em;
+  margin-top: 2px;
 }
 
+/* ─── Sidebar variant（横型） ───────────────────────────────────────────── */
+.sp-banners--sidebar .sp-card {
+  flex-direction: row;
+  height: 72px;
+}
+.sp-banners--sidebar .sp-img {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: 0;
+}
+.sp-banners--sidebar .sp-body {
+  padding: 6px 8px;
+  justify-content: center;
+  gap: 2px;
+}
+.sp-banners--sidebar .sp-title {
+  font-size: 10px;
+}
+.sp-banners--sidebar .sp-desc {
+  display: none;
+}
+
+/* ─── モバイル ───────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .sp-banners--home .sp-slots {
     grid-template-columns: 1fr;
+  }
+  .sp-banners--home .sp-card {
+    flex-direction: row;
+    height: 80px;
+  }
+  .sp-banners--home .sp-img {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+  }
+  .sp-banners--home .sp-desc {
+    display: none;
   }
 }
 </style>
