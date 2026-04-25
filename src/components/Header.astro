@@ -1,10 +1,5 @@
 ---
 const categories = ['すべて', '技術', '規制・政策', '市場・投資', 'ニュース', 'コラム'];
-const currentPath = Astro.url.pathname;
-
-// アクティブカテゴリーをURLパラメータから取得
-const url = new URL(Astro.request.url);
-const activeCategory = url.searchParams.get('category') ?? 'すべて';
 ---
 
 <header class="site-header">
@@ -65,7 +60,8 @@ const activeCategory = url.searchParams.get('category') ?? 'すべて';
       {categories.map(cat => (
         <a
           href={cat === 'すべて' ? '/' : `/?category=${encodeURIComponent(cat)}`}
-          class={`sp-cat-link ${activeCategory === cat ? 'active' : ''}`}
+          class={`sp-cat-link${cat === 'すべて' ? ' active' : ''}`}
+          data-cat={cat}
         >{cat}</a>
       ))}
     </nav>
@@ -78,7 +74,8 @@ const activeCategory = url.searchParams.get('category') ?? 'すべて';
       {categories.map(cat => (
         <a
           href={cat === 'すべて' ? '/' : `/?category=${encodeURIComponent(cat)}`}
-          class={`cat-pill ${activeCategory === cat ? 'on' : ''}`}
+          class={`cat-pill${cat === 'すべて' ? ' on' : ''}`}
+          data-cat={cat}
         >{cat}</a>
       ))}
     </div>

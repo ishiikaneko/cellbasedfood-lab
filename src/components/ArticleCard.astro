@@ -16,7 +16,7 @@ const dateStr = pubDate.toLocaleDateString('ja-JP', {
 }).replace('/', '.');
 ---
 
-<a href={`/blog/${slug}`} class="art-card">
+<a href={`/blog/${slug}`} class="art-card" data-card-cat={category}>
   <div class="art-thumb">
     {heroImage
       ? <img src={heroImage} alt={title} loading="lazy" />

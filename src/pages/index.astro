@@ -9,16 +9,8 @@ import { getCollection } from 'astro:content';
 const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-// ── カテゴリーフィルタ（URLパラメータ対応） ──
-const url = new URL(Astro.request.url);
-const activeCategory = url.searchParams.get('category') ?? 'すべて';
-
-const filtered = activeCategory === 'すべて'
-  ? allPosts
-  : allPosts.filter(p => p.data.category === activeCategory);
-
-// ── トップ9本 ──
-const latestPosts = filtered.slice(0, 9);
+// ── 表示対象（最大50本） ──
+const displayPosts = allPosts.slice(0, 50);
 
 // ── タグ一覧（全記事から収集・重複除去・昇順） ──
 const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
@@ -34,24 +26,24 @@ const popularPosts = allPosts.slice(0, 3);
     <main class="main-content">
       <div class="inner">
 
-        <!-- ── HERO（週間人気1位記事） ── -->
-        {latestPosts.length > 0 && (
+        <!-- ── HERO（最新記事） ── -->
+        {allPosts.length > 0 && (
           <section class="hero-area" aria-labelledby="hero-heading">
-            <a href={`/blog/${latestPosts[0].slug}`} class="hero-inner">
+            <a href={`/blog/${allPosts[0].slug}`} class="hero-inner">
               <div class="hero-body">
                 <div class="hero-badge">
-                  <span class={`tag tag-${latestPosts[0].data.category}`}>{latestPosts[0].data.category}</span>
-                  <time datetime={latestPosts[0].data.pubDate.toISOString()} class="hero-date">
-                    {latestPosts[0].data.pubDate.toLocaleDateString('ja-JP', { month: '2-digit', day: '2-digit' }).replace('/', '.')}
+                  <span class={`tag tag-${allPosts[0].data.category}`}>{allPosts[0].data.category}</span>
+                  <time datetime={allPosts[0].data.pubDate.toISOString()} class="hero-date">
+                    {allPosts[0].data.pubDate.toLocaleDateString('ja-JP', { month: '2-digit', day: '2-digit' }).replace('/', '.')}
                   </time>
                 </div>
-                <h2 id="hero-heading" class="hero-title">{latestPosts[0].data.title}</h2>
-                <p class="hero-desc">{latestPosts[0].data.description}</p>
+                <h2 id="hero-heading" class="hero-title">{allPosts[0].data.title}</h2>
+                <p class="hero-desc">{allPosts[0].data.description}</p>
                 <span class="hero-read">記事を読む →</span>
               </div>
-              <div class="hero-thumb" style={latestPosts[0].data.heroImage ? '' : 'background:linear-gradient(135deg,#E1F5EE,#5DCAA5);'}>
-                {latestPosts[0].data.heroImage
-                  ? <img src={latestPosts[0].data.heroImage} alt={latestPosts[0].data.title} />
+              <div class="hero-thumb" style={allPosts[0].data.heroImage ? '' : 'background:linear-gradient(135deg,#E1F5EE,#5DCAA5);'}>
+                {allPosts[0].data.heroImage
+                  ? <img src={allPosts[0].data.heroImage} alt={allPosts[0].data.title} />
                   : <svg viewBox="0 0 64 64" fill="none" width="64" height="64"><circle cx="32" cy="32" r="14" fill="#0F6E56" opacity=".2"/><circle cx="32" cy="32" r="8" fill="#0F6E56" opacity=".4"/><circle cx="14" cy="20" r="5" fill="#1D9E75" opacity=".35"/><circle cx="50" cy="20" r="5" fill="#1D9E75" opacity=".35"/><circle cx="14" cy="44" r="5" fill="#1D9E75" opacity=".35"/><circle cx="50" cy="44" r="5" fill="#1D9E75" opacity=".35"/></svg>
                 }
                 <span class="gen-badge">DALL-E 3</span>
@@ -64,12 +56,12 @@ const popularPosts = allPosts.slice(0, 3);
         <section class="articles-section" aria-labelledby="latest-heading">
           <div class="sec-head">
             <h2 id="latest-heading" class="sec-label">最新記事</h2>
-            <span class="sec-count">{latestPosts.length} / 全{filtered.length}本</span>
+            <span class="sec-count" id="art-count">{displayPosts.length} / 全{allPosts.length}本</span>
           </div>
 
-          {latestPosts.length > 0 ? (
-            <div class="art-grid">
-              {latestPosts.map(post => (
+          {displayPosts.length > 0 ? (
+            <div class="art-grid" id="art-grid">
+              {displayPosts.map(post => (
                 <ArticleCard
                   title={post.data.title}
                   slug={post.slug}
@@ -81,12 +73,13 @@ const popularPosts = allPosts.slice(0, 3);
               ))}
             </div>
           ) : (
-            <p class="empty-msg">該当する記事がまだありません。</p>
+            <p class="empty-msg" id="empty-msg" style="display:none">該当する記事がまだありません。</p>
           )}
+          <p class="empty-msg" id="filter-empty" style="display:none">このカテゴリーの記事はまだありません。</p>
         </section>
 
         <!-- ── PAGINATION / MORE ── -->
-        {filtered.length > 9 && (
+        {allPosts.length > 50 && (
           <div class="more-zone">
             <div class="page-dots" aria-hidden="true">
               <span class="pdot cur"></span>
@@ -96,7 +89,7 @@ const popularPosts = allPosts.slice(0, 3);
               <span class="pdot"></span>
             </div>
             <a href="/blog" class="more-btn">以前の記事はこちら →</a>
-            <span class="page-sub">10本 / ページ</span>
+            <span class="page-sub">50本 / ページ</span>
           </div>
         )}
 
@@ -182,6 +175,64 @@ const popularPosts = allPosts.slice(0, 3);
 
     <Footer />
   </div>
+
+  <script>
+  (function () {
+    function getActiveCat() {
+      return new URLSearchParams(window.location.search).get('category') ?? 'すべて';
+    }
+
+    function applyFilter(cat) {
+      const grid = document.getElementById('art-grid');
+      const countEl = document.getElementById('art-count');
+      const filterEmpty = document.getElementById('filter-empty');
+
+      if (grid) {
+        const cards = grid.querySelectorAll('[data-card-cat]');
+        let visibleCount = 0;
+        cards.forEach(function (card) {
+          const show = cat === 'すべて' || card.dataset.cardCat === cat;
+          card.style.display = show ? '' : 'none';
+          if (show) visibleCount++;
+        });
+
+        if (filterEmpty) filterEmpty.style.display = visibleCount === 0 ? '' : 'none';
+        if (countEl) countEl.textContent = visibleCount + ' / 全' + cards.length + '本';
+      }
+
+      document.querySelectorAll('[data-cat]').forEach(function (el) {
+        el.classList.toggle('on', el.dataset.cat === cat);
+        el.classList.toggle('active', el.dataset.cat === cat);
+      });
+
+      const url = new URL(window.location.href);
+      if (cat === 'すべて') {
+        url.searchParams.delete('category');
+      } else {
+        url.searchParams.set('category', cat);
+      }
+      history.replaceState(null, '', url.toString());
+    }
+
+    applyFilter(getActiveCat());
+
+    document.querySelectorAll('[data-cat]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        applyFilter(el.dataset.cat || 'すべて');
+
+        const drawer = document.getElementById('sp-drawer');
+        const toggle = document.getElementById('menu-toggle');
+        if (drawer && drawer.classList.contains('open')) {
+          drawer.classList.remove('open');
+          drawer.setAttribute('aria-hidden', 'true');
+          toggle && toggle.classList.remove('open');
+          toggle && toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  })();
+  </script>
 </BaseLayout>
 
 <style>
