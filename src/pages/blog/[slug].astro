@@ -84,7 +84,6 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
                 <time datetime={post.data.pubDate.toISOString()} class="art-date">{dateStr}</time>
               </div>
               <h1 class="art-title">{post.data.title}</h1>
-              <p class="art-desc">{post.data.description}</p>
             </header>
 
             <!-- 本文 -->
@@ -244,12 +243,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   margin-bottom: 14px;
   letter-spacing: 0.02em;
 }
-.art-desc {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.85;
-  letter-spacing: 0.02em;
-}
+
 
 /* ── ARTICLE BODY ── */
 .art-body {
