@@ -16,7 +16,6 @@ const BANNER_URLS = [
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
-// Amazon uses name="title" / name="description", not og: tags
 function extractNameMeta(html, name) {
   const re = new RegExp(
     `<meta[^>]+name=["']${name}["'][^>]+content=["']([^"']*)["']|` +
@@ -27,21 +26,45 @@ function extractNameMeta(html, name) {
   return (m?.[1] ?? m?.[2] ?? '').trim() || null;
 }
 
-function extractProductImage(html) {
-  // Product images are in src="..." around the 390KB mark in Amazon HTML
-  const m = html.match(/src="(https:\/\/m\.media-amazon\.com\/images\/I\/[^"]+\.jpg[^"]*)"/);
-  return m?.[1] ?? null;
+// タイトルと著者名を分離して返す
+function parseAmazonTitle(rawTitle) {
+  if (!rawTitle) return { title: null, author: null };
+
+  let t = rawTitle;
+  let author = null;
+
+  // Strip "Amazon.co.jp: " prefix
+  t = t.replace(/^Amazon\.co\.jp\s*:\s*/i, '');
+
+  // "| AUTHOR" パターンで著者抽出（| 本/通販/Amazon 以外）
+  const pipeIdx = t.search(/\s*[|｜]/);
+  if (pipeIdx > 0) {
+    let afterPipe = t.slice(pipeIdx).replace(/^\s*[|｜]\s*/, '').trim();
+    // 著者文字列末尾の "|本|通販|Amazon" を除去
+    afterPipe = afterPipe.replace(/\s*[|｜].*$/i, '').trim();
+    if (afterPipe && !/^(本|書籍|通販|Amazon|アマゾン)/i.test(afterPipe)) {
+      author = afterPipe;
+    }
+    t = t.slice(0, pipeIdx).trim();
+  }
+
+  // " eBook : AUTHOR: Kindleストア" から著者抽出（まだ取れていない場合）
+  if (!author) {
+    const ebookMatch = t.match(/\s+(?:eBook|電子書籍)\s*:\s*([^:]+):\s*Kindleストア/i);
+    if (ebookMatch) author = ebookMatch[1].trim();
+  }
+
+  // " eBook : ..." 以降を除去
+  t = t.replace(/\s+(?:eBook|Kindle版|単行本|電子書籍)\s*:.*$/i, '');
+
+  return { title: t.trim() || null, author: author || null };
 }
 
-function cleanAmazonTitle(title) {
-  if (!title) return null;
-  // Strip "Amazon.co.jp: " prefix
-  let t = title.replace(/^Amazon\.co\.jp\s*:\s*/i, '');
-  // Strip " eBook : 著者名 : Kindleストア" and similar author/format suffixes
-  t = t.replace(/\s+(?:eBook|Kindle版|単行本|電子書籍)\s*:.*$/i, '');
-  // Strip " | 本 | 通販 | Amazon" and similar suffixes
-  t = t.replace(/\s*[|｜]\s*(本|書籍|通販|Amazon|アマゾン).*$/i, '');
-  return t.trim() || null;
+// descriptionから著者名を抽出（タイトルに著者がない場合のフォールバック）
+function extractAuthorFromDescription(desc) {
+  if (!desc) return null;
+  const m = desc.match(/(?:eBook|電子書籍)\s*:\s*([^:]+):\s*Kindleストア/i);
+  return m ? m[1].trim() : null;
 }
 
 async function fetchOgp(url) {
@@ -57,8 +80,7 @@ async function fetchOgp(url) {
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    // Read up to 450KB – product images appear around the 390KB mark in Amazon HTML.
-    // Stop early once we find an <img src="...amazon...jpg"> pattern.
+    // 最大450KB読み取り。商品画像のsrc=が見つかったら早期終了
     const reader = res.body.getReader();
     let html = '';
     let bytes = 0;
@@ -72,17 +94,17 @@ async function fetchOgp(url) {
     }
     reader.cancel();
 
-    const rawTitle    = extractNameMeta(html, 'title');
-    const title       = cleanAmazonTitle(rawTitle);
-    const description = extractNameMeta(html, 'description');
-    const image       = extractProductImage(html);
+    const rawTitle = extractNameMeta(html, 'title');
+    const desc     = extractNameMeta(html, 'description');
+    const { title, author: titleAuthor } = parseAmazonTitle(rawTitle);
+    const author = titleAuthor ?? extractAuthorFromDescription(desc);
 
     if (!html.includes('amazon')) throw new Error('Robot check page');
-    console.log(`  OK  ${url} → ${title?.slice(0, 50)}`);
-    return { url, title: title ?? 'Amazon商品を見る', image, description };
+    console.log(`  OK  ${url} → ${title?.slice(0, 40)} / ${author ?? '著者不明'}`);
+    return { url, title: title ?? 'Amazon商品を見る', author };
   } catch (err) {
     console.warn(`  FAIL ${url}: ${err.message}`);
-    return { url, title: 'Amazon商品を見る', image: null, description: null };
+    return { url, title: 'Amazon商品を見る', author: null };
   }
 }
 
