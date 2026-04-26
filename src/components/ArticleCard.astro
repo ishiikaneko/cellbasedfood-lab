@@ -6,9 +6,10 @@ interface Props {
   category: string;
   heroImage?: string;
   aiGenerated?: boolean;
+  searchText?: string;
 }
 
-const { title, slug, pubDate, category, heroImage, aiGenerated = false } = Astro.props;
+const { title, slug, pubDate, category, heroImage, aiGenerated = false, searchText } = Astro.props;
 
 const dateStr = pubDate.toLocaleDateString('ja-JP', {
   month: '2-digit',
@@ -16,7 +17,7 @@ const dateStr = pubDate.toLocaleDateString('ja-JP', {
 }).replace('/', '.');
 ---
 
-<a href={`/blog/${slug}`} class="art-card" data-card-cat={category}>
+<a href={`/blog/${slug}`} class="art-card" data-card-cat={category} data-search-text={searchText ?? ''}>
   <div class="art-thumb">
     {heroImage
       ? <img src={heroImage} alt={title} loading="lazy" />

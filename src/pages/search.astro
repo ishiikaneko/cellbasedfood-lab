@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="検索結果 | CellBasedFood Lab" description="サイト内検索結果">
+  <div class="page-wrapper">
+    <Header />
+
+    <main class="main-content">
+      <div class="inner">
+
+        <section class="articles-section" aria-labelledby="search-heading">
+          <div class="sec-head">
+            <h2 id="search-heading" class="sec-label">
+              検索結果：<span id="search-query-label" class="query-label"></span>
+            </h2>
+            <span class="sec-count" id="art-count"></span>
+          </div>
+
+          {allPosts.length > 0 ? (
+            <div class="art-grid" id="art-grid">
+              {allPosts.map(post => (
+                <ArticleCard
+                  title={post.data.title}
+                  slug={post.slug}
+                  pubDate={post.data.pubDate}
+                  category={post.data.category}
+                  heroImage={post.data.heroImage}
+                  aiGenerated={post.data.aiGenerated}
+                  searchText={[
+                    post.data.title,
+                    post.data.description,
+                    post.data.category,
+                    ...(post.data.tags ?? []),
+                  ].join(' ')}
+                />
+              ))}
+            </div>
+          ) : (
+            <p class="empty-msg">記事がまだありません。</p>
+          )}
+
+          <p class="empty-msg" id="search-empty" style="display:none"></p>
+        </section>
+
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+
+  <script>
+  (function () {
+    const q = new URLSearchParams(window.location.search).get('q') ?? '';
+    const query = q.trim();
+    const queryLower = query.toLowerCase();
+
+    const queryLabel = document.getElementById('search-query-label');
+    const countEl = document.getElementById('art-count');
+    const grid = document.getElementById('art-grid');
+    const emptyEl = document.getElementById('search-empty');
+
+    if (queryLabel) {
+      queryLabel.textContent = query ? `「${query}」` : 'すべて';
+    }
+
+    if (grid) {
+      const cards = grid.querySelectorAll('[data-search-text]');
+      let visibleCount = 0;
+
+      cards.forEach(function (card) {
+        const text = (card.getAttribute('data-search-text') ?? '').toLowerCase();
+        const show = !queryLower || text.includes(queryLower);
+        (card as HTMLElement).style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+
+      if (countEl) {
+        countEl.textContent = query
+          ? `${visibleCount}件 / 全${cards.length}本`
+          : `全${cards.length}本`;
+      }
+
+      if (emptyEl) {
+        if (visibleCount === 0 && query) {
+          emptyEl.textContent = `「${query}」に一致する記事は見つかりませんでした。`;
+          emptyEl.style.display = '';
+        } else {
+          emptyEl.style.display = 'none';
+        }
+      }
+    }
+  })();
+  </script>
+</BaseLayout>
+
+<style>
+.page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; }
+.inner { max-width: 1200px; margin: 0 auto; }
+
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 8px;
+}
+.sec-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.query-label {
+  color: #1a1a18;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.sec-count { font-size: 10px; color: #888; }
+
+.art-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 0.5px solid #e5e4df;
+}
+.art-grid > :nth-child(3n) { border-right: none; }
+.art-grid > :nth-last-child(-n+3):nth-child(3n+1),
+.art-grid > :nth-last-child(-n+3):nth-child(3n+2),
+.art-grid > :nth-last-child(-n+3):nth-child(3n)  { border-bottom: none; }
+
+.empty-msg {
+  padding: 32px 24px;
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .sec-head { padding: 10px 16px 6px; }
+  .art-grid { grid-template-columns: 1fr; }
+  .art-grid > * { border-right: none !important; }
+  .inner { max-width: 100%; }
+}
+</style>
