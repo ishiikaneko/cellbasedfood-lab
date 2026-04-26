@@ -17,8 +17,7 @@ const FALLBACK_URLS = [
 interface OgpItem {
   url: string;
   title: string | null;
-  image: string | null;
-  description: string | null;
+  author: string | null;
 }
 
 let ogpItems: OgpItem[] = [];
@@ -29,7 +28,7 @@ try {
   const raw = readFileSync(join(process.cwd(), 'src/data/ogp-cache.json'), 'utf-8');
   ogpItems = (JSON.parse(raw) as { items: OgpItem[] }).items ?? [];
 } catch {
-  ogpItems = FALLBACK_URLS.map(url => ({ url, title: null, image: null, description: null }));
+  ogpItems = FALLBACK_URLS.map(url => ({ url, title: null, author: null }));
 }
 ---
 
@@ -50,8 +49,7 @@ try {
 interface OgpItem {
   url: string;
   title: string | null;
-  image: string | null;
-  description: string | null;
+  author: string | null;
 }
 
 function getRandomItems<T>(arr: T[], count: number): T[] {
@@ -67,11 +65,8 @@ function escapeHtml(str: string): string {
 }
 
 function buildCard(item: OgpItem): string {
-  const title       = item.title       ?? 'Amazon商品を見る';
-  const description = item.description ?? '';
-  const imageHtml   = item.image
-    ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(title)}" loading="lazy" />`
-    : `<div class="sp-img-placeholder" aria-hidden="true">📦</div>`;
+  const title  = item.title  ?? 'Amazon商品を見る';
+  const author = item.author ?? '';
 
   return `<a
     href="${escapeHtml(item.url)}"
@@ -79,12 +74,9 @@ function buildCard(item: OgpItem): string {
     rel="noopener noreferrer sponsored"
     class="sp-slot sp-card"
   >
-    <div class="sp-img">${imageHtml}</div>
-    <div class="sp-body">
-      <p class="sp-title">${escapeHtml(title)}</p>
-      ${description ? `<p class="sp-desc">${escapeHtml(description)}</p>` : ''}
-      <span class="sp-cta">amazon.co.jp ↗</span>
-    </div>
+    <p class="sp-title">${escapeHtml(title)}</p>
+    ${author ? `<p class="sp-author">${escapeHtml(author)}</p>` : ''}
+    <span class="sp-cta">amazon.co.jp ↗</span>
   </a>`;
 }
 
@@ -106,92 +98,58 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <style>
-/* ─── Label ─────────────────────────────────────────────────────────────── */
 .sp-label {
   font-family: 'Space Mono', monospace;
   font-size: 9px;
   letter-spacing: .1em;
   color: #888;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin: 0 0 6px;
+  padding: 0 16px;
 }
 
-/* ─── Home: 3列グリッド ──────────────────────────────────────────────────── */
+/* ─── Home: 3列グリッド（icon-rowと同じ幅感） ────────────────────────── */
 .sp-banners--home .sp-slots {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  border-top: 0.5px solid #e5e4df;
 }
 
 /* ─── Sidebar: 縦積み ───────────────────────────────────────────────────── */
 .sp-banners--sidebar .sp-slots {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
-/* ─── プレースホルダー（JS実行前） ─────────────────────────────────────── */
+/* ─── プレースホルダー ───────────────────────────────────────────────────── */
 .sp-placeholder {
-  height: 160px;
-  border-radius: 8px;
-  background: #fff;
-  border: 1px dashed #dddbd4;
+  height: 68px;
+  background: #fafaf8;
+  border-right: 0.5px solid #e5e4df;
 }
+.sp-placeholder:last-child { border-right: none; }
 
-/* ─── OGPカード ─────────────────────────────────────────────────────────── */
+/* ─── カード共通 ──────────────────────────────────────────────────────────── */
 .sp-card {
   display: flex;
   flex-direction: column;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #e5e4df;
-  background: #fff;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px 12px;
+  border-right: 0.5px solid #e5e4df;
   text-decoration: none;
   color: inherit;
-  transition: background .15s, border-color .15s, box-shadow .15s;
+  transition: background .15s;
 }
-.sp-card:hover {
-  background: #f5f4f0;
-  border-color: #d0cfc9;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
-}
-
-/* 画像エリア */
-.sp-img {
-  width: 100%;
-  height: 100px;
-  overflow: hidden;
-  background: #f0ede6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.sp-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.sp-img-placeholder {
-  font-size: 28px;
-  line-height: 1;
-  opacity: .6;
-}
-
-/* テキストエリア */
-.sp-body {
-  padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+.sp-card:last-child { border-right: none; }
+.sp-card:hover { background: #f5f4f0; }
 
 .sp-title {
   font-family: 'Noto Serif JP', serif;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
-  line-height: 1.55;
+  line-height: 1.5;
   color: #1a1a18;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -200,64 +158,40 @@ document.addEventListener('DOMContentLoaded', () => {
   margin: 0;
 }
 
-.sp-desc {
-  font-size: 10px;
-  color: #888;
-  line-height: 1.55;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+.sp-author {
+  font-size: 9px;
+  color: #999;
+  line-height: 1.4;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   margin: 0;
 }
 
 .sp-cta {
   font-family: 'Space Mono', monospace;
-  font-size: 9px;
+  font-size: 8px;
   color: #0F6E56;
-  letter-spacing: .05em;
-  margin-top: 2px;
+  letter-spacing: .04em;
 }
 
-/* ─── Sidebar variant（横型） ───────────────────────────────────────────── */
+/* ─── Sidebar variant ───────────────────────────────────────────────────── */
 .sp-banners--sidebar .sp-card {
-  flex-direction: row;
-  height: 72px;
+  border-right: none;
+  border: 1px solid #e5e4df;
+  border-radius: 6px;
+  padding: 8px 10px;
 }
-.sp-banners--sidebar .sp-img {
-  width: 72px;
-  height: 72px;
-  flex-shrink: 0;
-  border-radius: 0;
-}
-.sp-banners--sidebar .sp-body {
-  padding: 6px 8px;
-  justify-content: center;
-  gap: 2px;
-}
-.sp-banners--sidebar .sp-title {
-  font-size: 10px;
-}
-.sp-banners--sidebar .sp-desc {
-  display: none;
+.sp-banners--sidebar .sp-card:hover {
+  border-color: #d0cfc9;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
 }
 
 /* ─── モバイル ───────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .sp-banners--home .sp-slots {
-    grid-template-columns: 1fr;
-  }
-  .sp-banners--home .sp-card {
-    flex-direction: row;
-    height: 80px;
-  }
-  .sp-banners--home .sp-img {
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-  }
-  .sp-banners--home .sp-desc {
-    display: none;
-  }
+  .sp-title { font-size: 9px; }
+  .sp-author { font-size: 8px; }
+  .sp-card { padding: 8px 8px; gap: 2px; }
+  .sp-placeholder { height: 56px; }
 }
 </style>
