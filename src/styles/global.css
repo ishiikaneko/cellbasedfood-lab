@@ -37,7 +37,7 @@
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; scroll-behavior: smooth; }
+html { font-size: 18px; scroll-behavior: smooth; }
 body {
   font-family: var(--font-sans);
   background: #fafaf8;
@@ -49,7 +49,7 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
 /* ── Category tag colors ── */
-.tag { font-size: 9px; padding: 2px 7px; border-radius: 20px; font-family: var(--font-mono); white-space: nowrap; }
+.tag { font-size: 11px; padding: 2px 7px; border-radius: 20px; font-family: var(--font-mono); white-space: nowrap; }
 .tag-技術      { background: var(--green-50); color: var(--green-600); }
 .tag-規制・政策 { background: var(--blue-50);  color: var(--blue-600); }
 .tag-市場・投資 { background: var(--amber-50); color: var(--amber-600); }
@@ -71,7 +71,7 @@ img { display: block; max-width: 100%; }
   position: absolute; bottom: 3px; right: 4px;
   background: rgba(15,110,86,0.82);
   color: #fff;
-  font-size: 8px;
+  font-size: 10px;
   font-family: var(--font-mono);
   padding: 1px 5px;
   border-radius: 3px;
