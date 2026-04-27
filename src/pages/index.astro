@@ -94,19 +94,7 @@ const popularPosts = allPosts.slice(0, 3);
           </div>
         )}
 
-        <!-- ── TAGS ── -->
-        {allTags.length > 0 && (
-          <section class="tag-area" aria-labelledby="tag-heading">
-            <h2 id="tag-heading" class="tag-head-label">タグ</h2>
-            <div class="tag-pills">
-              {allTags.map(tag => (
-                <a href={`/tag/${encodeURIComponent(tag)}`} class="tag-pill">
-                  #{tag}
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
+        <!-- ── TAGS (hidden) ── -->
 
         <!-- ── POPULAR ── -->
         <section class="pop-zone" aria-labelledby="popular-heading">
