@@ -10,13 +10,12 @@
 import { execSync } from 'child_process';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import path from 'path';
-import fetch from 'node-fetch';
+import { generateBlogThumbnail } from '../media/thumbnail-blog.js';
 
 // ── 設定 ──────────────────────────────────────────────────
 const SITE_REPO_PATH = process.env.SITE_REPO_PATH || 'C:/Users/Yuji Matsuyoshi/Downloads/cellbasedfood-lab';
 const BLOG_DIR       = path.join(SITE_REPO_PATH, 'src/content/blog');
 const IMAGES_DIR     = path.join(SITE_REPO_PATH, 'public/images');
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // DALL-E 3用（任意）
 
 // カテゴリーの正規化マップ
 const CATEGORY_MAP = {
@@ -47,15 +46,17 @@ export async function publish(article) {
   if (!existsSync(BLOG_DIR))   mkdirSync(BLOG_DIR,   { recursive: true });
   if (!existsSync(IMAGES_DIR)) mkdirSync(IMAGES_DIR, { recursive: true });
 
-  // 3. サムネイル画像生成（DALL-E 3 / フォールバック）
+  // 3. サムネイル画像生成（カテゴリ別カラー + 装飾漢字）
+  const imgFilename = `${date}-${slug}.png`;
+  const imgPath     = path.join(IMAGES_DIR, imgFilename);
   let heroImage = '';
-  if (OPENAI_API_KEY) {
-    try {
-      heroImage = await generateThumbnail(article, date, slug);
-      console.log(`🖼  Thumbnail generated: ${heroImage}`);
-    } catch (e) {
-      console.warn(`⚠️  Thumbnail generation failed: ${e.message}`);
-    }
+  try {
+    const category = CATEGORY_MAP[article.category] ?? 'ニュース';
+    await generateBlogThumbnail(article.title, { date, category }, imgPath);
+    heroImage = `/images/${imgFilename}`;
+    console.log(`🖼  Thumbnail generated: ${heroImage}`);
+  } catch (e) {
+    console.warn(`⚠️  Thumbnail generation failed: ${e.message}`);
   }
 
   // 4. カテゴリー正規化
@@ -97,52 +98,6 @@ draft: false
 
 ${body}
 ${refsSection}${relatedSection}`;
-}
-
-// ── DALL-E 3 サムネイル生成 ────────────────────────────────
-async function generateThumbnail(article, date, slug) {
-  // 画像生成プロンプトを記事タイトルから作成
-  const prompt = buildImagePrompt(article.title, article.category);
-
-  const res = await fetch('https://api.openai.com/v1/images/generations', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'dall-e-3',
-      prompt,
-      n: 1,
-      size: '1792x1024',      // ブログOGP推奨サイズ
-      quality: 'standard',
-      response_format: 'b64_json',
-    }),
-  });
-
-  if (!res.ok) throw new Error(`DALL-E API error: ${res.status}`);
-  const data = await res.json();
-  const b64  = data.data[0].b64_json;
-
-  // base64 → PNG保存
-  const imgFilename = `${date}-${slug}.png`;
-  const imgPath     = path.join(IMAGES_DIR, imgFilename);
-  writeFileSync(imgPath, Buffer.from(b64, 'base64'));
-
-  return `/images/${imgFilename}`;
-}
-
-// 画像プロンプト生成
-function buildImagePrompt(title, category) {
-  const categoryPrompts = {
-    '技術':      'scientific laboratory, cell culture, biotechnology, clean modern style,',
-    '規制・政策': 'government documents, policy, law, formal official style,',
-    '市場・投資': 'business chart, market data, investment, financial visualization,',
-    'ニュース':   'breaking news, global food technology, modern editorial style,',
-    'その他':    'thoughtful essay, researcher writing, academic atmosphere,',
-  };
-  const base = categoryPrompts[category] ?? '';
-  return `${base} cultured meat, cell-based food technology, professional blog thumbnail, minimal clean design, no text, 16:9 ratio. Topic: ${title}`;
 }
 
 // ── Git操作 ────────────────────────────────────────────────

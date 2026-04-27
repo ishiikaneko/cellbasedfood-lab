@@ -9,22 +9,33 @@ import { log } from '../utils/logger.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Noto Sans JP from @fontsource — Japanese subset woff2
+// Noto Sans JP from @fontsource — Japanese subset woff1 (woff2 is unsupported by opentype.js)
 const JP_FONT_PATH = path.resolve(
   __dirname,
-  '../../node_modules/@fontsource/noto-sans-jp/files/noto-sans-jp-japanese-400-normal.woff2'
+  '../../node_modules/@fontsource/noto-sans-jp/files/noto-sans-jp-japanese-400-normal.woff'
 );
 
 const W = 1200;
 const H = 630;
 
+// カテゴリ別ビジュアル設定（アクセントカラー + 装飾漢字）
+const CATEGORY_STYLES = {
+  '技術':       { accent: '#00aaff', symbol: '技' },
+  '規制・政策':  { accent: '#ff8844', symbol: '規' },
+  '市場・投資':  { accent: '#00cc77', symbol: '市' },
+  'ニュース':   { accent: '#ffcc00', symbol: '報' },
+  'その他':    { accent: '#aa88ff', symbol: '考' },
+};
+
 function el(type, style, children) {
   return { type, props: { style: { display: 'flex', ...style }, children } };
 }
 
-export async function generateBlogThumbnail(title, { tagline = '', date = '' } = {}, outputPath) {
+export async function generateBlogThumbnail(title, { tagline = '', date = '', category = '' } = {}, outputPath) {
   const fontData = fs.readFileSync(JP_FONT_PATH);
   const displayDate = date || new Date().toISOString().slice(0, 10);
+  const style = CATEGORY_STYLES[category] ?? CATEGORY_STYLES['その他'];
+  const displayTagline = tagline || category || 'その他';
 
   // Satori element tree — flexbox layout
   const tree = el(
@@ -34,62 +45,81 @@ export async function generateBlogThumbnail(title, { tagline = '', date = '' } =
       height: `${H}px`,
       backgroundColor: '#0f0f1a',
       flexDirection: 'row',
+      overflow: 'hidden',
     },
     [
-      // Left accent bar
+      // Left accent bar（カテゴリカラー）
       el('div', {
         width: '8px',
         height: '100%',
-        backgroundColor: '#00aaff',
+        backgroundColor: style.accent,
         flexShrink: 0,
       }, []),
 
-      // Main content
+      // Main content（装飾シンボル + テキスト）
       el(
         'div',
         {
           flex: 1,
+          position: 'relative',
           flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: '56px 64px',
+          overflow: 'hidden',
         },
         [
-          // Category tagline (optional)
-          ...(tagline
-            ? [
-                el('div', {
-                  fontSize: '22px',
-                  color: '#00aaff',
-                  marginBottom: '14px',
-                  fontFamily: 'Noto Sans JP',
-                  letterSpacing: '0.05em',
-                }, tagline),
-              ]
-            : []),
-
-          // Article title
+          // 装飾漢字（背景レイヤー、absolute）
           el('div', {
-            fontSize: '50px',
-            color: '#ffffff',
-            lineHeight: 1.45,
-            marginBottom: '36px',
+            position: 'absolute',
+            right: '-10px',
+            top: '-40px',
+            fontSize: '320px',
+            color: style.accent,
+            opacity: 0.07,
             fontFamily: 'Noto Sans JP',
-          }, title),
+            lineHeight: '1',
+            userSelect: 'none',
+          }, style.symbol),
 
-          // Divider
+          // テキストコンテンツ（下揃え）
           el('div', {
-            width: '48px',
-            height: '3px',
-            backgroundColor: '#444466',
-            marginBottom: '20px',
-          }, []),
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            padding: '56px 64px',
+          }, [
+            // カテゴリラベル
+            el('div', {
+              fontSize: '22px',
+              color: style.accent,
+              marginBottom: '14px',
+              fontFamily: 'Noto Sans JP',
+              letterSpacing: '0.05em',
+            }, displayTagline),
 
-          // Date
-          el('div', {
-            fontSize: '20px',
-            color: '#666688',
-            fontFamily: 'Noto Sans JP',
-          }, displayDate),
+            // 記事タイトル
+            el('div', {
+              fontSize: '50px',
+              color: '#ffffff',
+              lineHeight: 1.45,
+              marginBottom: '36px',
+              fontFamily: 'Noto Sans JP',
+              maxWidth: '900px',
+            }, title),
+
+            // 区切り線
+            el('div', {
+              width: '48px',
+              height: '3px',
+              backgroundColor: '#444466',
+              marginBottom: '20px',
+            }, []),
+
+            // 日付
+            el('div', {
+              fontSize: '20px',
+              color: '#666688',
+              fontFamily: 'Noto Sans JP',
+            }, displayDate),
+          ]),
         ]
       ),
     ]

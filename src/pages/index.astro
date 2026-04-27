@@ -13,9 +13,6 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
 // ── 表示対象（最大50本） ──
 const displayPosts = allPosts.slice(0, 50);
 
-// ── タグ一覧（全記事から収集・重複除去・昇順） ──
-const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
-
 // ── 人気記事（本番では analytics から popular.json を読む。現在はダミー） ──
 const popularPosts = allPosts.slice(0, 3);
 ---
@@ -93,8 +90,6 @@ const popularPosts = allPosts.slice(0, 3);
             <span class="page-sub">50本 / ページ</span>
           </div>
         )}
-
-        <!-- ── TAGS (hidden) ── -->
 
         <!-- ── POPULAR ── -->
         <section class="pop-zone" aria-labelledby="popular-heading">
@@ -344,29 +339,6 @@ const popularPosts = allPosts.slice(0, 3);
 }
 .more-btn:hover { background: #E1F5EE; }
 .page-sub { font-size: 12px; color: #888; font-family: 'Space Mono', monospace; }
-
-/* ── TAGS ── */
-.tag-area {
-  border-top: 0.5px solid #e5e4df;
-  padding: 12px 24px;
-}
-.tag-head-label {
-  font-size: 13px;
-  color: #888;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-.tag-pills { display: flex; flex-wrap: wrap; gap: 5px; }
-.tag-pill {
-  font-size: 12px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  border: 0.5px solid #dddbd4;
-  color: #666;
-  text-decoration: none;
-  transition: all .15s;
-}
-.tag-pill:hover { background: #E1F5EE; color: #0F6E56; border-color: #0F6E56; }
 
 /* ── POPULAR ── */
 .pop-zone { border-top: 0.5px solid #e5e4df; }
