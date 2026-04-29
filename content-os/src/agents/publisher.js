@@ -13,7 +13,10 @@ import path from 'path';
 import Anthropic from '@anthropic-ai/sdk';
 
 // ── 設定 ──────────────────────────────────────────────────
-const SITE_REPO_PATH = process.env.SITE_REPO_PATH || 'C:/Users/Yuji Matsuyoshi/Downloads/cellbasedfood-lab';
+// SITE_REPO_PATH: GitHub Actions では ${{ github.workspace }}、PCでは リポジトリルートを指定
+// PC実行時は content-os/.env に SITE_REPO_PATH=/path/to/cellbasedfood-lab を追記
+const SITE_REPO_PATH = process.env.SITE_REPO_PATH
+  || path.resolve(new URL('../../..', import.meta.url).pathname);
 const BLOG_DIR       = path.join(SITE_REPO_PATH, 'src/content/blog');
 const IMAGES_DIR     = path.join(SITE_REPO_PATH, 'public/images');
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -212,10 +215,11 @@ function gitPush(filepath, title) {
       return;
     }
 
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', opts).toString().trim() || 'main';
     const commitMsg = `auto: ${title.slice(0, 60)}`;
     execSync(`git commit -m "${commitMsg.replace(/"/g, "'")}"`, opts);
-    execSync(`git push origin main`, opts);
-    console.log(`🚀 Pushed to GitHub: ${commitMsg}`);
+    execSync(`git push origin ${branch}`, opts);
+    console.log(`🚀 Pushed to GitHub (${branch}): ${commitMsg}`);
   } catch (e) {
     console.error(`❌ Git push failed: ${e.message}`);
     throw e;
