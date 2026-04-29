@@ -4,7 +4,6 @@ import { generateAllAudio } from './tts.js';
 import { generateAllImages } from './images.js';
 import { assembleVideo } from './video.js';
 import { generateYouTubeThumbnail } from './thumbnail-youtube.js';
-import { generateBlogThumbnail } from './thumbnail-blog.js';
 import { log } from '../utils/logger.js';
 
 export async function buildVideo(
@@ -52,7 +51,6 @@ export async function buildVideo(
 
   // 3. Generate thumbnails
   const ytThumbPath = path.join(mediaDir, 'thumbnail-youtube.png');
-  const blogThumbPath = path.join(mediaDir, 'thumbnail-blog.png');
 
   log.step('Generating thumbnails...');
 
@@ -67,24 +65,16 @@ export async function buildVideo(
     log.info('  No hook image found, skipping YouTube thumbnail.');
   }
 
-  const blogTitle = wordpress?.title || youtube.title;
-  const blogDate = new Date().toISOString().slice(0, 10);
-  if (force || !fs.existsSync(blogThumbPath)) {
-    await generateBlogThumbnail(blogTitle, { tagline: 'フードテック', date: blogDate }, blogThumbPath);
-  } else {
-    log.dim('  Skip (exists): thumbnail-blog.png');
-  }
-
   // 4. Assemble video
   if (skipVideo) {
     log.info('Skipping video assembly (--skip-video).');
-    return summarize(mediaDir, ytThumbPath, blogThumbPath, null);
+    return summarize(mediaDir, ytThumbPath, null);
   }
 
   const videoPath = path.join(mediaDir, 'video.mp4');
   if (!force && fs.existsSync(videoPath)) {
     log.info(`Video already exists: ${videoPath} (use --force to re-encode)`);
-    return summarize(mediaDir, ytThumbPath, blogThumbPath, videoPath);
+    return summarize(mediaDir, ytThumbPath, videoPath);
   }
 
   // Pair images + audio by position
@@ -102,7 +92,7 @@ export async function buildVideo(
 
   await assembleVideo(segments, videoPath);
 
-  return summarize(mediaDir, ytThumbPath, blogThumbPath, videoPath);
+  return summarize(mediaDir, ytThumbPath, videoPath);
 }
 
 function collectExistingFiles(dir, script, ext = '.png') {
@@ -116,14 +106,13 @@ function collectExistingFiles(dir, script, ext = '.png') {
   return keys.map((key) => ({ key, path: path.join(dir, `${key}${ext}`) }));
 }
 
-function summarize(mediaDir, ytThumb, blogThumb, videoPath) {
+function summarize(mediaDir, ytThumb, videoPath) {
   log.success('\nBuild complete:');
   log.info(`  Media dir:     ${mediaDir}`);
   if (fs.existsSync(ytThumb)) log.info(`  YT thumbnail:  ${ytThumb}`);
-  if (fs.existsSync(blogThumb)) log.info(`  Blog OGP:      ${blogThumb}`);
   if (videoPath && fs.existsSync(videoPath)) {
     const size = (fs.statSync(videoPath).size / 1024 / 1024).toFixed(1);
     log.info(`  Video:         ${videoPath} (${size} MB)`);
   }
-  return { mediaDir, ytThumb, blogThumb, videoPath };
+  return { mediaDir, ytThumb, videoPath };
 }

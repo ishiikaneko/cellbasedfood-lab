@@ -10,12 +10,12 @@
 import { execSync } from 'child_process';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import path from 'path';
-import { generateBlogThumbnail } from '../media/thumbnail-blog.js';
 
 // ── 設定 ──────────────────────────────────────────────────
 const SITE_REPO_PATH = process.env.SITE_REPO_PATH || 'C:/Users/Yuji Matsuyoshi/Downloads/cellbasedfood-lab';
 const BLOG_DIR       = path.join(SITE_REPO_PATH, 'src/content/blog');
 const IMAGES_DIR     = path.join(SITE_REPO_PATH, 'public/images');
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 // カテゴリーの正規化マップ
 const CATEGORY_MAP = {
@@ -46,21 +46,19 @@ export async function publish(article) {
   if (!existsSync(BLOG_DIR))   mkdirSync(BLOG_DIR,   { recursive: true });
   if (!existsSync(IMAGES_DIR)) mkdirSync(IMAGES_DIR, { recursive: true });
 
-  // 3. サムネイル画像生成（カテゴリ別カラー + 装飾漢字）
-  const imgFilename = `${date}-${slug}.png`;
-  const imgPath     = path.join(IMAGES_DIR, imgFilename);
-  let heroImage = '';
-  try {
-    const category = CATEGORY_MAP[article.category] ?? 'ニュース';
-    await generateBlogThumbnail(article.title, { date, category }, imgPath);
-    heroImage = `/images/${imgFilename}`;
-    console.log(`🖼  Thumbnail generated: ${heroImage}`);
-  } catch (e) {
-    console.warn(`⚠️  Thumbnail generation failed: ${e.message}`);
-  }
-
-  // 4. カテゴリー正規化
+  // 3. カテゴリー正規化
   const category = CATEGORY_MAP[article.category] ?? 'ニュース';
+
+  // 4. サムネイル画像生成（DALL-E 3）
+  let heroImage = '';
+  if (OPENAI_API_KEY) {
+    try {
+      heroImage = await generateThumbnail(article.title, category, date, slug);
+      console.log(`🖼  Thumbnail generated: ${heroImage}`);
+    } catch (e) {
+      console.warn(`⚠️  Thumbnail generation failed: ${e.message}`);
+    }
+  }
 
   // 5. Markdownファイル生成
   const markdown = buildMarkdown({ ...article, category, heroImage, date });
@@ -98,6 +96,59 @@ draft: false
 
 ${body}
 ${refsSection}${relatedSection}`;
+}
+
+// ── DALL-E 3 サムネイル生成 ────────────────────────────────
+async function generateThumbnail(title, category, date, slug) {
+  const prompt = buildImagePrompt(title, category);
+
+  const res = await fetch('https://api.openai.com/v1/images/generations', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'dall-e-3',
+      prompt,
+      n: 1,
+      size: '1792x1024',
+      quality: 'standard',
+      response_format: 'b64_json',
+    }),
+  });
+
+  if (!res.ok) throw new Error(`DALL-E API error: ${res.status}`);
+  const data = await res.json();
+  const b64  = data.data[0].b64_json;
+
+  const imgFilename = `${date}-${slug}.png`;
+  const imgPath     = path.join(IMAGES_DIR, imgFilename);
+  writeFileSync(imgPath, Buffer.from(b64, 'base64'));
+
+  return `/images/${imgFilename}`;
+}
+
+// 画像プロンプト生成
+function buildImagePrompt(title, category) {
+  // カテゴリーごとのベースカラーのみ固定（アイコンモチーフは記事タイトルから自由に決定）
+  const categoryColors = {
+    '技術':      'electric blue (#0066FF)',
+    '規制・政策': 'deep navy (#1A3A5C)',
+    '市場・投資': 'emerald green (#00AA55)',
+    'ニュース':   'vivid orange (#FF6600)',
+    'その他':    'soft purple (#7B4FBF)',
+  };
+  const color = categoryColors[category] ?? categoryColors['ニュース'];
+
+  return [
+    `Flat vector icon illustration.`,
+    `Choose the single most fitting symbol to represent this article topic: "${title}".`,
+    `Solid background filled entirely with ${color}.`,
+    `One white icon perfectly centered in the middle of the canvas, clean geometric lines, generous padding around the icon.`,
+    `No text, no letters, no numbers, no watermarks, no gradients, no photo-realism, no people, no borders.`,
+    `Style: minimal app-icon aesthetic, 1792x1024 landscape composition.`,
+  ].join(' ');
 }
 
 // ── Git操作 ────────────────────────────────────────────────
