@@ -10,12 +10,14 @@
 import { execSync } from 'child_process';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import path from 'path';
+import Anthropic from '@anthropic-ai/sdk';
 
 // ── 設定 ──────────────────────────────────────────────────
 const SITE_REPO_PATH = process.env.SITE_REPO_PATH || 'C:/Users/Yuji Matsuyoshi/Downloads/cellbasedfood-lab';
 const BLOG_DIR       = path.join(SITE_REPO_PATH, 'src/content/blog');
 const IMAGES_DIR     = path.join(SITE_REPO_PATH, 'public/images');
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 // カテゴリーの正規化マップ
 const CATEGORY_MAP = {
@@ -53,7 +55,7 @@ export async function publish(article) {
   let heroImage = '';
   if (OPENAI_API_KEY) {
     try {
-      heroImage = await generateThumbnail(article.title, category, date, slug);
+      heroImage = await generateThumbnail(article, category, date, slug);
       console.log(`🖼  Thumbnail generated: ${heroImage}`);
     } catch (e) {
       console.warn(`⚠️  Thumbnail generation failed: ${e.message}`);
@@ -99,8 +101,22 @@ ${refsSection}${relatedSection}`;
 }
 
 // ── DALL-E 3 サムネイル生成 ────────────────────────────────
-async function generateThumbnail(title, category, date, slug) {
-  const prompt = buildImagePrompt(title, category);
+// カテゴリーごとのベースカラー（記事カテゴリーで統一）
+const CATEGORY_COLORS = {
+  '技術':      'electric blue (#0066FF)',
+  '規制・政策': 'deep navy (#1A3A5C)',
+  '市場・投資': 'emerald green (#00AA55)',
+  'ニュース':   'vivid orange (#FF6600)',
+  'その他':    'soft purple (#7B4FBF)',
+};
+
+async function generateThumbnail(article, category, date, slug) {
+  // 4-1. 記事内容から中央アイコンの具体モチーフを決定（Claudeに抽出させる）
+  const iconConcept = await deriveIconConcept(article, category);
+  console.log(`🎯 Icon concept: ${iconConcept}`);
+
+  // 4-2. カテゴリー色 ＋ 記事固有アイコン で DALL-E プロンプトを組み立てる
+  const prompt = buildImagePrompt(iconConcept, category);
 
   const res = await fetch('https://api.openai.com/v1/images/generations', {
     method: 'POST',
@@ -129,23 +145,53 @@ async function generateThumbnail(title, category, date, slug) {
   return `/images/${imgFilename}`;
 }
 
-// 画像プロンプト生成
-function buildImagePrompt(title, category) {
-  // カテゴリーごとのベースカラーのみ固定（アイコンモチーフは記事タイトルから自由に決定）
-  const categoryColors = {
-    '技術':      'electric blue (#0066FF)',
-    '規制・政策': 'deep navy (#1A3A5C)',
-    '市場・投資': 'emerald green (#00AA55)',
-    'ニュース':   'vivid orange (#FF6600)',
-    'その他':    'soft purple (#7B4FBF)',
-  };
-  const color = categoryColors[category] ?? categoryColors['ニュース'];
+// 記事タイトル・要約からアイコンモチーフ（英語の短い名詞句）を抽出
+async function deriveIconConcept(article, category) {
+  const fallback = FALLBACK_ICON_BY_CATEGORY[category] ?? FALLBACK_ICON_BY_CATEGORY['その他'];
+  if (!ANTHROPIC_API_KEY) return fallback;
+
+  const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+  const prompt =
+    `You pick a single iconic symbol that visually represents a Japanese article about cultivated meat / cellular agriculture.\n\n` +
+    `Title: ${article.title}\n` +
+    `Description: ${article.description ?? ''}\n` +
+    `Category: ${category}\n\n` +
+    `Reply with ONLY a 2–5 word English noun phrase describing one concrete object suitable as a flat white icon (e.g. "DNA double helix", "scale of justice", "bioreactor tank", "rising bar chart", "magnifying glass over molecule"). ` +
+    `No punctuation, no quotes, no explanation.`;
+
+  try {
+    const msg = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 32,
+      messages: [{ role: 'user', content: prompt }],
+    });
+    const text = msg.content?.[0]?.text?.trim();
+    if (!text) return fallback;
+    return text.replace(/^["'`]|["'`.]$/g, '').trim() || fallback;
+  } catch (e) {
+    console.warn(`⚠️  Icon concept derivation failed: ${e.message}`);
+    return fallback;
+  }
+}
+
+// Claude APIが使えない・失敗した場合のカテゴリー別フォールバックアイコン
+const FALLBACK_ICON_BY_CATEGORY = {
+  '技術':       'DNA double helix',
+  '規制・政策': 'document with official seal',
+  '市場・投資': 'rising bar chart',
+  'ニュース':   'megaphone',
+  'その他':     'lightbulb',
+};
+
+// 画像プロンプト生成（カテゴリー色 ＋ 記事固有アイコン）
+function buildImagePrompt(iconConcept, category) {
+  const color = CATEGORY_COLORS[category] ?? CATEGORY_COLORS['ニュース'];
 
   return [
     `Flat vector icon illustration.`,
-    `Choose the single most fitting symbol to represent this article topic: "${title}".`,
     `Solid background filled entirely with ${color}.`,
-    `One white icon perfectly centered in the middle of the canvas, clean geometric lines, generous padding around the icon.`,
+    `Centered subject: a single white icon depicting ${iconConcept}.`,
+    `Perfectly centered in the middle of the canvas, clean geometric lines, generous padding around the icon.`,
     `No text, no letters, no numbers, no watermarks, no gradients, no photo-realism, no people, no borders.`,
     `Style: minimal app-icon aesthetic, 1792x1024 landscape composition.`,
   ].join(' ');
