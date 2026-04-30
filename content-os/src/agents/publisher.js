@@ -10,17 +10,19 @@
 import { execSync } from 'child_process';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
 
 // ── 設定 ──────────────────────────────────────────────────
-const SITE_REPO_PATH = process.env.SITE_REPO_PATH || 'C:/Users/Yuji Matsuyoshi/Downloads/cellbasedfood-lab';
-const BLOG_DIR       = path.join(SITE_REPO_PATH, 'src/content/blog');
-const IMAGES_DIR     = path.join(SITE_REPO_PATH, 'public/images');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+export const SITE_REPO_PATH = process.env.SITE_REPO_PATH || path.resolve(__dirname, '../../..');
+export const BLOG_DIR       = path.join(SITE_REPO_PATH, 'src/content/blog');
+export const IMAGES_DIR     = path.join(SITE_REPO_PATH, 'public/images');
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 // カテゴリーの正規化マップ
-const CATEGORY_MAP = {
+export const CATEGORY_MAP = {
   '技術':      '技術',
   '科学':      '技術',
   '規制':      '規制・政策',
@@ -110,7 +112,7 @@ const CATEGORY_COLORS = {
   'その他':    'soft purple (#7B4FBF)',
 };
 
-async function generateThumbnail(article, category, date, slug) {
+export async function generateThumbnail(article, category, date, slug) {
   // 4-1. 記事内容から中央アイコンの具体モチーフを決定（Claudeに抽出させる）
   const iconConcept = await deriveIconConcept(article, category);
   console.log(`🎯 Icon concept: ${iconConcept}`);
@@ -198,7 +200,7 @@ function buildImagePrompt(iconConcept, category) {
 }
 
 // ── Git操作 ────────────────────────────────────────────────
-function gitPush(filepath, title) {
+export function gitPush(filepath, title) {
   try {
     const opts = { cwd: SITE_REPO_PATH, stdio: 'pipe' };
 
@@ -223,7 +225,7 @@ function gitPush(filepath, title) {
 }
 
 // ── スラッグ生成 ───────────────────────────────────────────
-function generateSlug(title) {
+export function generateSlug(title) {
   return title
     .toLowerCase()
     .replace(/[\u3000-\u9fff\uff00-\uffef]/g, '') // 日本語文字を除去
