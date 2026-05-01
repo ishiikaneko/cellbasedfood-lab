@@ -5,6 +5,7 @@ pubDate: 2026-04-29
 category: 規制・政策
 tags: ["規制対応", "食品安全", "EU", "商業化"]
 aiGenerated: true
+heroImage: /images/2026-04-29-italy-cultivated-meat-ban.svg
 draft: false
 ---
 

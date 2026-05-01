@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <rect width="1792" height="1024" fill="#00AA55"/>
+  <circle cx="896" cy="512" r="280" fill="#66DD99" opacity="0.15"/>
+  <circle cx="896" cy="512" r="160" fill="#66DD99" opacity="0.25"/>
+  <circle cx="896" cy="512" r="80"  fill="#66DD99" opacity="0.45"/>
+  <circle cx="896" cy="512" r="32"  fill="#66DD99" opacity="0.8"/>
+  <circle cx="580" cy="320" r="48"  fill="#66DD99" opacity="0.3"/>
+  <circle cx="1212" cy="320" r="48" fill="#66DD99" opacity="0.3"/>
+  <circle cx="580" cy="704" r="48"  fill="#66DD99" opacity="0.3"/>
+  <circle cx="1212" cy="704" r="48" fill="#66DD99" opacity="0.3"/>
+  <text x="896" y="840" font-family="sans-serif" font-size="48" font-weight="bold"
+        fill="#66DD99" text-anchor="middle" opacity="0.7" letter-spacing="8">市場・投資</text>
+</svg>
