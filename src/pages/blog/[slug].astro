@@ -364,6 +364,24 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   border-radius: 8px;
 }
 
+:global(.prose table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2em 0;
+  font-size: 16px;
+}
+:global(.prose th),
+:global(.prose td) {
+  padding: 10px 14px;
+  border: 1px solid #e5e4df;
+  line-height: 1.7;
+}
+:global(.prose th) {
+  background: #f5f4f0;
+  font-weight: 600;
+  text-align: left;
+}
+
 /* ── SIDEBAR ── */
 .sidebar {
   padding: 16px;
