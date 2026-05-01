@@ -51,15 +51,23 @@ export async function publish(article) {
   // 3. カテゴリー正規化
   const category = CATEGORY_MAP[article.category] ?? 'ニュース';
 
-  // 4. サムネイル画像生成（DALL-E 3）
+  // 4. サムネイル画像生成（DALL-E 3 → SVGフォールバック）
   let heroImage = '';
   if (OPENAI_API_KEY) {
     try {
       heroImage = await generateThumbnail(article, category, date, slug);
       console.log(`🖼  Thumbnail generated: ${heroImage}`);
     } catch (e) {
-      console.warn(`⚠️  Thumbnail generation failed: ${e.message}`);
+      console.error(`❌ DALL-E thumbnail generation failed: ${e.message}`);
     }
+  } else {
+    console.warn('⚠️  OPENAI_API_KEY is not set. Falling back to SVG placeholder.');
+  }
+
+  // DALL-E未設定・失敗時はSVGプレースホルダーを生成（heroImageを必ず持つ）
+  if (!heroImage) {
+    heroImage = generateSvgPlaceholder(category, date, slug);
+    console.log(`🖼  SVG placeholder generated: ${heroImage}`);
   }
 
   // 5. Markdownファイル生成
@@ -134,9 +142,13 @@ async function generateThumbnail(article, category, date, slug) {
     }),
   });
 
-  if (!res.ok) throw new Error(`DALL-E API error: ${res.status}`);
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`DALL-E API error: ${res.status} ${res.statusText} — ${body.slice(0, 300)}`);
+  }
   const data = await res.json();
-  const b64  = data.data[0].b64_json;
+  const b64  = data.data?.[0]?.b64_json;
+  if (!b64) throw new Error(`DALL-E response missing b64_json: ${JSON.stringify(data).slice(0, 200)}`);
 
   const imgFilename = `${date}-${slug}.png`;
   const imgPath     = path.join(IMAGES_DIR, imgFilename);
@@ -197,6 +209,38 @@ function buildImagePrompt(iconConcept, category) {
   ].join(' ');
 }
 
+// ── SVGプレースホルダー生成 ───────────────────────────────
+const SVG_CATEGORY_STYLES = {
+  '技術':       { bg: '#0F6E56', accent: '#5DCAA5', label: '技術' },
+  '規制・政策': { bg: '#1A3A5C', accent: '#6A9FD8', label: '規制・政策' },
+  '市場・投資': { bg: '#00AA55', accent: '#66DD99', label: '市場・投資' },
+  'ニュース':   { bg: '#CC5200', accent: '#FF9966', label: 'NEWS' },
+  'その他':     { bg: '#5B3A8C', accent: '#B088DD', label: 'その他' },
+};
+
+function generateSvgPlaceholder(category, date, slug) {
+  const { bg, accent, label } = SVG_CATEGORY_STYLES[category] ?? SVG_CATEGORY_STYLES['ニュース'];
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <rect width="1792" height="1024" fill="${bg}"/>
+  <circle cx="896" cy="512" r="280" fill="${accent}" opacity="0.15"/>
+  <circle cx="896" cy="512" r="160" fill="${accent}" opacity="0.25"/>
+  <circle cx="896" cy="512" r="80"  fill="${accent}" opacity="0.45"/>
+  <circle cx="896" cy="512" r="32"  fill="${accent}" opacity="0.8"/>
+  <circle cx="580" cy="320" r="48"  fill="${accent}" opacity="0.3"/>
+  <circle cx="1212" cy="320" r="48" fill="${accent}" opacity="0.3"/>
+  <circle cx="580" cy="704" r="48"  fill="${accent}" opacity="0.3"/>
+  <circle cx="1212" cy="704" r="48" fill="${accent}" opacity="0.3"/>
+  <text x="896" y="840" font-family="sans-serif" font-size="48" font-weight="bold"
+        fill="${accent}" text-anchor="middle" opacity="0.7" letter-spacing="8">${label}</text>
+</svg>`;
+
+  const imgFilename = `${date}-${slug}.svg`;
+  const imgPath = path.join(IMAGES_DIR, imgFilename);
+  writeFileSync(imgPath, svg, 'utf-8');
+  return `/images/${imgFilename}`;
+}
+
 // ── Git操作 ────────────────────────────────────────────────
 function gitPush(filepath, title) {
   try {
@@ -214,7 +258,8 @@ function gitPush(filepath, title) {
 
     const commitMsg = `auto: ${title.slice(0, 60)}`;
     execSync(`git commit -m "${commitMsg.replace(/"/g, "'")}"`, opts);
-    execSync(`git push origin main`, opts);
+    // HEADにpush（どのブランチでも正しく動作する）
+    execSync(`git push origin HEAD`, opts);
     console.log(`🚀 Pushed to GitHub: ${commitMsg}`);
   } catch (e) {
     console.error(`❌ Git push failed: ${e.message}`);

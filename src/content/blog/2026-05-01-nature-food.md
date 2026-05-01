@@ -5,6 +5,7 @@ pubDate: 2026-05-01
 category: 技術
 tags: []
 aiGenerated: true
+heroImage: /images/2026-05-01-nature-food.svg
 draft: false
 ---
 

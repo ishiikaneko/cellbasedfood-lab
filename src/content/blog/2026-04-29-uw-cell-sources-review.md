@@ -5,6 +5,7 @@ pubDate: 2026-04-29
 category: 技術
 tags: ["細胞培養", "幹細胞", "分化誘導", "論文紹介", "米国"]
 aiGenerated: true
+heroImage: /images/2026-04-29-uw-cell-sources-review.svg
 draft: false
 ---
 

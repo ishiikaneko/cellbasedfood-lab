@@ -5,6 +5,7 @@ pubDate: 2026-04-30
 category: 技術
 tags: ["培養肉", "細胞農業", "筋サテライト細胞", "シングルセル解析", "牛筋肉細胞"]
 aiGenerated: false
+heroImage: /images/2026-04-30-bovine-muscle-single-cell-cultured-meat.svg
 draft: false
 ---
 
