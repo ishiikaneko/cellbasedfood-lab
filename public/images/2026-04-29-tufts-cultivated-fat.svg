@@ -1,13 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
   <rect width="1792" height="1024" fill="#0F6E56"/>
-  <circle cx="896" cy="512" r="280" fill="#5DCAA5" opacity="0.15"/>
-  <circle cx="896" cy="512" r="160" fill="#5DCAA5" opacity="0.25"/>
-  <circle cx="896" cy="512" r="80"  fill="#5DCAA5" opacity="0.45"/>
-  <circle cx="896" cy="512" r="32"  fill="#5DCAA5" opacity="0.8"/>
-  <circle cx="580" cy="320" r="48"  fill="#5DCAA5" opacity="0.3"/>
-  <circle cx="1212" cy="320" r="48" fill="#5DCAA5" opacity="0.3"/>
-  <circle cx="580" cy="704" r="48"  fill="#5DCAA5" opacity="0.3"/>
-  <circle cx="1212" cy="704" r="48" fill="#5DCAA5" opacity="0.3"/>
-  <text x="896" y="840" font-family="sans-serif" font-size="48" font-weight="bold"
-        fill="#5DCAA5" text-anchor="middle" opacity="0.7" letter-spacing="8">技術</text>
+  <g transform="translate(746,362) scale(3)">
+    <path d="M50,12 C50,12 18,50 18,65 C18,83 33,92 50,92 C67,92 82,83 82,65 C82,50 50,12 50,12 Z" fill="none" stroke="white" stroke-width="3.5"/>
+    <ellipse cx="40" cy="72" rx="9" ry="5.5" fill="white" opacity="0.55" transform="rotate(-25 40 72)"/>
+  </g>
 </svg>
