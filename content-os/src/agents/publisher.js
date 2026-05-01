@@ -38,11 +38,18 @@ const CATEGORY_MAP = {
 export async function publish(article) {
   console.log(`📝 Publishing: ${article.title}`);
 
-  // 1. スラッグ・ファイル名生成
-  const date   = new Date().toISOString().split('T')[0]; // 2026-04-20
-  const slug   = generateSlug(article.title);
-  const filename = `${date}-${slug}.md`;
-  const filepath = path.join(BLOG_DIR, filename);
+  // 1. スラッグ・ファイル名生成（衝突時はカウンタサフィックスで回避）
+  const date = new Date().toISOString().split('T')[0]; // 2026-04-20
+  let slug = generateSlug(article.title);
+  let filename = `${date}-${slug}.md`;
+  let filepath = path.join(BLOG_DIR, filename);
+  let counter = 2;
+  while (existsSync(filepath)) {
+    slug = `${generateSlug(article.title)}-${counter}`;
+    filename = `${date}-${slug}.md`;
+    filepath = path.join(BLOG_DIR, filename);
+    counter++;
+  }
 
   // 2. ディレクトリ確認
   if (!existsSync(BLOG_DIR))   mkdirSync(BLOG_DIR,   { recursive: true });
@@ -110,6 +117,8 @@ const CATEGORY_COLORS = {
   'その他':    'soft purple (#7B4FBF)',
 };
 
+const RETRY_DELAYS = [5000, 10000, 20000]; // ms
+
 async function generateThumbnail(article, category, date, slug) {
   // 4-1. 記事内容から中央アイコンの具体モチーフを決定（Claudeに抽出させる）
   const iconConcept = await deriveIconConcept(article, category);
@@ -118,31 +127,48 @@ async function generateThumbnail(article, category, date, slug) {
   // 4-2. カテゴリー色 ＋ 記事固有アイコン で DALL-E プロンプトを組み立てる
   const prompt = buildImagePrompt(iconConcept, category);
 
-  const res = await fetch('https://api.openai.com/v1/images/generations', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'dall-e-3',
-      prompt,
-      n: 1,
-      size: '1792x1024',
-      quality: 'standard',
-      response_format: 'b64_json',
-    }),
-  });
-
-  if (!res.ok) throw new Error(`DALL-E API error: ${res.status}`);
-  const data = await res.json();
-  const b64  = data.data[0].b64_json;
-
   const imgFilename = `${date}-${slug}.png`;
   const imgPath     = path.join(IMAGES_DIR, imgFilename);
-  writeFileSync(imgPath, Buffer.from(b64, 'base64'));
 
-  return `/images/${imgFilename}`;
+  for (let attempt = 0; attempt <= RETRY_DELAYS.length; attempt++) {
+    try {
+      const res = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'dall-e-3',
+          prompt,
+          n: 1,
+          size: '1792x1024',
+          quality: 'standard',
+          response_format: 'b64_json',
+        }),
+      });
+
+      if (!res.ok) {
+        const errBody = await res.text();
+        throw new Error(`DALL-E API error: ${res.status} - ${errBody}`);
+      }
+
+      const data = await res.json();
+      const b64  = data.data?.[0]?.b64_json;
+      if (!b64) throw new Error('DALL-E response missing b64_json');
+
+      writeFileSync(imgPath, Buffer.from(b64, 'base64'));
+      return `/images/${imgFilename}`;
+    } catch (e) {
+      if (attempt < RETRY_DELAYS.length) {
+        const waitSec = RETRY_DELAYS[attempt] / 1000;
+        console.warn(`⚠️  DALL-E attempt ${attempt + 1} failed: ${e.message}. Retrying in ${waitSec}s...`);
+        await new Promise(r => setTimeout(r, RETRY_DELAYS[attempt]));
+      } else {
+        throw e;
+      }
+    }
+  }
 }
 
 // 記事タイトル・要約からアイコンモチーフ（英語の短い名詞句）を抽出
@@ -214,7 +240,8 @@ function gitPush(filepath, title) {
 
     const commitMsg = `auto: ${title.slice(0, 60)}`;
     execSync(`git commit -m "${commitMsg.replace(/"/g, "'")}"`, opts);
-    execSync(`git push origin main`, opts);
+    const currentBranch = execSync('git rev-parse --abbrev-ref HEAD', opts).toString().trim();
+    execSync(`git push -u origin ${currentBranch}`, opts);
     console.log(`🚀 Pushed to GitHub: ${commitMsg}`);
   } catch (e) {
     console.error(`❌ Git push failed: ${e.message}`);
