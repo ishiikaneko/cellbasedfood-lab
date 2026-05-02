@@ -7,7 +7,7 @@ import { publishToTwitter } from './publishers/twitter.js';
 const SITE_REPO_PATH = process.env.SITE_REPO_PATH || path.resolve('..', '..');
 const BLOG_DIR       = path.join(SITE_REPO_PATH, 'src/content/blog');
 const HISTORY_FILE   = path.join(SITE_REPO_PATH, 'data/x-post-history.json');
-const SITE_URL       = process.env.SITE_URL || 'https://cellbasedfood-ishiikaneko.com';
+const SITE_URL       = process.env.SITE_URL || 'https://cellbasedfood-lab.com';
 const HOURS_GATE     = 36;
 const HISTORY_WINDOW = 5;
 

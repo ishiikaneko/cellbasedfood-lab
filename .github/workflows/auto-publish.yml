@@ -70,5 +70,5 @@ jobs:
           TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
           SITE_REPO_PATH: ${{ github.workspace }}
-          SITE_URL: https://cellbasedfood-ishiikaneko.com
+          SITE_URL: https://cellbasedfood-lab.com
         run: node content-os/src/x-auto-post.js
