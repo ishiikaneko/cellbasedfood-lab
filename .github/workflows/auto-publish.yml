@@ -43,6 +43,7 @@ jobs:
         run: node content-os/src/index.js publish
 
   post-to-x:
+    if: false  # X自動投稿を一時停止
     runs-on: ubuntu-latest
     needs: publish
     permissions:
