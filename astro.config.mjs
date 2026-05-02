@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://cellbasedfood-lab.vercel.app',
+  site: 'https://cellbasedfood-lab.com',
 });
