@@ -5,6 +5,7 @@ pubDate: 2026-04-25
 category: 規制・政策
 tags: ["規制対応", "食品安全", "シンガポール", "商業化", "スタートアップ"]
 aiGenerated: true
+heroImage: /images/2026-04-25-singapore-good-meat-approval.svg
 draft: false
 ---
 

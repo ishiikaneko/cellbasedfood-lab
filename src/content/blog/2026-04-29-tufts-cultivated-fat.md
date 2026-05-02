@@ -5,6 +5,7 @@ pubDate: 2026-04-29
 category: 技術
 tags: ["細胞培養", "分化誘導", "足場材料", "論文紹介", "米国"]
 aiGenerated: true
+heroImage: /images/2026-04-29-tufts-cultivated-fat.svg
 draft: false
 ---
 

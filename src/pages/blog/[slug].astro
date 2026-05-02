@@ -64,13 +64,24 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
               {post.data.heroImage
                 ? <img src={post.data.heroImage} alt={post.data.title} />
                 : <div class="hero-placeholder">
-                    <svg viewBox="0 0 64 64" fill="none" width="72" height="72">
-                      <circle cx="32" cy="32" r="14" fill="#0F6E56" opacity=".2"/>
-                      <circle cx="32" cy="32" r="8"  fill="#0F6E56" opacity=".4"/>
-                      <circle cx="14" cy="20" r="5"  fill="#1D9E75" opacity=".35"/>
-                      <circle cx="50" cy="20" r="5"  fill="#1D9E75" opacity=".35"/>
-                      <circle cx="14" cy="44" r="5"  fill="#1D9E75" opacity=".35"/>
-                      <circle cx="50" cy="44" r="5"  fill="#1D9E75" opacity=".35"/>
+                    <svg viewBox="0 0 80 80" fill="none" width="88" height="88">
+                      <circle cx="40" cy="40" r="18" fill="#0F6E56" opacity=".11"/>
+                      <circle cx="40" cy="40" r="11" fill="#0F6E56" opacity=".24"/>
+                      <circle cx="40" cy="40" r="5"  fill="#0F6E56" opacity=".48"/>
+                      <circle cx="16" cy="24" r="7"  fill="#1D9E75" opacity=".16"/>
+                      <circle cx="16" cy="24" r="3.5" fill="#1D9E75" opacity=".36"/>
+                      <circle cx="64" cy="24" r="7"  fill="#1D9E75" opacity=".16"/>
+                      <circle cx="64" cy="24" r="3.5" fill="#1D9E75" opacity=".36"/>
+                      <circle cx="16" cy="56" r="7"  fill="#1D9E75" opacity=".16"/>
+                      <circle cx="16" cy="56" r="3.5" fill="#1D9E75" opacity=".36"/>
+                      <circle cx="64" cy="56" r="7"  fill="#1D9E75" opacity=".16"/>
+                      <circle cx="64" cy="56" r="3.5" fill="#1D9E75" opacity=".36"/>
+                      <line x1="23" y1="28" x2="31" y2="35" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
+                      <line x1="49" y1="35" x2="57" y2="28" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
+                      <line x1="23" y1="52" x2="31" y2="45" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
+                      <line x1="49" y1="45" x2="57" y2="52" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
+                      <line x1="40" y1="22" x2="40" y2="29" stroke="#0F6E56" stroke-width="1" opacity=".2"/>
+                      <line x1="40" y1="51" x2="40" y2="58" stroke="#0F6E56" stroke-width="1" opacity=".2"/>
                     </svg>
                   </div>
               }
@@ -162,7 +173,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 /* ── BREADCRUMB ── */
 .breadcrumb {
   padding: 8px 24px;
-  font-size: 12px;
+  font-size: 10px;
   color: #888;
   font-family: 'Space Mono', monospace;
   border-bottom: 0.5px solid #e5e4df;
@@ -192,25 +203,25 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   align-items: center;
   justify-content: center;
 }
-.art-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+.art-hero-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.art-hero-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.22));
+  pointer-events: none;
+}
 .hero-placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #E1F5EE, #5DCAA5);
+  background: radial-gradient(ellipse at 40% 45%, #9FE1CB 0%, #E1F5EE 45%, #b6d8cc 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.gen-badge {
-  position: absolute;
-  bottom: 10px;
-  right: 12px;
-  background: rgba(15,110,86,.82);
-  color: #fff;
-  font-size: 10px;
-  font-family: 'Space Mono', monospace;
-  padding: 2px 6px;
-  border-radius: 3px;
 }
 
 /* ── ARTICLE HEADER ── */
@@ -229,12 +240,12 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 .art-date {
   font-family: 'Space Mono', monospace;
-  font-size: 12px;
+  font-size: 10px;
   color: #888;
 }
 .art-title {
   font-family: 'Noto Serif JP', serif;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 600;
   line-height: 1.65;
   color: #1a1a18;
@@ -256,7 +267,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 
 :global(.prose p) {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 2.0;
   color: #1a1a18;
   margin: 0 0 1.8em;
@@ -265,7 +276,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 
 :global(.prose h2) {
   font-family: 'Noto Serif JP', serif;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
   color: #1a1a18;
   margin: 4em 0 1.2em;
@@ -281,7 +292,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 
 :global(.prose h3) {
   font-family: 'Noto Serif JP', serif;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 600;
   color: #1a1a18;
   margin: 3em 0 1em;
@@ -299,7 +310,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 
 :global(.prose blockquote p) {
-  font-size: 16px;
+  font-size: 14px;
   color: #555;
   margin-bottom: 0;
   line-height: 1.85;
@@ -335,7 +346,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 
 :global(.prose li) {
   font-family: 'Noto Serif JP', serif;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.95;
   color: #1a1a18;
   margin-bottom: 0.8em;
@@ -364,6 +375,24 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   border-radius: 8px;
 }
 
+:global(.prose table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2em 0;
+  font-size: 16px;
+}
+:global(.prose th),
+:global(.prose td) {
+  padding: 10px 14px;
+  border: 1px solid #e5e4df;
+  line-height: 1.7;
+}
+:global(.prose th) {
+  background: #f5f4f0;
+  font-weight: 600;
+  text-align: left;
+}
+
 /* ── SIDEBAR ── */
 .sidebar {
   padding: 16px;
@@ -376,7 +405,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 .sb-section { margin-bottom: 20px; }
 .sb-label {
   font-family: 'Space Mono', monospace;
-  font-size: 11px;
+  font-size: 9px;
   letter-spacing: .1em;
   color: #888;
   text-transform: uppercase;
@@ -399,13 +428,13 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 .sb-pop-item:last-child { border-bottom: none; }
 .sb-pop-num {
   font-family: 'Space Mono', monospace;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
   color: #E1F5EE;
   flex-shrink: 0;
   width: 18px;
 }
-.sb-pop-title { font-size: 12px; color: #1a1a18; line-height: 1.55; }
+.sb-pop-title { font-size: 10px; color: #1a1a18; line-height: 1.55; }
 
 
 /* ── RELATED ARTICLES ── */
@@ -417,7 +446,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 .related-label {
   font-family: 'Space Mono', monospace;
-  font-size: 11px;
+  font-size: 9px;
   letter-spacing: .1em;
   color: #888;
   text-transform: uppercase;
@@ -459,7 +488,7 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 .related-title {
   font-family: 'Noto Serif JP', serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.6;
   color: #1a1a18;
@@ -473,17 +502,17 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 }
 
 @media (max-width: 600px) {
-  .art-title { font-size: 22px; }
+  .art-title { font-size: 20px; }
   .art-hero-img { height: 200px; }
   .art-header { padding: 18px 20px 16px; }
   .art-body { padding: 24px 20px 32px; }
   .prose p,
   .prose li {
-    font-size: 17px;
+    font-size: 15px;
     line-height: 1.9;
   }
-  .prose h2 { font-size: 21px; }
-  .prose h3 { font-size: 18px; }
+  .prose h2 { font-size: 19px; }
+  .prose h3 { font-size: 16px; }
   .related-grid { grid-template-columns: 1fr; }
   .related-zone { padding: 20px 20px 28px; }
   .breadcrumb { padding: 8px 16px; }

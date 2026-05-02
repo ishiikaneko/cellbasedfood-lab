@@ -5,6 +5,7 @@ pubDate: 2026-04-25
 category: 技術
 tags: []
 aiGenerated: true
+heroImage: /images/2026-04-25-nature-foodpost.svg
 draft: false
 ---
 
