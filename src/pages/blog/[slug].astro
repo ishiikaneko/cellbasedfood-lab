@@ -31,6 +31,9 @@ const popularPosts = allPosts
 const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   year: 'numeric', month: '2-digit', day: '2-digit'
 }).replace(/\//g, '.');
+
+const pageUrl = new URL(`/blog/${post.slug}`, Astro.site ?? Astro.url.origin).href;
+const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.data.title)}&url=${encodeURIComponent(pageUrl)}`;
 ---
 
 <BaseLayout
@@ -102,6 +105,22 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
             <div class="art-body">
               <div class="prose">
                 <Content />
+              </div>
+
+              <!-- X share button -->
+              <div class="x-share">
+                <a
+                  href={xShareUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="x-share-btn"
+                  aria-label="Xでシェア"
+                >
+                  <svg class="x-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                  Xでシェア
+                </a>
               </div>
             </div>
 
@@ -391,6 +410,35 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   background: #f5f4f0;
   font-weight: 600;
   text-align: left;
+}
+
+/* ── X SHARE BUTTON ── */
+.x-share {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 0.5px solid #e5e4df;
+}
+.x-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: #000;
+  color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: opacity .15s;
+}
+.x-share-btn:hover { opacity: 0.75; }
+.x-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 /* ── SIDEBAR ── */
