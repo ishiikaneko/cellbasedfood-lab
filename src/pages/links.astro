@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const linkGroups = [
+  {
+    label: '論文・学術データベース',
+    links: [
+      { name: 'PubMed', url: 'https://pubmed.ncbi.nlm.nih.gov/', desc: '生命科学・医学分野の論文検索（NLM）' },
+      { name: 'Google Scholar', url: 'https://scholar.google.com/', desc: '学術論文・書籍の横断検索' },
+      { name: 'bioRxiv', url: 'https://www.biorxiv.org/', desc: '生物学プレプリントサーバー（Cell Press系）' },
+      { name: 'Semantic Scholar', url: 'https://www.semanticscholar.org/', desc: 'AI支援型論文検索・引用分析' },
+    ],
+  },
+  {
+    label: '政府・規制機関',
+    links: [
+      { name: 'FDA (米国)', url: 'https://www.fda.gov/food/human-cell-cultured-food-products', desc: '米国食品医薬品局 ─ 培養食品ページ' },
+      { name: 'USDA (米国)', url: 'https://www.usda.gov/', desc: '米国農務省 ─ 細胞培養食品の監督を共同管轄' },
+      { name: 'EFSA (欧州)', url: 'https://www.efsa.europa.eu/', desc: '欧州食品安全機関 ─ 新規食品評価' },
+      { name: '食品安全委員会（日本）', url: 'https://www.fsc.go.jp/', desc: '食品健康影響評価・リスクコミュニケーション' },
+    ],
+  },
+  {
+    label: '業界団体・シンクタンク',
+    links: [
+      { name: 'GFI (Good Food Institute)', url: 'https://gfi.org/', desc: '代替タンパク質分野の主要シンクタンク。年次レポートが充実' },
+      { name: 'UPSIDE Foods', url: 'https://upsidefoods.com/', desc: '米国 ─ FDA承認取得済みの培養鶏肉企業' },
+      { name: 'GOOD Meat', url: 'https://goodmeat.co/', desc: 'シンガポール・米国で販売実績のある培養肉企業' },
+      { name: 'Cultivated Meat Modeling Consortium', url: 'https://www.thecmmc.org/', desc: '培養肉の数理モデル研究コンソーシアム' },
+    ],
+  },
+  {
+    label: '市場・投資データ',
+    links: [
+      { name: 'AgFunder News', url: 'https://agfundernews.com/', desc: 'アグリフードテックの資金調達・ニュース' },
+      { name: 'The Good Food Institute — State of the Industry', url: 'https://gfi.org/resources/alternative-protein-state-of-the-industry-reports/', desc: 'GFI年次産業レポート（代替タンパク全体）' },
+    ],
+  },
+];
+---
+
+<BaseLayout title="情報サイトリンク集" description="培養肉・代替タンパク分野の論文DB・政府資料・業界団体などの厳選リソース一覧">
+  <div class="page-wrapper">
+    <Header />
+
+    <main class="main-content">
+      <div class="inner">
+
+        <div class="page-head">
+          <a href="/" class="back-link">← トップへ</a>
+          <div class="page-title-row">
+            <div class="page-icon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <circle cx="15" cy="15" r="9" stroke="#185FA5" stroke-width="1.5" opacity=".4"/>
+                <ellipse cx="15" cy="15" rx="4.5" ry="9" stroke="#185FA5" stroke-width="1.5" opacity=".4"/>
+                <line x1="6" y1="15" x2="24" y2="15" stroke="#185FA5" stroke-width="1.5" opacity=".5"/>
+                <line x1="7.5" y1="10" x2="22.5" y2="10" stroke="#185FA5" stroke-width="1" opacity=".35"/>
+                <line x1="7.5" y1="20" x2="22.5" y2="20" stroke="#185FA5" stroke-width="1" opacity=".35"/>
+                <circle cx="15" cy="15" r="2.5" fill="#185FA5" opacity=".6"/>
+              </svg>
+            </div>
+            <div>
+              <h1 class="page-title">情報サイトリンク集</h1>
+              <p class="page-desc">論文DB・政府資料・業界団体など、厳選リソースを一覧で。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="links-body">
+          {linkGroups.map(group => (
+            <section class="link-group">
+              <h2 class="group-label">{group.label}</h2>
+              <ul class="link-list">
+                {group.links.map(link => (
+                  <li>
+                    <a href={link.url} target="_blank" rel="noopener noreferrer" class="link-card">
+                      <span class="link-name">{link.name}</span>
+                      <span class="link-desc">{link.desc}</span>
+                      <span class="link-ext" aria-hidden="true">↗</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style>
+.page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; }
+.inner { max-width: 1200px; margin: 0 auto; }
+
+.page-head {
+  padding: 16px 24px 20px;
+  border-bottom: 0.5px solid #e5e4df;
+}
+.back-link {
+  font-size: 12px;
+  color: #888;
+  text-decoration: none;
+  font-family: 'Space Mono', monospace;
+  display: inline-block;
+  margin-bottom: 14px;
+  transition: color .15s;
+}
+.back-link:hover { color: #0F6E56; }
+.page-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.page-icon {
+  width: 56px;
+  height: 56px;
+  background: #E6F1FB;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.page-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: #1a1a18;
+  margin-bottom: 4px;
+}
+.page-desc {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.6;
+}
+
+.links-body {
+  padding: 0 24px 40px;
+}
+
+.link-group {
+  margin-top: 32px;
+}
+.group-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 0.5px solid #e5e4df;
+}
+
+.link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.link-list li {
+  border-bottom: 0.5px solid #e5e4df;
+}
+.link-list li:last-child { border-bottom: none; }
+
+.link-card {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 4px;
+  text-decoration: none;
+  color: inherit;
+  transition: background .15s;
+  border-radius: 4px;
+  position: relative;
+}
+.link-card:hover { background: #f5f4f0; }
+
+.link-name {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a18;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.link-desc {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.5;
+}
+.link-ext {
+  margin-left: auto;
+  font-size: 13px;
+  color: #0F6E56;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .page-head { padding: 14px 16px 16px; }
+  .links-body { padding: 0 16px 32px; }
+  .link-card { flex-wrap: wrap; gap: 4px; }
+  .link-ext { margin-left: 0; }
+  .inner { max-width: 100%; }
+}
+</style>
