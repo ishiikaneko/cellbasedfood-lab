@@ -51,15 +51,23 @@ export async function publish(article) {
   // 3. カテゴリー正規化
   const category = CATEGORY_MAP[article.category] ?? 'ニュース';
 
-  // 4. サムネイル画像生成（DALL-E 3）
+  // 4. サムネイル画像生成（DALL-E 3 → SVGフォールバック）
   let heroImage = '';
   if (OPENAI_API_KEY) {
     try {
       heroImage = await generateThumbnail(article, category, date, slug);
       console.log(`🖼  Thumbnail generated: ${heroImage}`);
     } catch (e) {
-      console.warn(`⚠️  Thumbnail generation failed: ${e.message}`);
+      console.error(`❌ DALL-E thumbnail generation failed: ${e.message}`);
     }
+  } else {
+    console.warn('⚠️  OPENAI_API_KEY is not set. Falling back to SVG placeholder.');
+  }
+
+  // DALL-E未設定・失敗時はSVGプレースホルダーを生成（heroImageを必ず持つ）
+  if (!heroImage) {
+    heroImage = await generateSvgPlaceholder(article, category, date, slug);
+    console.log(`🖼  SVG placeholder generated: ${heroImage}`);
   }
 
   // 5. Markdownファイル生成
@@ -134,9 +142,13 @@ async function generateThumbnail(article, category, date, slug) {
     }),
   });
 
-  if (!res.ok) throw new Error(`DALL-E API error: ${res.status}`);
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`DALL-E API error: ${res.status} ${res.statusText} — ${body.slice(0, 300)}`);
+  }
   const data = await res.json();
-  const b64  = data.data[0].b64_json;
+  const b64  = data.data?.[0]?.b64_json;
+  if (!b64) throw new Error(`DALL-E response missing b64_json: ${JSON.stringify(data).slice(0, 200)}`);
 
   const imgFilename = `${date}-${slug}.png`;
   const imgPath     = path.join(IMAGES_DIR, imgFilename);
@@ -197,6 +209,120 @@ function buildImagePrompt(iconConcept, category) {
   ].join(' ');
 }
 
+// ── SVGプレースホルダー生成（記事内容対応） ─────────────────
+const SVG_CATEGORY_STYLES = {
+  '技術':       { bg: '#0F6E56', accent: '#5DCAA5' },
+  '規制・政策': { bg: '#1A3A5C', accent: '#6A9FD8' },
+  '市場・投資': { bg: '#00AA55', accent: '#66DD99' },
+  'ニュース':   { bg: '#CC5200', accent: '#FF9966' },
+  'その他':     { bg: '#5B3A8C', accent: '#B088DD' },
+};
+
+// アイコン定義（100x100 viewBox、白シェイプのみ）
+const ICON_SHAPES = {
+  dna: `
+    <path d="M32,12 C44,22 56,32 68,42 C56,52 44,62 32,72 C44,82 56,90 66,95" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    <path d="M68,12 C56,22 44,32 32,42 C44,52 56,62 68,72 C56,82 44,90 34,95" fill="none" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    <line x1="44" y1="24" x2="56" y2="30" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="37" y1="42" x2="63" y2="42" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="44" y1="60" x2="56" y2="54" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="37" y1="74" x2="63" y2="74" stroke="white" stroke-width="2.5" stroke-linecap="round"/>`,
+  cell: `
+    <ellipse cx="50" cy="50" rx="33" ry="28" fill="none" stroke="white" stroke-width="3"/>
+    <ellipse cx="50" cy="50" rx="14" ry="12" fill="white" opacity="0.85"/>
+    <circle cx="36" cy="38" r="4" fill="white" opacity="0.6"/>
+    <circle cx="64" cy="60" r="3.5" fill="white" opacity="0.6"/>
+    <circle cx="40" cy="65" r="3" fill="white" opacity="0.5"/>`,
+  flask: `
+    <path d="M40,14 L40,46 L19,76 Q14,88 26,88 L74,88 Q86,88 81,76 L60,46 L60,14 Z" fill="none" stroke="white" stroke-width="3.5" stroke-linejoin="round"/>
+    <line x1="33" y1="14" x2="67" y2="14" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="40" cy="66" r="4" fill="white" opacity="0.75"/>
+    <circle cx="55" cy="74" r="3" fill="white" opacity="0.75"/>
+    <circle cx="46" cy="59" r="3" fill="white" opacity="0.6"/>`,
+  chart: `
+    <rect x="13" y="55" width="16" height="27" rx="2" fill="white"/>
+    <rect x="36" y="36" width="16" height="46" rx="2" fill="white"/>
+    <rect x="59" y="18" width="16" height="64" rx="2" fill="white"/>
+    <line x1="8" y1="85" x2="90" y2="85" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="8" y1="85" x2="8" y2="12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>`,
+  checkmark: `
+    <circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="4"/>
+    <path d="M27,50 L42,65 L73,34" fill="none" stroke="white" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  ban: `
+    <circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="4.5"/>
+    <line x1="24" y1="76" x2="76" y2="24" stroke="white" stroke-width="4.5" stroke-linecap="round"/>`,
+  scaffold: `
+    <rect x="15" y="15" width="70" height="70" rx="3" fill="none" stroke="white" stroke-width="3"/>
+    <line x1="38" y1="15" x2="38" y2="85" stroke="white" stroke-width="2"/>
+    <line x1="62" y1="15" x2="62" y2="85" stroke="white" stroke-width="2"/>
+    <line x1="15" y1="38" x2="85" y2="38" stroke="white" stroke-width="2"/>
+    <line x1="15" y1="62" x2="85" y2="62" stroke="white" stroke-width="2"/>
+    <circle cx="38" cy="38" r="4.5" fill="white"/>
+    <circle cx="62" cy="38" r="4.5" fill="white"/>
+    <circle cx="38" cy="62" r="4.5" fill="white"/>
+    <circle cx="62" cy="62" r="4.5" fill="white"/>`,
+  document: `
+    <rect x="22" y="10" width="56" height="72" rx="4" fill="none" stroke="white" stroke-width="3"/>
+    <line x1="33" y1="30" x2="67" y2="30" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="33" y1="43" x2="67" y2="43" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="33" y1="56" x2="54" y2="56" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="66" cy="74" r="11" fill="none" stroke="white" stroke-width="2.5"/>
+    <path d="M60,74 L64,78 L72,68" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  droplet: `
+    <path d="M50,12 C50,12 18,50 18,65 C18,83 33,92 50,92 C67,92 82,83 82,65 C82,50 50,12 50,12 Z" fill="none" stroke="white" stroke-width="3.5"/>
+    <ellipse cx="40" cy="72" rx="9" ry="5.5" fill="white" opacity="0.55" transform="rotate(-25 40 72)"/>`,
+  microscope: `
+    <rect x="40" y="10" width="20" height="36" rx="3" fill="none" stroke="white" stroke-width="3"/>
+    <circle cx="50" cy="50" r="18" fill="none" stroke="white" stroke-width="3"/>
+    <circle cx="50" cy="50" r="7" fill="white" opacity="0.85"/>
+    <rect x="44" y="68" width="12" height="20" fill="white" opacity="0.9"/>
+    <line x1="28" y1="88" x2="72" y2="88" stroke="white" stroke-width="3" stroke-linecap="round"/>`,
+  megaphone: `
+    <path d="M18,38 L18,62 L34,62 L62,80 L62,20 L34,38 Z" fill="none" stroke="white" stroke-width="3.5" stroke-linejoin="round"/>
+    <rect x="18" y="38" width="16" height="24" rx="2" fill="white" opacity="0.85"/>
+    <path d="M70,35 Q80,50 70,65" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M74,28 Q88,50 74,72" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.6"/>`,
+};
+
+// iconConceptのキーワードから最適なアイコンキーを選択
+function selectIconKey(iconConcept) {
+  const c = (iconConcept || '').toLowerCase();
+  if (c.includes('dna') || c.includes('helix') || c.includes('gene') || c.includes('sequence') || c.includes('chromos')) return 'dna';
+  if (c.includes('chart') || c.includes('bar') || c.includes('graph') || c.includes('invest') || c.includes('market') || c.includes('report')) return 'chart';
+  if (c.includes('ban') || c.includes('prohibit') || c.includes('forbid') || c.includes('restrict')) return 'ban';
+  if (c.includes('approv') || c.includes('check') || c.includes('certif') || c.includes('permit') || c.includes('grant')) return 'checkmark';
+  if (c.includes('scaffold') || c.includes('matrix') || c.includes('polymer') || c.includes('biomaterial') || c.includes('grid')) return 'scaffold';
+  if (c.includes('flask') || c.includes('beaker') || c.includes('media') || c.includes('tank') || c.includes('bioreactor') || c.includes('culture')) return 'flask';
+  if (c.includes('fat') || c.includes('adipose') || c.includes('lipid') || c.includes('droplet')) return 'droplet';
+  if (c.includes('microscop') || c.includes('single') || c.includes('magnif')) return 'microscope';
+  if (c.includes('megaphon') || c.includes('news') || c.includes('announce') || c.includes('broadcast')) return 'megaphone';
+  if (c.includes('document') || c.includes('law') || c.includes('regulat') || c.includes('seal') || c.includes('official') || c.includes('policy') || c.includes('scale of just')) return 'document';
+  if (c.includes('cell') || c.includes('satellite') || c.includes('stem') || c.includes('myosatellite') || c.includes('progenitor') || c.includes('nucleus')) return 'cell';
+  return 'dna'; // デフォルト
+}
+
+async function generateSvgPlaceholder(article, category, date, slug) {
+  const { bg } = SVG_CATEGORY_STYLES[category] ?? SVG_CATEGORY_STYLES['その他'];
+
+  // 記事内容からアイコンコンセプトを取得し、対応する定義済みアイコンを選択
+  const iconConcept = await deriveIconConcept(article, category);
+  console.log(`🎯 Icon concept: ${iconConcept}`);
+  const iconKey = selectIconKey(iconConcept);
+  const shapes = ICON_SHAPES[iconKey];
+
+  // アイコンを1792x1024キャンバスの中央に配置（100x100→300x300にスケール）
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <rect width="1792" height="1024" fill="${bg}"/>
+  <g transform="translate(746,362) scale(3)">${shapes}
+  </g>
+</svg>`;
+
+  const imgFilename = `${date}-${slug}.svg`;
+  const imgPath = path.join(IMAGES_DIR, imgFilename);
+  writeFileSync(imgPath, svg, 'utf-8');
+  return `/images/${imgFilename}`;
+}
+
 // ── Git操作 ────────────────────────────────────────────────
 function gitPush(filepath, title) {
   try {
@@ -214,7 +340,8 @@ function gitPush(filepath, title) {
 
     const commitMsg = `auto: ${title.slice(0, 60)}`;
     execSync(`git commit -m "${commitMsg.replace(/"/g, "'")}"`, opts);
-    execSync(`git push origin main`, opts);
+    // HEADにpush（どのブランチでも正しく動作する）
+    execSync(`git push origin HEAD`, opts);
     console.log(`🚀 Pushed to GitHub: ${commitMsg}`);
   } catch (e) {
     console.error(`❌ Git push failed: ${e.message}`);
