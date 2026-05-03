@@ -11,7 +11,7 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
 const columnPosts = allPosts.filter(p => p.data.category === 'コラム');
 ---
 
-<BaseLayout title="コラム" description="培養肉から少し焦点が外れた、周辺情報に関する記事一覧">
+<BaseLayout title="コラム" description="石井金子のオリジナル記事">
   <div class="page-wrapper">
     <Header />
 
@@ -33,7 +33,7 @@ const columnPosts = allPosts.filter(p => p.data.category === 'コラム');
             </div>
             <div>
               <h1 class="page-title">コラム</h1>
-              <p class="page-desc">培養肉から少し焦点が外れた、周辺情報に関する記事はこちら。</p>
+              <p class="page-desc">石井金子のオリジナル記事</p>
             </div>
           </div>
         </div>
