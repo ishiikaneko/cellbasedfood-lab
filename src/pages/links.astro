@@ -5,37 +5,50 @@ import Footer from '../components/Footer.astro';
 
 const linkGroups = [
   {
-    label: '論文・学術データベース',
+    label: 'ニュース・業界動向',
     links: [
-      { name: 'PubMed', url: 'https://pubmed.ncbi.nlm.nih.gov/', desc: '生命科学・医学分野の論文検索（NLM）' },
-      { name: 'Google Scholar', url: 'https://scholar.google.com/', desc: '学術論文・書籍の横断検索' },
-      { name: 'bioRxiv', url: 'https://www.biorxiv.org/', desc: '生物学プレプリントサーバー（Cell Press系）' },
-      { name: 'Semantic Scholar', url: 'https://www.semanticscholar.org/', desc: 'AI支援型論文検索・引用分析' },
+      { name: 'Cultivated Meat News', url: 'https://cultivated-meat.maubon.com/', desc: '培養肉関連ニュースをまとめて追える海外キュレーションサイト' },
+      { name: 'Green Queen', url: 'https://www.greenqueen.com.hk/category/cellbased-protein-cultivated-meat/', desc: '培養肉・代替タンパク質の企業動向や市場ニュースを扱う海外メディア' },
+      { name: 'Foovo', url: 'https://foodtech-japan.com/', desc: '海外フードテックニュースを日本語で読める専門メディア' },
     ],
   },
   {
-    label: '政府・規制機関',
+    label: '規制・安全性',
     links: [
-      { name: 'FDA (米国)', url: 'https://www.fda.gov/food/human-cell-cultured-food-products', desc: '米国食品医薬品局 ─ 培養食品ページ' },
-      { name: 'USDA (米国)', url: 'https://www.usda.gov/', desc: '米国農務省 ─ 細胞培養食品の監督を共同管轄' },
-      { name: 'EFSA (欧州)', url: 'https://www.efsa.europa.eu/', desc: '欧州食品安全機関 ─ 新規食品評価' },
-      { name: '食品安全委員会（日本）', url: 'https://www.fsc.go.jp/', desc: '食品健康影響評価・リスクコミュニケーション' },
+      { name: '消費者庁｜新開発食品調査部会', url: 'https://www.caa.go.jp/policies/council/fssc/meeting_materials/review_meeting_004/', desc: '日本の細胞培養食品に関する制度・安全性議論の資料' },
+      { name: 'FDA（米国）', url: 'https://www.hfpappexternal.fda.gov/scripts/fdcc/index.cfm?set=animalcellculturefoods', desc: '培養動物細胞由来食品の市販前相談状況を確認できる公式リスト' },
+      { name: 'USDA-FSIS（米国）', url: 'https://www.fsis.usda.gov/inspection/compliance-guidance/labeling/labeling-policies/human-food-made-cultured-animal-cells', desc: '米国における培養細胞食品の表示・監督情報を扱う公式ページ' },
+      { name: 'UK Food Standards Agency', url: 'https://www.food.gov.uk/business-guidance/cell-cultivated-products', desc: '英国での細胞培養食品の申請・安全性評価に関する公式ガイダンス' },
     ],
   },
   {
-    label: '業界団体・シンクタンク',
+    label: '国内団体・コンソーシアム',
     links: [
-      { name: 'GFI (Good Food Institute)', url: 'https://gfi.org/', desc: '代替タンパク質分野の主要シンクタンク。年次レポートが充実' },
-      { name: 'UPSIDE Foods', url: 'https://upsidefoods.com/', desc: '米国 ─ FDA承認取得済みの培養鶏肉企業' },
-      { name: 'GOOD Meat', url: 'https://goodmeat.co/', desc: 'シンガポール・米国で販売実績のある培養肉企業' },
-      { name: 'Cultivated Meat Modeling Consortium', url: 'https://www.thecmmc.org/', desc: '培養肉の数理モデル研究コンソーシアム' },
+      { name: 'JACA｜一般社団法人細胞農業研究機構', url: 'https://jaca.jp/', desc: '日本の細胞農業に関する政策提言や社会実装を扱う団体' },
+      { name: '特定非営利法人日本細胞農業協会', url: 'https://cellagri.org/', desc: '細胞農業の普及啓発や教育活動を行う日本の非営利団体' },
+      { name: '日本培養食料学会', url: 'https://www.cultivated-food.org/', desc: '培養食料分野の研究者・実務者が集まる国内学会' },
+      { name: 'クラフトエッセン協議会', url: 'https://craft-essen.com/', desc: '細胞培養食品の社会理解と普及を目指す国内情報サイト' },
+      { name: '培養肉未来創造コンソーシアム', url: 'https://cficm.jp/', desc: '3Dバイオプリント培養肉の社会実装を目指す国内コンソーシアム' },
     ],
   },
   {
-    label: '市場・投資データ',
+    label: '海外団体・ネットワーク',
     links: [
-      { name: 'AgFunder News', url: 'https://agfundernews.com/', desc: 'アグリフードテックの資金調達・ニュース' },
-      { name: 'The Good Food Institute — State of the Industry', url: 'https://gfi.org/resources/alternative-protein-state-of-the-industry-reports/', desc: 'GFI年次産業レポート（代替タンパク全体）' },
+      { name: 'The Good Food Institute (GFI)', url: 'https://gfi.org/cultivated/', desc: '培養肉の仕組みや意義を学べるGFIの基礎解説ページ' },
+      { name: 'GFI JAPAN', url: 'https://gfi.or.jp/', desc: '代替タンパク質分野の動向を日本語で発信するGFIの日本拠点' },
+      { name: 'Cellular Agriculture Europe', url: 'https://www.cellularagriculture.eu/', desc: '欧州における細胞農業の政策・産業動向を発信する業界団体' },
+      { name: 'Cellular Agriculture Australia', url: 'https://www.cellularagricultureaustralia.org/', desc: '豪州の細胞農業・代替タンパク質分野を支援する団体' },
+      { name: 'APAC-SCA', url: 'https://www.apac-sca.org/', desc: 'アジア太平洋地域の細胞農業関係者をつなぐ業界ネットワーク' },
+      { name: 'New Harvest', url: 'https://www.new-harvest.org/', desc: '細胞農業の研究支援と人材育成を行う海外の非営利団体' },
+      { name: 'The Cultivarian Society', url: 'https://www.cultivarian.food/', desc: '培養肉の普及を食文化や倫理の視点から支援する海外団体' },
+    ],
+  },
+  {
+    label: '研究・アカデミア・その他',
+    links: [
+      { name: 'Tufts Center for Cellular Agriculture', url: 'https://cellularagriculture.tufts.edu/', desc: '培養肉・細胞農業の研究を進めるタフツ大学の研究拠点' },
+      { name: 'Shojinmeat Project', url: 'https://shojinmeat.com/', desc: 'オープンソースDIY培養肉を掲げる日本発のコミュニティ' },
+      { name: 'Cellbase', url: 'https://cellbase.com/ja', desc: '培養肉開発に必要な素材・機器・サービスを探せるB2Bサイト' },
     ],
   },
 ];
