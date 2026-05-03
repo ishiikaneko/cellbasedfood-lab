@@ -88,7 +88,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
                     </svg>
                   </div>
               }
-              <span class="gen-badge">DALL-E 3</span>
+              {post.data.heroImage && post.data.heroImage.endsWith('.png') && <span class="gen-badge">DALL-E 3</span>}
             </div>
 
             <!-- 記事ヘッダー -->

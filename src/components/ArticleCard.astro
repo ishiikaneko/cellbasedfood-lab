@@ -43,7 +43,7 @@ const dateStr = pubDate.toLocaleDateString('ja-JP', {
           </svg>
         </div>
     }
-    <span class="gen-badge" aria-label="AI生成画像">DALL-E 3</span>
+    {heroImage && heroImage.endsWith('.png') && <span class="gen-badge" aria-label="AI生成画像">DALL-E 3</span>}
   </div>
 
   <div class="art-meta">
