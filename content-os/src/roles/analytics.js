@@ -1,9 +1,10 @@
 import { fetchTwitterStats } from '../analytics/twitter.js';
 import { fetchWordPressStats } from '../analytics/wordpress.js';
+import { fetchVercelStats } from '../analytics/vercel.js';
 import { log } from '../utils/logger.js';
 import chalk from 'chalk';
 
-export async function runAnalytics({ platforms = ['twitter', 'wordpress'] } = {}) {
+export async function runAnalytics({ platforms = ['twitter', 'wordpress', 'vercel'] } = {}) {
   log.step('Fetching analytics...');
   const results = {};
 
@@ -45,6 +46,22 @@ export async function runAnalytics({ platforms = ['twitter', 'wordpress'] } = {}
       }
     } catch (err) {
       log.error(`WordPress analytics failed: ${err.message}`);
+    }
+  }
+
+  if (platforms.includes('vercel')) {
+    try {
+      const vk = await fetchVercelStats({ days: 7, topN: 10 });
+      results.vercel = vk;
+
+      console.log(chalk.bold('\n--- Vercel Web Analytics (last 7 days) ---'));
+      console.log(`Total page views: ${chalk.green(vk.totalViews)}`);
+      console.log(chalk.dim('\nTop pages:'));
+      vk.topPaths.forEach((p) => {
+        console.log(`  ${chalk.cyan(p.path.padEnd(50))} ${p.views} views`);
+      });
+    } catch (err) {
+      log.error(`Vercel analytics failed: ${err.message}`);
     }
   }
 

@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "fetch-ogp": "node scripts/fetch-ogp.mjs"
+    "fetch-ogp": "node scripts/fetch-ogp.mjs",
+    "generate-popular": "node content-os/src/scripts/generate-popular.mjs"
   },
   "dependencies": {
     "astro": "^4.8.0",
