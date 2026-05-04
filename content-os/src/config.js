@@ -17,6 +17,10 @@ export const config = {
   YOUTUBE_REDIRECT_URI: process.env.YOUTUBE_REDIRECT_URI || 'http://localhost:3000/oauth2callback',
 
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+
+  VERCEL_API_TOKEN:  process.env.VERCEL_API_TOKEN,
+  VERCEL_PROJECT_ID: process.env.VERCEL_PROJECT_ID,
+  VERCEL_TEAM_ID:    process.env.VERCEL_TEAM_ID,
 };
 
 export function requireConfig(...keys) {
