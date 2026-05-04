@@ -39,7 +39,8 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
 <BaseLayout
   title={post.data.title}
   description={post.data.description}
-  ogImage={post.data.heroImage}
+  ogImage={post.data.ogImage}
+  ogType="article"
 >
   <div class="page-wrapper">
     <Header />
