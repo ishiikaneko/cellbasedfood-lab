@@ -10,8 +10,9 @@
     "generate-popular": "node content-os/src/scripts/generate-popular.mjs"
   },
   "dependencies": {
-    "astro": "^4.8.0",
-    "@astrojs/sitemap": "^3.1.0"
+    "@astrojs/sitemap": "^3.1.0",
+    "@vercel/analytics": "^2.0.1",
+    "astro": "^4.8.0"
   },
   "devDependencies": {
     "typescript": "^5.4.0"
