@@ -1,6 +1,6 @@
 ---
 title: 培養肉専門情報サイト｢CellBasedFood Lab｣はじめました。
-description: 培養肉や細胞性食品を、研究・規制・事業化の視点から冷静に読み解くために、専門情報サイトCellBasedFood Labを始めた理由を整理します。
+description: 培養肉などの細胞性食品を、研究・規制・製造・事業化の観点から読み解く場所、｢CellBasedFood Lab｣を始めました。
 category: コラム
 tags:
   - 培養肉
