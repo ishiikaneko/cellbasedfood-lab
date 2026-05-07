@@ -9,7 +9,7 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title="検索結果 | CellBasedFood Lab" description="サイト内検索結果">
+<BaseLayout title="検索結果" description="サイト内検索結果">
   <div class="page-wrapper">
     <Header />
 
