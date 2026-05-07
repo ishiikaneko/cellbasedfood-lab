@@ -1,0 +1,39 @@
+name: Generate Missing Thumbnails
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/blog/**.md'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install content-os dependencies
+        run: npm install
+        working-directory: ./content-os
+      - name: Generate missing thumbnails
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NODE_PATH: ${{ github.workspace }}/content-os/node_modules
+        run: node scripts/generate-missing-thumbnails.mjs
+      - name: Commit and push if changed
+        run: |
+          git config user.name "Bot"
+          git config user.email "bot@example.com"
+          git add src/content/blog/ public/images/
+          if git diff --staged --quiet; then
+            echo "No thumbnails generated."
+          else
+            git commit -m "auto: generate missing thumbnails"
+            git push origin HEAD
+          fi
