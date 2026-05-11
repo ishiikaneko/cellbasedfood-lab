@@ -7,6 +7,7 @@ tags:
   - 培養肉
   - 筋芽細胞
   - 鶏細胞
+heroImage: /images/2026-05-07-chicken-young-myoblasts-short.svg
 ---
 
 以前、[牛の筋衛星細胞では若い個体から取った方が細胞のポテンシャルが高いことを紹介](https://cellbasedfood-lab.com/blog/bovine-satellite-cells-calves-cattle)しました。今回は鶏の場合だとどうなるのか、それを示した論文の紹介です。

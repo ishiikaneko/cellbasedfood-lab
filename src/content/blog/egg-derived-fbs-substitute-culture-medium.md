@@ -7,6 +7,7 @@ tags:
   - 培養肉
   - 培地
   - FBS代替
+heroImage: /images/2026-05-11-egg-derived-fbs-substitute-culture-medium.svg
 ---
 
 細胞培養時に当たり前のように使われているFBS。現在もFBSを使わずに細胞を培養する試みは続いています。では、食品として身近な「卵」は、その代わりになるのでしょうか。
