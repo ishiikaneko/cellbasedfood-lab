@@ -7,6 +7,7 @@ tags:
   - 培養肉
   - マイクロキャリア
   - 大豆タンパク質
+heroImage: /images/2026-05-07-edible-soy-protein-microcarriers-cultured-meat.svg
 ---
 
 

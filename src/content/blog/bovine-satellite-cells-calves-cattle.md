@@ -13,6 +13,7 @@ references:
     url: "https://www.sciencedirect.com/science/article/pii/S2665927123001132"
     type: "原著論文"
     note: "子牛と成熟牛の牛骨格筋由来筋衛星細胞を比較し、増殖性、筋形成関連遺伝子、脂肪蓄積関連遺伝子の違いを示した主軸ソース。"
+heroImage: /images/2026-05-01-bovine-satellite-cells-calves-cattle.svg
 ---
 
 直感では、成牛よりも若い子牛の細胞の方がよく増えそうなイメージがあります。論文の結果を元に、その違いを定量的に把握しておきましょう。
