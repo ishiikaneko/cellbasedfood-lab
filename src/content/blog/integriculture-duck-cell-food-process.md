@@ -9,6 +9,7 @@ tags:
   - インテグリカルチャー
   - アヒル細胞
 pubDate: 2026-05-16
+heroImage: /images/2026-05-16-integriculture-duck-cell-food-process.svg
 references:
   - title: "An integrated scalable process for adherent cultivated meat production: From proliferative cell selection to safety-verified product development"
     url: "https://www.biorxiv.org/content/10.64898/2026.01.08.698307v1"
