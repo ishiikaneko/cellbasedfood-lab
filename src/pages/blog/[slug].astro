@@ -56,7 +56,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
           <span>{post.data.title}</span>
         </nav>
 
-        <!-- ARTICLE LAYOUT -->
+        <!-- ARTICLE + SIDEBAR -->
         <div class="article-wrap">
 
           <!-- ── MAIN ── -->
@@ -101,7 +101,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
               <h1 class="art-title">{post.data.title}</h1>
             </header>
 
-            <!-- 本文 -->
+            <!-- 本文（引用文献を含む） -->
             <div class="art-body">
               <div class="prose">
                 <Content />
@@ -126,7 +126,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
 
           </article>
 
-          <!-- ── SIDEBAR ── -->
+          <!-- ── SIDEBAR（デスクトップのみ） ── -->
           <aside class="sidebar" aria-label="サイドバー">
 
             <!-- 人気記事 -->
@@ -175,6 +175,24 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
             </div>
           </section>
         )}
+
+        <!-- モバイル専用: バナー → 人気記事 -->
+        <div class="mobile-extra">
+          <div class="mobile-banner-zone">
+            <SponsoredBanners variant="home" />
+          </div>
+          <section class="popular-zone" aria-labelledby="popular-heading">
+            <h2 id="popular-heading" class="popular-label">人気記事</h2>
+            <div class="popular-list">
+              {popularPosts.map((p, i) => (
+                <a href={`/blog/${p.slug}`} class="pop-item">
+                  <span class="pop-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="pop-title">{p.data.title}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        </div>
 
       </div>
     </main>
@@ -462,7 +480,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   border-bottom: 0.5px solid #e5e4df;
 }
 
-/* 人気記事 */
+/* 人気記事（サイドバー） */
 .sb-pop-item {
   display: flex;
   gap: 8px;
@@ -483,7 +501,6 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   width: 18px;
 }
 .sb-pop-title { font-size: 10px; color: #1a1a18; line-height: 1.55; }
-
 
 /* ── RELATED ARTICLES ── */
 .related-zone {
@@ -542,11 +559,17 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   color: #1a1a18;
 }
 
+/* ── モバイル専用セクション（デスクトップでは非表示） ── */
+.mobile-extra { display: none; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .article-wrap { grid-template-columns: 1fr; }
-  .sidebar { position: static; max-height: none; border-top: 0.5px solid #e5e4df; }
   .article-main { border-right: none; }
+  /* サイドバーを非表示にしてモバイル専用セクションを表示 */
+  .sidebar { display: none; }
+  .mobile-extra { display: block; }
+  .mobile-banner-zone { border-top: 0.5px solid #e5e4df; border-bottom: 0.5px solid #e5e4df; }
 }
 
 @media (max-width: 600px) {
@@ -565,5 +588,48 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   .related-zone { padding: 20px 20px 28px; }
   .breadcrumb { padding: 8px 16px; }
 }
-</style>
 
+/* ── 人気記事（モバイル） ── */
+.popular-zone {
+  padding: 24px 20px 40px;
+}
+.popular-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+.popular-list {
+  display: flex;
+  flex-direction: column;
+}
+.pop-item {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 0.5px solid #e5e4df;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity .15s;
+}
+.pop-item:last-child { border-bottom: none; }
+.pop-item:hover { opacity: 0.7; }
+.pop-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0F6E56;
+  flex-shrink: 0;
+  width: 20px;
+}
+.pop-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #1a1a18;
+}
+</style>
