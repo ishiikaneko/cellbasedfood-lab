@@ -56,74 +56,99 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
           <span>{post.data.title}</span>
         </nav>
 
-        <!-- ARTICLE -->
-        <article class="article-main">
+        <!-- ARTICLE + SIDEBAR -->
+        <div class="article-wrap">
 
-          <!-- ヒーロー画像 -->
-          <div class="art-hero-img">
-            {post.data.heroImage
-              ? <img src={post.data.heroImage} alt={post.data.title} />
-              : <div class="hero-placeholder">
-                  <svg viewBox="0 0 80 80" fill="none" width="88" height="88">
-                    <circle cx="40" cy="40" r="18" fill="#0F6E56" opacity=".11"/>
-                    <circle cx="40" cy="40" r="11" fill="#0F6E56" opacity=".24"/>
-                    <circle cx="40" cy="40" r="5"  fill="#0F6E56" opacity=".48"/>
-                    <circle cx="16" cy="24" r="7"  fill="#1D9E75" opacity=".16"/>
-                    <circle cx="16" cy="24" r="3.5" fill="#1D9E75" opacity=".36"/>
-                    <circle cx="64" cy="24" r="7"  fill="#1D9E75" opacity=".16"/>
-                    <circle cx="64" cy="24" r="3.5" fill="#1D9E75" opacity=".36"/>
-                    <circle cx="16" cy="56" r="7"  fill="#1D9E75" opacity=".16"/>
-                    <circle cx="16" cy="56" r="3.5" fill="#1D9E75" opacity=".36"/>
-                    <circle cx="64" cy="56" r="7"  fill="#1D9E75" opacity=".16"/>
-                    <circle cx="64" cy="56" r="3.5" fill="#1D9E75" opacity=".36"/>
-                    <line x1="23" y1="28" x2="31" y2="35" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
-                    <line x1="49" y1="35" x2="57" y2="28" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
-                    <line x1="23" y1="52" x2="31" y2="45" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
-                    <line x1="49" y1="45" x2="57" y2="52" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
-                    <line x1="40" y1="22" x2="40" y2="29" stroke="#0F6E56" stroke-width="1" opacity=".2"/>
-                    <line x1="40" y1="51" x2="40" y2="58" stroke="#0F6E56" stroke-width="1" opacity=".2"/>
+          <!-- ── MAIN ── -->
+          <article class="article-main">
+
+            <!-- ヒーロー画像 -->
+            <div class="art-hero-img">
+              {post.data.heroImage
+                ? <img src={post.data.heroImage} alt={post.data.title} />
+                : <div class="hero-placeholder">
+                    <svg viewBox="0 0 80 80" fill="none" width="88" height="88">
+                      <circle cx="40" cy="40" r="18" fill="#0F6E56" opacity=".11"/>
+                      <circle cx="40" cy="40" r="11" fill="#0F6E56" opacity=".24"/>
+                      <circle cx="40" cy="40" r="5"  fill="#0F6E56" opacity=".48"/>
+                      <circle cx="16" cy="24" r="7"  fill="#1D9E75" opacity=".16"/>
+                      <circle cx="16" cy="24" r="3.5" fill="#1D9E75" opacity=".36"/>
+                      <circle cx="64" cy="24" r="7"  fill="#1D9E75" opacity=".16"/>
+                      <circle cx="64" cy="24" r="3.5" fill="#1D9E75" opacity=".36"/>
+                      <circle cx="16" cy="56" r="7"  fill="#1D9E75" opacity=".16"/>
+                      <circle cx="16" cy="56" r="3.5" fill="#1D9E75" opacity=".36"/>
+                      <circle cx="64" cy="56" r="7"  fill="#1D9E75" opacity=".16"/>
+                      <circle cx="64" cy="56" r="3.5" fill="#1D9E75" opacity=".36"/>
+                      <line x1="23" y1="28" x2="31" y2="35" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
+                      <line x1="49" y1="35" x2="57" y2="28" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
+                      <line x1="23" y1="52" x2="31" y2="45" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
+                      <line x1="49" y1="45" x2="57" y2="52" stroke="#1D9E75" stroke-width="1" opacity=".22"/>
+                      <line x1="40" y1="22" x2="40" y2="29" stroke="#0F6E56" stroke-width="1" opacity=".2"/>
+                      <line x1="40" y1="51" x2="40" y2="58" stroke="#0F6E56" stroke-width="1" opacity=".2"/>
+                    </svg>
+                  </div>
+              }
+              {post.data.heroImage && post.data.heroImage.endsWith('.png') && <span class="gen-badge">DALL-E 3</span>}
+            </div>
+
+            <!-- 記事ヘッダー -->
+            <header class="art-header">
+              <div class="art-meta-row">
+                <span class={`tag tag-${post.data.category}`}>{post.data.category}</span>
+                {post.data.aiGenerated && <span class="ai-dot" aria-label="AI生成記事" />}
+                <time datetime={post.data.pubDate.toISOString()} class="art-date">{dateStr}</time>
+              </div>
+              <h1 class="art-title">{post.data.title}</h1>
+            </header>
+
+            <!-- 本文（引用文献を含む） -->
+            <div class="art-body">
+              <div class="prose">
+                <Content />
+              </div>
+
+              <!-- X share button -->
+              <div class="x-share">
+                <a
+                  href={xShareUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="x-share-btn"
+                  aria-label="Xでシェア"
+                >
+                  <svg class="x-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
-                </div>
-            }
-            {post.data.heroImage && post.data.heroImage.endsWith('.png') && <span class="gen-badge">DALL-E 3</span>}
-          </div>
-
-          <!-- 記事ヘッダー -->
-          <header class="art-header">
-            <div class="art-meta-row">
-              <span class={`tag tag-${post.data.category}`}>{post.data.category}</span>
-              {post.data.aiGenerated && <span class="ai-dot" aria-label="AI生成記事" />}
-              <time datetime={post.data.pubDate.toISOString()} class="art-date">{dateStr}</time>
+                  でシェア
+                </a>
+              </div>
             </div>
-            <h1 class="art-title">{post.data.title}</h1>
-          </header>
 
-          <!-- 本文（引用文献を含む） -->
-          <div class="art-body">
-            <div class="prose">
-              <Content />
+          </article>
+
+          <!-- ── SIDEBAR（デスクトップのみ） ── -->
+          <aside class="sidebar" aria-label="サイドバー">
+
+            <!-- 人気記事 -->
+            <div class="sb-section">
+              <div class="sb-label">人気記事</div>
+              {popularPosts.map((p, i) => (
+                <a href={`/blog/${p.slug}`} class="sb-pop-item">
+                  <span class="sb-pop-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="sb-pop-title">{p.data.title}</span>
+                </a>
+              ))}
             </div>
-          </div>
 
-        </article>
+            <!-- サイドバーバナー -->
+            <div class="sb-section">
+              <SponsoredBanners variant="sidebar" />
+            </div>
 
-        <!-- X シェアボタン -->
-        <div class="x-share">
-          <a
-            href={xShareUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="x-share-btn"
-            aria-label="Xでシェア"
-          >
-            <svg class="x-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
-            でシェア
-          </a>
+          </aside>
         </div>
 
-        <!-- 関連記事 -->
+        <!-- 関連記事（記事下・フル幅） -->
         {related.length > 0 && (
           <section class="related-zone" aria-labelledby="related-heading">
             <h2 id="related-heading" class="related-label">関連記事</h2>
@@ -151,23 +176,23 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
           </section>
         )}
 
-        <!-- バナー -->
-        <div class="banner-zone">
-          <SponsoredBanners variant="home" />
-        </div>
-
-        <!-- 人気記事 -->
-        <section class="popular-zone" aria-labelledby="popular-heading">
-          <h2 id="popular-heading" class="popular-label">人気記事</h2>
-          <div class="popular-list">
-            {popularPosts.map((p, i) => (
-              <a href={`/blog/${p.slug}`} class="pop-item">
-                <span class="pop-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <span class="pop-title">{p.data.title}</span>
-              </a>
-            ))}
+        <!-- モバイル専用: バナー → 人気記事 -->
+        <div class="mobile-extra">
+          <div class="mobile-banner-zone">
+            <SponsoredBanners variant="home" />
           </div>
-        </section>
+          <section class="popular-zone" aria-labelledby="popular-heading">
+            <h2 id="popular-heading" class="popular-label">人気記事</h2>
+            <div class="popular-list">
+              {popularPosts.map((p, i) => (
+                <a href={`/blog/${p.slug}`} class="pop-item">
+                  <span class="pop-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="pop-title">{p.data.title}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        </div>
 
       </div>
     </main>
@@ -180,7 +205,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
 /* ── LAYOUT ── */
 .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
 .main-content { flex: 1; }
-.inner { max-width: 860px; margin: 0 auto; }
+.inner { max-width: 1200px; margin: 0 auto; }
 
 /* ── BREADCRUMB ── */
 .breadcrumb {
@@ -196,8 +221,14 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
 .breadcrumb a { color: #0F6E56; text-decoration: none; }
 .breadcrumb a:hover { text-decoration: underline; }
 
+/* ── ARTICLE + SIDEBAR GRID ── */
+.article-wrap {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+}
+
 /* ── MAIN ── */
-.article-main { border-bottom: 0.5px solid #e5e4df; }
+.article-main { border-right: 0.5px solid #e5e4df; }
 
 /* ── HERO IMAGE ── */
 .art-hero-img {
@@ -403,8 +434,9 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
 .x-share {
   display: flex;
   justify-content: center;
-  padding: 32px 40px;
-  border-bottom: 0.5px solid #e5e4df;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 0.5px solid #e5e4df;
 }
 .x-share-btn {
   display: inline-flex;
@@ -427,59 +459,55 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   flex-shrink: 0;
 }
 
-/* ── BANNER ── */
-.banner-zone {
-  border-bottom: 0.5px solid #e5e4df;
+/* ── SIDEBAR ── */
+.sidebar {
+  padding: 16px;
+  position: sticky;
+  top: 52px;
+  align-self: start;
+  max-height: calc(100vh - 52px);
+  overflow-y: auto;
 }
-
-/* ── POPULAR ARTICLES ── */
-.popular-zone {
-  padding: 24px 40px 40px;
-}
-.popular-label {
+.sb-section { margin-bottom: 20px; }
+.sb-label {
   font-family: 'Space Mono', monospace;
   font-size: 9px;
   letter-spacing: .1em;
   color: #888;
   text-transform: uppercase;
-  margin-bottom: 14px;
-  font-weight: 400;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 0.5px solid #e5e4df;
 }
-.popular-list {
+
+/* 人気記事（サイドバー） */
+.sb-pop-item {
   display: flex;
-  flex-direction: column;
-}
-.pop-item {
-  display: flex;
-  gap: 12px;
-  align-items: baseline;
-  padding: 10px 0;
+  gap: 8px;
+  padding: 6px 0;
   border-bottom: 0.5px solid #e5e4df;
   text-decoration: none;
   color: inherit;
   transition: opacity .15s;
 }
-.pop-item:last-child { border-bottom: none; }
-.pop-item:hover { opacity: 0.7; }
-.pop-num {
+.sb-pop-item:hover { opacity: 0.7; }
+.sb-pop-item:last-child { border-bottom: none; }
+.sb-pop-num {
   font-family: 'Space Mono', monospace;
   font-size: 11px;
   font-weight: 700;
-  color: #0F6E56;
+  color: #E1F5EE;
   flex-shrink: 0;
-  width: 20px;
+  width: 18px;
 }
-.pop-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 14px;
-  line-height: 1.65;
-  color: #1a1a18;
-}
+.sb-pop-title { font-size: 10px; color: #1a1a18; line-height: 1.55; }
 
 /* ── RELATED ARTICLES ── */
 .related-zone {
   padding: 24px 40px 32px;
-  border-bottom: 0.5px solid #e5e4df;
+  border-top: 0.5px solid #e5e4df;
+  max-width: 800px;
+  margin: 0 auto;
 }
 .related-label {
   font-family: 'Space Mono', monospace;
@@ -531,7 +559,19 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   color: #1a1a18;
 }
 
+/* ── モバイル専用セクション（デスクトップでは非表示） ── */
+.mobile-extra { display: none; }
+
 /* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .article-wrap { grid-template-columns: 1fr; }
+  .article-main { border-right: none; }
+  /* サイドバーを非表示にしてモバイル専用セクションを表示 */
+  .sidebar { display: none; }
+  .mobile-extra { display: block; }
+  .mobile-banner-zone { border-top: 0.5px solid #e5e4df; border-bottom: 0.5px solid #e5e4df; }
+}
+
 @media (max-width: 600px) {
   .art-title { font-size: 20px; }
   .art-hero-img { height: 200px; }
@@ -546,9 +586,50 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   .prose h3 { font-size: 16px; }
   .related-grid { grid-template-columns: 1fr; }
   .related-zone { padding: 20px 20px 28px; }
-  .popular-zone { padding: 20px 20px 32px; }
-  .x-share { padding: 24px 20px; }
   .breadcrumb { padding: 8px 16px; }
 }
-</style>
 
+/* ── 人気記事（モバイル） ── */
+.popular-zone {
+  padding: 24px 20px 40px;
+}
+.popular-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+.popular-list {
+  display: flex;
+  flex-direction: column;
+}
+.pop-item {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 0.5px solid #e5e4df;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity .15s;
+}
+.pop-item:last-child { border-bottom: none; }
+.pop-item:hover { opacity: 0.7; }
+.pop-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0F6E56;
+  flex-shrink: 0;
+  width: 20px;
+}
+.pop-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #1a1a18;
+}
+</style>
