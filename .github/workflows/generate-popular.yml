@@ -33,10 +33,14 @@ jobs:
         run: |
           git config user.name "Bot"
           git config user.email "bot@example.com"
-          if git diff --quiet src/data/popular.json; then
+          if [ ! -f src/data/popular.json ]; then
+            echo "popular.json was not generated (no data or skipped). Nothing to commit."
+            exit 0
+          fi
+          git add src/data/popular.json
+          if git diff --cached --quiet; then
             echo "No changes to popular.json"
           else
-            git add src/data/popular.json
             git commit -m "chore: update popular.json"
             git push
           fi
