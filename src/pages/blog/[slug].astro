@@ -4,6 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import SponsoredBanners from '../../components/SponsoredBanners.astro';
 import { getCollection } from 'astro:content';
+import { getPopularPosts } from '../../utils/popular.js';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -23,10 +24,11 @@ const related = allPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 2);
 
-// 人気記事（本番では popular.json から取得。現在は新着順）
-const popularPosts = allPosts
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+// 人気記事（popular.json があれば analytics から、なければ最新3本）
+const sortedByDate = [...allPosts].sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const popularPosts = getPopularPosts(sortedByDate);
 
 const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
   year: 'numeric', month: '2-digit', day: '2-digit'
