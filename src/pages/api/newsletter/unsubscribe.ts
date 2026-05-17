@@ -32,24 +32,27 @@ export const POST: APIRoute = async ({ request }) => {
   const resend = new Resend(import.meta.env.RESEND_API_KEY);
   const audienceId = import.meta.env.RESEND_AUDIENCE_ID;
 
-  try {
-    // List contacts and find by email to get the ID
-    const result = await resend.contacts.list({ audienceId });
-    const contacts = (result.data as { data?: Array<{ id: string; email: string }> })?.data ?? [];
-    const contact = contacts.find(c => c.email.toLowerCase() === email.toLowerCase());
-
-    if (contact) {
-      await resend.contacts.update({
-        id: contact.id,
-        audienceId,
-        unsubscribed: true,
-      });
-    }
-    // If contact not found, treat as already unsubscribed
-  } catch (err) {
-    console.error('Unsubscribe error:', err);
-    return json({ error: '配信停止の処理中にエラーが発生しました。' }, 500);
+  const { data: listData, error: listErr } = await resend.contacts.list({ audienceId });
+  if (listErr) {
+    console.error('Unsubscribe list error:', listErr);
+    return json({ error: `配信停止に失敗しました: ${(listErr as { message?: string })?.message ?? 'unknown error'}` }, 500);
   }
+
+  const contacts = (listData as { data?: Array<{ id: string; email: string }> })?.data ?? [];
+  const contact = contacts.find(c => c.email.toLowerCase() === email.toLowerCase());
+
+  if (contact) {
+    const { error: updateErr } = await resend.contacts.update({
+      id: contact.id,
+      audienceId,
+      unsubscribed: true,
+    });
+    if (updateErr) {
+      console.error('Unsubscribe update error:', updateErr);
+      return json({ error: `配信停止に失敗しました: ${(updateErr as { message?: string })?.message ?? 'unknown error'}` }, 500);
+    }
+  }
+  // If contact not found, treat as already unsubscribed
 
   return json({ success: true }, 200);
 };

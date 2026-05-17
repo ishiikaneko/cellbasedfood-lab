@@ -53,14 +53,14 @@ export const POST: APIRoute = async ({ request }) => {
   const resend = new Resend(import.meta.env.RESEND_API_KEY);
   const audienceId = import.meta.env.RESEND_AUDIENCE_ID;
 
-  try {
-    await resend.contacts.create({ email, audienceId, unsubscribed: false });
-  } catch (err: unknown) {
-    const status = (err as { statusCode?: number })?.statusCode;
-    // 409 = already exists — treat as success
-    if (status !== 409) {
-      console.error('Resend contacts.create error:', err);
-      return json({ error: '登録に失敗しました。しばらくしてからお試しください。' }, 500);
+  const { error: createErr } = await resend.contacts.create({ email, audienceId, unsubscribed: false });
+  if (createErr) {
+    const name = (createErr as { name?: string })?.name;
+    // 'invalid_parameter' or similar when contact already exists — Resend returns error not 409
+    const alreadyExists = /already.*exist|duplicate/i.test(String((createErr as { message?: string })?.message ?? ''));
+    if (!alreadyExists) {
+      console.error('Resend contacts.create error:', createErr);
+      return json({ error: `登録に失敗しました: ${(createErr as { message?: string })?.message ?? name ?? 'unknown error'}` }, 500);
     }
   }
 
@@ -69,16 +69,16 @@ export const POST: APIRoute = async ({ request }) => {
   const unsubUrl = `${siteUrl}/newsletter/unsubscribe?token=${token}&email=${encodeURIComponent(email)}`;
   const fromEmail = import.meta.env.RESEND_FROM_EMAIL ?? 'CellBasedFood Lab <newsletter@cellbasedfood-lab.com>';
 
-  try {
-    await resend.emails.send({
-      from: fromEmail,
-      to: email,
-      subject: '【CellBasedFood Lab】メールマガジン登録を受け付けました',
-      html: welcomeEmailHtml(unsubUrl),
-      text: welcomeEmailText(unsubUrl),
-    });
-  } catch (err) {
-    console.error('Welcome email send error:', err);
+  const { error: sendErr } = await resend.emails.send({
+    from: fromEmail,
+    to: email,
+    subject: '【CellBasedFood Lab】メールマガジン登録を受け付けました',
+    html: welcomeEmailHtml(unsubUrl),
+    text: welcomeEmailText(unsubUrl),
+  });
+  if (sendErr) {
+    console.error('Welcome email send error:', sendErr);
+    return json({ error: `確認メール送信に失敗しました: ${(sendErr as { message?: string })?.message ?? 'unknown error'}` }, 500);
   }
 
   return json({ success: true }, 200);

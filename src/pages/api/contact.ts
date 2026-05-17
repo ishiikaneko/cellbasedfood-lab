@@ -69,30 +69,28 @@ export const POST: APIRoute = async ({ request }) => {
 
   const contactData = { name, email, subject, body: message, sentAt, ip };
 
-  try {
-    await resend.emails.send({
-      from: fromEmail,
-      to: notifyEmail,
-      replyTo: email,
-      subject: `【CellBasedFood Lab】お問い合わせがありました：${subject}`,
-      html: contactNotificationHtml(contactData),
-      text: contactNotificationText(contactData),
-    });
-  } catch (err) {
-    console.error('Contact notification send error:', err);
-    return json({ error: 'メッセージの送信に失敗しました。しばらくしてからお試しください。' }, 500);
+  const { error: notifyErr } = await resend.emails.send({
+    from: fromEmail,
+    to: notifyEmail,
+    replyTo: email,
+    subject: `【CellBasedFood Lab】お問い合わせがありました：${subject}`,
+    html: contactNotificationHtml(contactData),
+    text: contactNotificationText(contactData),
+  });
+  if (notifyErr) {
+    console.error('Contact notification send error:', notifyErr);
+    return json({ error: `メッセージ送信に失敗しました: ${(notifyErr as { message?: string })?.message ?? 'unknown error'}` }, 500);
   }
 
-  try {
-    await resend.emails.send({
-      from: fromEmail,
-      to: email,
-      subject: '【CellBasedFood Lab】お問い合わせを受け付けました',
-      html: contactAutoreplyHtml({ subject, body: message }),
-      text: contactAutoreplyText({ subject, body: message }),
-    });
-  } catch (err) {
-    console.error('Contact autoreply send error:', err);
+  const { error: autoErr } = await resend.emails.send({
+    from: fromEmail,
+    to: email,
+    subject: '【CellBasedFood Lab】お問い合わせを受け付けました',
+    html: contactAutoreplyHtml({ subject, body: message }),
+    text: contactAutoreplyText({ subject, body: message }),
+  });
+  if (autoErr) {
+    console.error('Contact autoreply send error:', autoErr);
   }
 
   return json({ success: true }, 200);
