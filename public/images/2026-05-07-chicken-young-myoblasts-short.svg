@@ -1,5 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
   <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B8D67A"/>
+      <stop offset="100%" stop-color="#7BA838"/>
+    </linearGradient>
     <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
       <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
@@ -10,14 +14,35 @@
       <stop offset="100%" stop-color="white" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="1792" height="1024" fill="#0F6E56"/>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
   <rect width="1792" height="1024" fill="url(#sheen)"/>
   <rect width="1792" height="1024" fill="url(#glow)"/>
-  <g transform="translate(746,362) scale(3)">
-    <ellipse cx="50" cy="50" rx="33" ry="28" fill="none" stroke="white" stroke-width="3"/>
-    <ellipse cx="50" cy="50" rx="14" ry="12" fill="white" opacity="0.85"/>
-    <circle cx="36" cy="38" r="4" fill="white" opacity="0.6"/>
-    <circle cx="64" cy="60" r="3.5" fill="white" opacity="0.6"/>
-    <circle cx="40" cy="65" r="3" fill="white" opacity="0.5"/>
+  <!-- Chicken silhouette -->
+  <g transform="translate(746,330) scale(3.2)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <!-- Body (egg-shaped) -->
+    <ellipse cx="50" cy="70" rx="28" ry="22"/>
+    <!-- Head -->
+    <circle cx="76" cy="40" r="11"/>
+    <!-- Neck connection -->
+    <path d="M72,48 Q66,56 60,60"/>
+    <!-- Beak -->
+    <path d="M86,38 L96,40 L86,44 Z" fill="white"/>
+    <!-- Comb (3 bumps) -->
+    <path d="M68,30 Q70,22 73,28 Q76,20 79,28 Q82,22 84,30"/>
+    <!-- Wattle -->
+    <path d="M80,46 Q82,52 78,52" fill="white" opacity="0.6"/>
+    <!-- Eye -->
+    <circle cx="78" cy="38" r="1.8" fill="white"/>
+    <!-- Wing detail -->
+    <path d="M40,62 Q50,72 60,68"/>
+    <!-- Tail feathers -->
+    <path d="M22,60 Q14,50 18,42"/>
+    <path d="M22,66 Q12,62 12,55"/>
+    <path d="M24,72 Q12,74 14,68"/>
+    <!-- Legs -->
+    <line x1="42" y1="92" x2="42" y2="104"/>
+    <line x1="58" y1="92" x2="58" y2="104"/>
+    <path d="M38,104 L42,104 L46,104"/>
+    <path d="M54,104 L58,104 L62,104"/>
   </g>
 </svg>

@@ -1,5 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
   <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B8D67A"/>
+      <stop offset="100%" stop-color="#7BA838"/>
+    </linearGradient>
     <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
       <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
@@ -10,14 +14,44 @@
       <stop offset="100%" stop-color="white" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="1792" height="1024" fill="#0F6E56"/>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
   <rect width="1792" height="1024" fill="url(#sheen)"/>
   <rect width="1792" height="1024" fill="url(#glow)"/>
-  <g transform="translate(746,362) scale(3)">
-    <ellipse cx="50" cy="50" rx="33" ry="28" fill="none" stroke="white" stroke-width="3"/>
-    <ellipse cx="50" cy="50" rx="14" ry="12" fill="white" opacity="0.85"/>
-    <circle cx="36" cy="38" r="4" fill="white" opacity="0.6"/>
-    <circle cx="64" cy="60" r="3.5" fill="white" opacity="0.6"/>
-    <circle cx="40" cy="65" r="3" fill="white" opacity="0.5"/>
+  <!-- Adult cow (larger) on the left + calf (smaller) on the right, both cow heads -->
+  <g transform="translate(620,360) scale(3)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Adult cow head -->
+    <g stroke-width="3.5">
+      <!-- Face -->
+      <path d="M20,30 Q20,12 40,12 Q60,12 60,30 L60,52 Q60,68 40,68 Q20,68 20,52 Z"/>
+      <!-- Muzzle -->
+      <ellipse cx="40" cy="56" rx="14" ry="9"/>
+      <!-- Nostrils -->
+      <circle cx="35" cy="56" r="1.5" fill="white"/>
+      <circle cx="45" cy="56" r="1.5" fill="white"/>
+      <!-- Ears -->
+      <ellipse cx="14" cy="26" rx="6" ry="4" transform="rotate(-30,14,26)"/>
+      <ellipse cx="66" cy="26" rx="6" ry="4" transform="rotate(30,66,26)"/>
+      <!-- Horns -->
+      <path d="M22,18 Q18,8 24,6"/>
+      <path d="M58,18 Q62,8 56,6"/>
+      <!-- Eyes -->
+      <circle cx="32" cy="38" r="2" fill="white"/>
+      <circle cx="48" cy="38" r="2" fill="white"/>
+    </g>
   </g>
+  <!-- Calf (smaller) -->
+  <g transform="translate(960,420) scale(2.1)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke-width="3.5">
+      <path d="M20,30 Q20,12 40,12 Q60,12 60,30 L60,52 Q60,68 40,68 Q20,68 20,52 Z"/>
+      <ellipse cx="40" cy="56" rx="14" ry="9"/>
+      <circle cx="35" cy="56" r="1.5" fill="white"/>
+      <circle cx="45" cy="56" r="1.5" fill="white"/>
+      <ellipse cx="14" cy="26" rx="6" ry="4" transform="rotate(-30,14,26)"/>
+      <ellipse cx="66" cy="26" rx="6" ry="4" transform="rotate(30,66,26)"/>
+      <circle cx="32" cy="38" r="2" fill="white"/>
+      <circle cx="48" cy="38" r="2" fill="white"/>
+    </g>
+  </g>
+  <!-- vs symbol between -->
+  <text x="920" y="555" font-family="Georgia, serif" font-size="56" font-style="italic" fill="white" opacity="0.85" text-anchor="middle">vs</text>
 </svg>
