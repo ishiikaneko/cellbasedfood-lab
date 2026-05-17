@@ -5,8 +5,7 @@ import ArticleCard from '../components/ArticleCard.astro';
 import Footer from '../components/Footer.astro';
 import SponsoredBanners from '../components/SponsoredBanners.astro';
 import { getCollection } from 'astro:content';
-import { readFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { getPopularPosts } from '../utils/popular.js';
 
 // ── 全記事取得（下書き除外・日付降順） ──
 const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -16,28 +15,7 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
 const displayPosts = allPosts.slice(0, 50);
 
 // ── 人気記事（popular.json があれば analytics から、なければ最新3本） ──
-let popularPosts;
-const popularJsonPath = join(process.cwd(), 'src/data/popular.json');
-try {
-  if (existsSync(popularJsonPath)) {
-    const popularData = JSON.parse(readFileSync(popularJsonPath, 'utf-8'));
-    const slugOrder = popularData.slugs ?? [];
-    const slugSet   = new Set(slugOrder);
-    const found     = allPosts.filter((p) => slugSet.has(p.slug));
-    popularPosts    = slugOrder.map((slug) => found.find((p) => p.slug === slug)).filter(Boolean);
-    if (popularPosts.length < 3) {
-      const existing = new Set(popularPosts.map((p) => p.slug));
-      for (const post of allPosts) {
-        if (popularPosts.length >= 3) break;
-        if (!existing.has(post.slug)) popularPosts.push(post);
-      }
-    }
-  } else {
-    popularPosts = allPosts.slice(0, 3);
-  }
-} catch {
-  popularPosts = allPosts.slice(0, 3);
-}
+const popularPosts = getPopularPosts(allPosts);
 ---
 
 <BaseLayout>

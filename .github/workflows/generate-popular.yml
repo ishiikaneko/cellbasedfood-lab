@@ -1,0 +1,42 @@
+name: Generate Popular Articles
+on:
+  schedule:
+    # 毎日 06:00 JST (21:00 UTC) に実行
+    - cron: '0 21 * * *'
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install root dependencies
+        run: npm install
+      - name: Install content-os dependencies
+        run: npm install
+        working-directory: ./content-os
+      - name: Generate popular.json
+        env:
+          VERCEL_API_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+        run: npm run generate-popular
+      - name: Commit and push if changed
+        run: |
+          git config user.name "Bot"
+          git config user.email "bot@example.com"
+          if git diff --quiet src/data/popular.json; then
+            echo "No changes to popular.json"
+          else
+            git add src/data/popular.json
+            git commit -m "chore: update popular.json"
+            git push
+          fi
