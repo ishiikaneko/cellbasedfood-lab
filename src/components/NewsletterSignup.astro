@@ -1,0 +1,201 @@
+---
+---
+
+<section class="nl-section" aria-labelledby="nl-heading">
+  <div class="nl-inner">
+    <div class="nl-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+        <rect x="2" y="4" width="20" height="16" rx="3" stroke="#0F6E56" stroke-width="1.5"/>
+        <path d="M2 8l10 7 10-7" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="nl-text">
+      <h2 id="nl-heading" class="nl-title">CellBasedFood Lab メールマガジン</h2>
+      <p class="nl-desc">月1回程度、新着の細胞性食品関連記事のまとめと書籍情報をお届けします。</p>
+    </div>
+  </div>
+
+  <form id="nl-form" class="nl-form" novalidate>
+    <div id="nl-idle">
+      <div class="nl-field-row">
+        <div class="nl-input-wrap">
+          <label for="nl-email" class="sr-only">メールアドレス</label>
+          <input
+            id="nl-email"
+            type="email"
+            name="email"
+            placeholder="メールアドレスを入力"
+            autocomplete="email"
+            required
+            class="nl-input"
+          />
+        </div>
+        <button type="submit" class="nl-btn" id="nl-submit">登録する</button>
+      </div>
+      <label class="nl-consent-label">
+        <input type="checkbox" id="nl-consent" class="nl-checkbox" />
+        <span>
+          <a href="/privacy" class="nl-policy-link">プライバシーポリシー</a>に同意する
+        </span>
+      </label>
+      <p id="nl-error" class="nl-msg nl-msg-error" hidden></p>
+    </div>
+
+    <div id="nl-success" class="nl-msg nl-msg-success" hidden>
+      登録ありがとうございました。確認メールをお送りしました。
+    </div>
+  </form>
+</section>
+
+<style>
+.nl-section {
+  border-top: 0.5px solid #e5e4df;
+  padding: 28px 24px;
+  background: #f5f4f0;
+}
+.nl-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.nl-icon {
+  width: 40px;
+  height: 40px;
+  background: #E1F5EE;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.nl-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a18;
+  margin-bottom: 5px;
+}
+.nl-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.65;
+}
+.nl-form { max-width: 520px; }
+.nl-field-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.nl-input-wrap { flex: 1; }
+.nl-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #fff;
+  border: 0.5px solid #dddbd4;
+  border-radius: 6px;
+  outline: none;
+  color: #1a1a18;
+  transition: border-color .15s;
+}
+.nl-input:focus { border-color: #0F6E56; }
+.nl-input::placeholder { color: #aaa; }
+.nl-btn {
+  height: 40px;
+  padding: 0 18px;
+  background: #0F6E56;
+  color: #fff;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.nl-btn:hover { background: #0a5742; }
+.nl-btn:disabled { background: #aaa; cursor: not-allowed; }
+.nl-consent-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  user-select: none;
+}
+.nl-checkbox { width: 15px; height: 15px; accent-color: #0F6E56; flex-shrink: 0; cursor: pointer; }
+.nl-policy-link { color: #0F6E56; text-decoration: underline; text-underline-offset: 2px; }
+.nl-msg { font-size: 14px; line-height: 1.65; margin-top: 12px; }
+.nl-msg-success {
+  padding: 12px 16px;
+  background: #E1F5EE;
+  border: 0.5px solid #9FE1CB;
+  border-radius: 6px;
+  color: #0F6E56;
+}
+.nl-msg-error { color: #993556; }
+
+@media (max-width: 480px) {
+  .nl-section { padding: 22px 16px; }
+  .nl-field-row { flex-direction: column; }
+  .nl-btn { width: 100%; }
+}
+</style>
+
+<script>
+(function () {
+  const form = document.getElementById('nl-form');
+  const idleEl = document.getElementById('nl-idle');
+  const successEl = document.getElementById('nl-success');
+  const errorEl = document.getElementById('nl-error');
+  const submitBtn = document.getElementById('nl-submit');
+
+  if (!form) return;
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (errorEl) { errorEl.hidden = true; errorEl.textContent = ''; }
+
+    const emailInput = /** @type {HTMLInputElement} */ (document.getElementById('nl-email'));
+    const consentInput = /** @type {HTMLInputElement} */ (document.getElementById('nl-consent'));
+
+    if (!emailInput || !consentInput) return;
+
+    if (!emailInput.value.trim()) {
+      if (errorEl) { errorEl.textContent = 'メールアドレスを入力してください。'; errorEl.hidden = false; }
+      return;
+    }
+    if (!consentInput.checked) {
+      if (errorEl) { errorEl.textContent = 'プライバシーポリシーへの同意が必要です。'; errorEl.hidden = false; }
+      return;
+    }
+
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '送信中…'; }
+
+    try {
+      const res = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailInput.value.trim(), consent: consentInput.checked }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (idleEl) idleEl.hidden = true;
+        if (successEl) successEl.hidden = false;
+      } else {
+        if (errorEl) { errorEl.textContent = data.error ?? '登録に失敗しました。'; errorEl.hidden = false; }
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '登録する'; }
+      }
+    } catch {
+      if (errorEl) { errorEl.textContent = '通信エラーが発生しました。しばらくしてからお試しください。'; errorEl.hidden = false; }
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '登録する'; }
+    }
+  });
+})();
+</script>

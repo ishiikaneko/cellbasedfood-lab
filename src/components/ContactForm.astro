@@ -1,0 +1,206 @@
+---
+---
+
+<form id="contact-form" class="contact-form" novalidate>
+  <!-- Honeypot (hidden from humans, catches bots) -->
+  <div style="position:absolute;left:-9999px;top:-9999px;opacity:0" aria-hidden="true">
+    <label for="cf-website">ウェブサイト（入力しないでください）</label>
+    <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="cf-field">
+    <label for="cf-name" class="cf-label">お名前 <span class="cf-opt">任意</span></label>
+    <input id="cf-name" type="text" name="name" class="cf-input" maxlength="100" autocomplete="name" />
+  </div>
+
+  <div class="cf-field">
+    <label for="cf-email" class="cf-label">
+      メールアドレス <span class="cf-req">必須</span>
+    </label>
+    <input id="cf-email" type="email" name="email" class="cf-input" required autocomplete="email" />
+  </div>
+
+  <div class="cf-field">
+    <label for="cf-subject" class="cf-label">
+      件名 <span class="cf-req">必須</span>
+    </label>
+    <input id="cf-subject" type="text" name="subject" class="cf-input" required maxlength="200" />
+  </div>
+
+  <div class="cf-field">
+    <label for="cf-message" class="cf-label">
+      本文 <span class="cf-req">必須</span>
+    </label>
+    <textarea
+      id="cf-message"
+      name="message"
+      class="cf-textarea"
+      required
+      minlength="10"
+      maxlength="2000"
+      rows="7"
+    ></textarea>
+    <p class="cf-count"><span id="cf-count">0</span> / 2000文字</p>
+  </div>
+
+  <label class="cf-consent-label">
+    <input type="checkbox" id="cf-consent" class="cf-checkbox" />
+    <span>
+      <a href="/privacy" class="cf-policy-link">プライバシーポリシー</a>に同意する <span class="cf-req">必須</span>
+    </span>
+  </label>
+
+  <p id="cf-error" class="cf-msg cf-msg-error" hidden></p>
+
+  <button type="submit" id="cf-submit" class="cf-btn">送信する</button>
+
+  <div id="cf-success" class="cf-msg cf-msg-success" hidden>
+    お問い合わせを受け付けました。返信までしばらくお待ちください。
+  </div>
+</form>
+
+<style>
+.contact-form { display: flex; flex-direction: column; gap: 20px; max-width: 600px; }
+.cf-field { display: flex; flex-direction: column; gap: 6px; }
+.cf-label { font-size: 14px; color: #333; font-weight: 500; }
+.cf-req { font-size: 11px; background: #0F6E56; color: #fff; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+.cf-opt { font-size: 11px; background: #e5e4df; color: #666; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+.cf-input, .cf-textarea {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  color: #1a1a18;
+  background: #fff;
+  border: 0.5px solid #dddbd4;
+  border-radius: 6px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color .15s;
+  width: 100%;
+}
+.cf-input { height: 44px; }
+.cf-input:focus, .cf-textarea:focus { border-color: #0F6E56; }
+.cf-textarea { resize: vertical; min-height: 150px; line-height: 1.7; }
+.cf-count { font-size: 12px; color: #aaa; text-align: right; margin-top: 4px; }
+.cf-consent-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+.cf-checkbox { width: 16px; height: 16px; accent-color: #0F6E56; flex-shrink: 0; cursor: pointer; }
+.cf-policy-link { color: #0F6E56; text-decoration: underline; text-underline-offset: 2px; }
+.cf-btn {
+  height: 46px;
+  padding: 0 24px;
+  background: #0F6E56;
+  color: #fff;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background .15s;
+}
+.cf-btn:hover { background: #0a5742; }
+.cf-btn:disabled { background: #aaa; cursor: not-allowed; }
+.cf-msg { font-size: 14px; line-height: 1.65; }
+.cf-msg-success {
+  padding: 14px 16px;
+  background: #E1F5EE;
+  border: 0.5px solid #9FE1CB;
+  border-radius: 6px;
+  color: #0F6E56;
+}
+.cf-msg-error { color: #993556; }
+
+@media (max-width: 480px) {
+  .cf-btn { width: 100%; }
+}
+</style>
+
+<script>
+(function () {
+  const form = document.getElementById('contact-form');
+  const errorEl = document.getElementById('cf-error');
+  const successEl = document.getElementById('cf-success');
+  const submitBtn = /** @type {HTMLButtonElement|null} */ (document.getElementById('cf-submit'));
+  const messageEl = /** @type {HTMLTextAreaElement|null} */ (document.getElementById('cf-message'));
+  const countEl = document.getElementById('cf-count');
+
+  if (!form) return;
+
+  // Character counter
+  if (messageEl && countEl) {
+    messageEl.addEventListener('input', function () {
+      countEl.textContent = String(messageEl.value.length);
+    });
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (errorEl) { errorEl.hidden = true; errorEl.textContent = ''; }
+
+    const websiteEl = /** @type {HTMLInputElement|null} */ (document.getElementById('cf-website'));
+    const emailEl = /** @type {HTMLInputElement|null} */ (document.getElementById('cf-email'));
+    const subjectEl = /** @type {HTMLInputElement|null} */ (document.getElementById('cf-subject'));
+    const consentEl = /** @type {HTMLInputElement|null} */ (document.getElementById('cf-consent'));
+    const nameEl = /** @type {HTMLInputElement|null} */ (document.getElementById('cf-name'));
+
+    if (!emailEl || !subjectEl || !messageEl || !consentEl) return;
+
+    const message = messageEl.value.trim();
+
+    if (!emailEl.value.trim()) {
+      if (errorEl) { errorEl.textContent = 'メールアドレスを入力してください。'; errorEl.hidden = false; }
+      return;
+    }
+    if (!subjectEl.value.trim()) {
+      if (errorEl) { errorEl.textContent = '件名を入力してください。'; errorEl.hidden = false; }
+      return;
+    }
+    if (message.length < 10) {
+      if (errorEl) { errorEl.textContent = '本文は10文字以上入力してください。'; errorEl.hidden = false; }
+      return;
+    }
+    if (message.length > 2000) {
+      if (errorEl) { errorEl.textContent = '本文は2000文字以内で入力してください。'; errorEl.hidden = false; }
+      return;
+    }
+    if (!consentEl.checked) {
+      if (errorEl) { errorEl.textContent = 'プライバシーポリシーへの同意が必要です。'; errorEl.hidden = false; }
+      return;
+    }
+
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '送信中…'; }
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          website: websiteEl?.value ?? '',
+          name: nameEl?.value.trim() ?? '',
+          email: emailEl.value.trim(),
+          subject: subjectEl.value.trim(),
+          message,
+          consent: consentEl.checked,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        form.style.display = 'none';
+        if (successEl) successEl.hidden = false;
+      } else {
+        if (errorEl) { errorEl.textContent = data.error ?? '送信に失敗しました。'; errorEl.hidden = false; }
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '送信する'; }
+      }
+    } catch {
+      if (errorEl) { errorEl.textContent = '通信エラーが発生しました。しばらくしてからお試しください。'; errorEl.hidden = false; }
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '送信する'; }
+    }
+  });
+})();
+</script>
