@@ -2,7 +2,7 @@
 title: FBS代替に卵由来成分は使えるのか。現場研究員が見るところ。
 description: 卵由来成分によるFBS代替を進めた研究論文を参考に、｢実際のところ｣を現場からお伝えします。
 pubDate: 2026-05-11
-category: 技術
+category: 培養液
 tags:
   - 培養肉
   - 培地

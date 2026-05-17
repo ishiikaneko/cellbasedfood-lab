@@ -2,7 +2,7 @@
 title: (短文記事) 鶏の筋芽細胞も若い個体の細胞の方が良い
 description: 19日胚と5週齡の鶏筋芽細胞を比較した論文紹介
 pubDate: 2026-05-07
-category: 技術
+category: 細胞
 tags:
   - 培養肉
   - 筋芽細胞

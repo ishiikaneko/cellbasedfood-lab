@@ -2,7 +2,7 @@
 title: 子牛 vs 成牛、培養肉に向く筋衛星細胞はどちらか
 description: 子牛と成熟牛の筋衛星細胞を比較した2023年の原著論文をもとに、増殖性、筋形成関連遺伝子、脂肪関連遺伝子の違いを整理します。
 slug: bovine-satellite-cells-calves-cattle
-category: 技術
+category: 細胞
 tags:
   - 培養肉
   - 筋衛星細胞

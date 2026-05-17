@@ -2,7 +2,7 @@
 title: 日本初の細胞性食品を実現に向けた、インテグリカルチャー社とそのアヒル由来細胞性食品の製造プロセスの紹介。
 description: 細胞性食品を日本で初めて実現しようとするインテグリカルチャー社と、同社が公開した論文からアヒル由来細胞性食品の製造プロセスを紹介します。
 slug: integriculture-duck-cell-food-process
-category: 技術
+category: 細胞性食品
 tags:
   - 培養肉
   - 細胞性食品
