@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import SponsoredBanners from '../../components/SponsoredBanners.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import { getCollection } from 'astro:content';
 import { getPopularPosts } from '../../utils/popular.js';
 
@@ -149,6 +150,9 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
 
           </aside>
         </div>
+
+        <!-- メールマガジン登録 -->
+        <NewsletterSignup />
 
         <!-- 関連記事（記事下・フル幅） -->
         {related.length > 0 && (

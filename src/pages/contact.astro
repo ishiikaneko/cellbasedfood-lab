@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ContactForm from '../components/ContactForm.astro';
+---
+
+<BaseLayout
+  title="お問い合わせ"
+  description="CellBasedFood Labへのお問い合わせはこちらのフォームからどうぞ。"
+>
+  <div class="page-wrapper">
+    <Header />
+
+    <main class="main-content">
+      <div class="inner">
+        <div class="contact-page">
+          <nav class="breadcrumb" aria-label="パンくずリスト">
+            <a href="/">トップ</a>
+            <span aria-hidden="true"> › </span>
+            <span>お問い合わせ</span>
+          </nav>
+
+          <h1 class="page-title">お問い合わせ</h1>
+          <p class="page-desc" id="contact-desc">
+            CellBasedFood Labに関するご質問やご意見は、以下のフォームよりお送りください。
+            内容を確認のうえ、折り返しご連絡いたします。
+          </p>
+
+          <ContactForm />
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style>
+.page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; }
+.inner { max-width: 1200px; margin: 0 auto; }
+.contact-page { padding: 32px 24px 64px; max-width: 680px; }
+
+.breadcrumb {
+  font-size: 10px;
+  color: #888;
+  font-family: 'Space Mono', monospace;
+  margin-bottom: 28px;
+}
+.breadcrumb a { color: #0F6E56; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+
+.page-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: #1a1a18;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.page-desc {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 600px) {
+  .contact-page { padding: 20px 16px 48px; }
+  .page-title { font-size: 22px; }
+}
+</style>
