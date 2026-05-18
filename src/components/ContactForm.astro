@@ -192,7 +192,10 @@
       const data = await res.json();
       if (data.success) {
         form.style.display = 'none';
-        if (successEl) successEl.hidden = false;
+        const descEl = document.getElementById('contact-desc');
+        if (descEl) {
+          descEl.textContent = 'お問い合わせありがとうございました。確認いたしますのでしばらくお待ちください。';
+        }
       } else {
         if (errorEl) { errorEl.textContent = data.error ?? '送信に失敗しました。'; errorEl.hidden = false; }
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '送信する'; }
