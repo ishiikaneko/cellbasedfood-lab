@@ -1,0 +1,116 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const { searchParams } = Astro.url;
+const token = searchParams.get('token') ?? '';
+const email = searchParams.get('email') ?? '';
+
+let status: 'pending' | 'invalid' = 'pending';
+if (!token || !email) status = 'invalid';
+---
+
+<BaseLayout
+  title="メールマガジン配信停止"
+  description="CellBasedFood Labメールマガジンの配信停止手続きページです。"
+>
+  <div class="page-wrapper">
+    <Header />
+
+    <main class="main-content">
+      <div class="inner">
+        <div class="unsub-page">
+          <h1 class="page-title">メールマガジン配信停止</h1>
+
+          {status === 'invalid' ? (
+            <div class="msg msg-error">
+              リンクが無効です。メールマガジンに記載されているリンクから再度お試しください。
+            </div>
+          ) : (
+            <div id="unsub-container">
+              <div id="unsub-loading" class="msg msg-info">
+                配信停止処理中です。しばらくお待ちください…
+              </div>
+              <div id="unsub-success" class="msg msg-success" hidden>
+                配信停止が完了しました。今後、メールマガジンは届きません。
+              </div>
+              <div id="unsub-error" class="msg msg-error" hidden>
+                処理中にエラーが発生しました。しばらくしてからお試しください。
+              </div>
+            </div>
+          )}
+
+          <p class="back-link-wrap">
+            <a href="/" class="back-link">← トップへ戻る</a>
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</BaseLayout>
+
+{status === 'pending' && (
+  <script define:vars={{ token, email }}>
+  (async function () {
+    const loadingEl = document.getElementById('unsub-loading');
+    const successEl = document.getElementById('unsub-success');
+    const errorEl = document.getElementById('unsub-error');
+
+    try {
+      const res = await fetch('/api/newsletter/unsubscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, email }),
+      });
+      const data = await res.json();
+      if (loadingEl) loadingEl.hidden = true;
+      if (data.success) {
+        if (successEl) successEl.hidden = false;
+      } else {
+        if (errorEl) { errorEl.textContent = data.error ?? 'エラーが発生しました。'; errorEl.hidden = false; }
+      }
+    } catch {
+      if (loadingEl) loadingEl.hidden = true;
+      if (errorEl) { errorEl.textContent = '通信エラーが発生しました。'; errorEl.hidden = false; }
+    }
+  })();
+  </script>
+)}
+
+<style>
+.page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; }
+.inner { max-width: 1200px; margin: 0 auto; }
+.unsub-page { padding: 40px 24px 64px; max-width: 560px; }
+
+.page-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a18;
+  margin-bottom: 24px;
+}
+.msg {
+  padding: 16px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+.msg-info { background: #f5f4f0; border: 0.5px solid #e5e4df; color: #555; }
+.msg-success { background: #E1F5EE; border: 0.5px solid #9FE1CB; color: #0F6E56; }
+.msg-error { background: #FBEAF0; border: 0.5px solid #F7B8CB; color: #993556; }
+
+.back-link-wrap { margin-top: 8px; }
+.back-link { font-size: 14px; color: #0F6E56; text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .unsub-page { padding: 24px 16px 48px; }
+}
+</style>
