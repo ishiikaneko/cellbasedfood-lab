@@ -120,11 +120,7 @@ FaTTyのような細胞は、生産については改善の余地があるもの
 
 ## 引用文献
 
-- Thrower, T., Riley, S. E., Lee, S., Esteves, C. L., & Donadeu, F. X. "A unique spontaneously immortalised cell line from pig with enhanced adipogenic capacity." npj Science of Food 9, 52 (2025).  
-  FaTTyの作製方法、自然不死化、集団倍加、脂肪分化能、2次元・3次元培養、脂肪酸組成に関する主な根拠として使用しました。
+- [Thrower, T., Riley, S. E., Lee, S., Esteves, C. L., & Donadeu, F. X. "A unique spontaneously immortalised cell line from pig with enhanced adipogenic capacity." npj Science of Food 9, 52 (2025).](https://www.nature.com/articles/s41538-025-00413-y)
 
-- GOOD Meat, Inc. "Dossier in Support of the Safety of GOOD Meat Cultured Chicken as a Human Food Ingredient." FDA Cell Culture Consultation CCC 000001, 2022.  
-  GOOD Meat社が用いた鶏細胞株の由来と、自然不死化細胞株が培養肉生産に使われた例を確認する根拠として使用しました。
-
-- 石井金子「培養肉の生産現場#1: 培養豚脂肪生産細胞株『FaTTy』とは？」  
-  本記事の文体と、FaTTyを培養肉生産の現場目線で読むための論点整理の土台として参照しました。
+- [GOOD Meat, Inc. "Dossier in Support of the Safety of GOOD Meat Cultured Chicken as a Human Food Ingredient." FDA Cell Culture Consultation CCC 000001, 2022.](https://www.fda.gov/media/166346/download)  
+  GOOD Meat社が用いた鶏細胞株の由来
