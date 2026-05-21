@@ -14,6 +14,13 @@ const {
   ogImage = '/og-default.png',
 } = Astro.props;
 
+// SVG hero images are not supported as og:image by X/Twitter/Facebook/LINE.
+// scripts/generate-ogp-images.mjs writes a PNG twin under /images/og/ for each SVG.
+const ogImageForCard = ogImage.startsWith('/images/') && ogImage.endsWith('.svg')
+  ? ogImage.replace('/images/', '/images/og/').replace(/\.svg$/, '.png')
+  : ogImage;
+const ogImageURL = new URL(ogImageForCard, Astro.site);
+
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 <!DOCTYPE html>
@@ -28,10 +35,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta property="og:type" content="website" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+  <meta property="og:image" content={ogImageURL} />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="686" />
   <meta property="og:url" content={canonicalURL} />
   <meta property="og:site_name" content="CellBasedFood Lab" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={ogImageURL} />
 
   <title>{title === 'CellBasedFood Lab' ? title : `${title} | CellBasedFood Lab`}</title>
 
