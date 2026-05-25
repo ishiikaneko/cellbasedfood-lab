@@ -7,7 +7,7 @@ tags:
   - 細胞農業
   - 培養肉
   - 代替タンパク質
-pubDate: "2026-05-25"
+pubDate: 2026-05-25
 heroImage: /images/2026-05-25-caic-2026-conference.svg
 references:
   - title: "第8回細胞農業会議 | 未来の食を現代のビジネスへ"
