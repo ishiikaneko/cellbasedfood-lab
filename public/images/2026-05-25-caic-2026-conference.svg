@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5BA8D6"/>
+      <stop offset="100%" stop-color="#2E6FA8"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+  <!-- Podium with microphone (speaker on left) -->
+  <g transform="translate(460,300) scale(3.4)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <!-- Speaker head -->
+    <circle cx="50" cy="20" r="10"/>
+    <!-- Speaker shoulders/body -->
+    <path d="M30,52 Q30,36 50,36 Q70,36 70,52"/>
+    <!-- Podium top -->
+    <path d="M22,68 L78,68 L74,80 L26,80 Z"/>
+    <!-- Podium base -->
+    <path d="M30,80 L30,108"/>
+    <path d="M70,80 L70,108"/>
+    <path d="M22,108 L78,108"/>
+    <!-- Microphone stand -->
+    <path d="M50,52 L50,64"/>
+    <!-- Microphone head -->
+    <ellipse cx="50" cy="50" rx="3.5" ry="5"/>
+  </g>
+  <!-- Audience (right side) - rows of heads -->
+  <g transform="translate(980,360) scale(3.0)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+    <!-- Front row -->
+    <g>
+      <circle cx="12" cy="60" r="7"/>
+      <path d="M2,82 Q2,72 12,72 Q22,72 22,82"/>
+      <circle cx="40" cy="60" r="7"/>
+      <path d="M30,82 Q30,72 40,72 Q50,72 50,82"/>
+      <circle cx="68" cy="60" r="7"/>
+      <path d="M58,82 Q58,72 68,72 Q78,72 78,82"/>
+      <circle cx="96" cy="60" r="7"/>
+      <path d="M86,82 Q86,72 96,72 Q106,72 106,82"/>
+      <circle cx="124" cy="60" r="7"/>
+      <path d="M114,82 Q114,72 124,72 Q134,72 134,82"/>
+    </g>
+    <!-- Back row (smaller, offset) -->
+    <g opacity="0.7">
+      <circle cx="26" cy="36" r="6"/>
+      <path d="M18,54 Q18,46 26,46 Q34,46 34,54"/>
+      <circle cx="54" cy="36" r="6"/>
+      <path d="M46,54 Q46,46 54,46 Q62,46 62,54"/>
+      <circle cx="82" cy="36" r="6"/>
+      <path d="M74,54 Q74,46 82,46 Q90,46 90,54"/>
+      <circle cx="110" cy="36" r="6"/>
+      <path d="M102,54 Q102,46 110,46 Q118,46 118,54"/>
+    </g>
+  </g>
+  <!-- Connecting dots/network lines between speaker and audience -->
+  <g fill="white" opacity="0.55">
+    <circle cx="900" cy="420" r="6"/>
+    <circle cx="940" cy="460" r="5"/>
+    <circle cx="900" cy="500" r="5"/>
+    <circle cx="940" cy="540" r="6"/>
+    <circle cx="900" cy="580" r="5"/>
+  </g>
+  <!-- Small cell motif (bottom left, ties to cellular agriculture theme) -->
+  <g transform="translate(220,820) scale(2.0)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" opacity="0.85">
+    <circle cx="20" cy="20" r="18"/>
+    <circle cx="20" cy="20" r="6" fill="white" opacity="0.7"/>
+  </g>
+  <g transform="translate(310,860) scale(1.4)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" opacity="0.75">
+    <circle cx="20" cy="20" r="18"/>
+    <circle cx="20" cy="20" r="6" fill="white" opacity="0.7"/>
+  </g>
+</svg>
