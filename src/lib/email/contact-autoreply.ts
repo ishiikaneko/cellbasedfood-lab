@@ -37,6 +37,7 @@ export function contactAutoreplyHtml(data: ContactData): string {
     <hr style="margin:28px 0;border:none;border-top:0.5px solid #e5e4df">
     <p style="font-size:13px;color:#888;line-height:1.7;margin:0">
       CellBasedFood Lab<br>
+      〒103-0027 東京都中央区日本橋2丁目16-4 remix日本橋 6階<br>
       <a href="https://cellbasedfood-lab.com/" style="color:#0F6E56;text-decoration:none">https://cellbasedfood-lab.com/</a>
     </p>
   </div>
@@ -58,5 +59,6 @@ ${data.body}
 
 ---
 CellBasedFood Lab
+〒103-0027 東京都中央区日本橋2丁目16-4 remix日本橋 6階
 https://cellbasedfood-lab.com/`;
 }
