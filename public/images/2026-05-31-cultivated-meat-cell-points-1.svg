@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F5C800"/>
-      <stop offset="100%" stop-color="#E0B500"/>
+      <stop offset="0%" stop-color="#5DA0E6"/>
+      <stop offset="100%" stop-color="#2A65B8"/>
     </linearGradient>
     <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
@@ -27,7 +27,7 @@
     <!-- Nucleus -->
     <ellipse cx="780" cy="512" rx="100" ry="86" fill="white" opacity="0.85" stroke-width="4"/>
     <!-- Nucleolus -->
-    <circle cx="795" cy="505" r="26" fill="#D8A800" opacity="0.55" stroke="none"/>
+    <circle cx="795" cy="505" r="26" fill="#1F5BAA" opacity="0.55" stroke="none"/>
     <!-- Organelles scattered -->
     <ellipse cx="615" cy="395" rx="30" ry="16" fill="white" opacity="0.55" stroke="none" transform="rotate(-22 615 395)"/>
     <ellipse cx="950" cy="380" rx="28" ry="15" fill="white" opacity="0.55" stroke="none" transform="rotate(20 950 380)"/>
@@ -59,15 +59,15 @@
   <g font-family="'Hiragino Sans','Yu Gothic',sans-serif" font-weight="700">
     <!-- ① top -->
     <circle cx="1170" cy="420" r="34" fill="white"/>
-    <text x="1170" y="434" font-size="40" fill="#D8A800" text-anchor="middle">1</text>
+    <text x="1170" y="434" font-size="40" fill="#1F5BAA" text-anchor="middle">1</text>
     <!-- ② right -->
     <circle cx="1310" cy="560" r="34" fill="white"/>
-    <text x="1310" y="574" font-size="40" fill="#D8A800" text-anchor="middle">2</text>
+    <text x="1310" y="574" font-size="40" fill="#1F5BAA" text-anchor="middle">2</text>
     <!-- ③ bottom -->
     <circle cx="1170" cy="700" r="34" fill="white"/>
-    <text x="1170" y="714" font-size="40" fill="#D8A800" text-anchor="middle">3</text>
+    <text x="1170" y="714" font-size="40" fill="#1F5BAA" text-anchor="middle">3</text>
     <!-- ④ left -->
     <circle cx="1030" cy="560" r="34" fill="white"/>
-    <text x="1030" y="574" font-size="40" fill="#D8A800" text-anchor="middle">4</text>
+    <text x="1030" y="574" font-size="40" fill="#1F5BAA" text-anchor="middle">4</text>
   </g>
 </svg>
