@@ -4,7 +4,7 @@ description: 培養肉などの細胞性食品を、研究・規制・製造・�
 category: コラム
 tags:
   - 培養肉
-  - 細胞性食品
+  - 細胞培養食品
   - CellBasedFood Lab
 pubDate: 2026-05-02
 heroImage: /images/2026-05-02-cellbasedfood-lab-started.svg

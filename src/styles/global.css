@@ -54,7 +54,7 @@ img { display: block; max-width: 100%; }
 .tag-培養液       { background: linear-gradient(135deg, #FDE5EC, #F7B8CB); color: #8C2A4A; }
 .tag-培養方法     { background: linear-gradient(135deg, #E0EEFB, #A8CCEF); color: #1A4F8C; }
 .tag-その他培養資材 { background: linear-gradient(135deg, #EFE3F7, #C9A8E0); color: #5B2A85; }
-.tag-細胞性食品   { background: linear-gradient(135deg, #FDE7D3, #F6B98A); color: #8C4A1A; }
+.tag-細胞培養食品   { background: linear-gradient(135deg, #FDE7D3, #F6B98A); color: #8C4A1A; }
 .tag-コラム       { background: linear-gradient(135deg, #FBF2C8, #F0DD8B); color: #7A6014; }
 
 /* ── AI generated pulse dot ── */
