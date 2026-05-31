@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5C800"/>
+      <stop offset="100%" stop-color="#E0B500"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+
+  <!-- Large central cell: inspecting cell information -->
+  <g fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Cell membrane -->
+    <ellipse cx="780" cy="512" rx="290" ry="240" stroke-width="6"/>
+    <!-- Cytoplasm subtle fill -->
+    <ellipse cx="780" cy="512" rx="290" ry="240" fill="white" opacity="0.08" stroke="none"/>
+    <!-- Nucleus -->
+    <ellipse cx="780" cy="512" rx="100" ry="86" fill="white" opacity="0.85" stroke-width="4"/>
+    <!-- Nucleolus -->
+    <circle cx="795" cy="505" r="26" fill="#D8A800" opacity="0.55" stroke="none"/>
+    <!-- Organelles scattered -->
+    <ellipse cx="615" cy="395" rx="30" ry="16" fill="white" opacity="0.55" stroke="none" transform="rotate(-22 615 395)"/>
+    <ellipse cx="950" cy="380" rx="28" ry="15" fill="white" opacity="0.55" stroke="none" transform="rotate(20 950 380)"/>
+    <ellipse cx="600" cy="640" rx="28" ry="15" fill="white" opacity="0.55" stroke="none" transform="rotate(15 600 640)"/>
+    <ellipse cx="965" cy="630" rx="30" ry="16" fill="white" opacity="0.55" stroke="none" transform="rotate(-15 965 630)"/>
+    <circle cx="700" cy="335" r="10" fill="white" opacity="0.5" stroke="none"/>
+    <circle cx="870" cy="690" r="11" fill="white" opacity="0.5" stroke="none"/>
+    <circle cx="540" cy="510" r="8" fill="white" opacity="0.45" stroke="none"/>
+    <circle cx="1020" cy="500" r="9" fill="white" opacity="0.45" stroke="none"/>
+  </g>
+
+  <!-- Magnifying glass overlapping right side of cell -->
+  <g fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Lens highlight backing -->
+    <circle cx="1170" cy="560" r="178" fill="white" opacity="0.10" stroke="none"/>
+    <!-- Lens outer ring -->
+    <circle cx="1170" cy="560" r="178" stroke-width="16"/>
+    <!-- Inner rim subtle -->
+    <circle cx="1170" cy="560" r="158" stroke-width="3" opacity="0.45"/>
+    <!-- Highlight glint on lens -->
+    <path d="M1060,480 Q1080,432 1140,430" stroke-width="7" opacity="0.6"/>
+    <!-- Handle -->
+    <line x1="1300" y1="690" x2="1470" y2="860" stroke-width="26"/>
+    <!-- Handle cap -->
+    <circle cx="1478" cy="868" r="16" fill="white" stroke="none"/>
+  </g>
+
+  <!-- 4 numbered markers around the lens, indicating the 4 inspection points -->
+  <g font-family="'Hiragino Sans','Yu Gothic',sans-serif" font-weight="700">
+    <!-- ① top -->
+    <circle cx="1170" cy="420" r="34" fill="white"/>
+    <text x="1170" y="434" font-size="40" fill="#D8A800" text-anchor="middle">1</text>
+    <!-- ② right -->
+    <circle cx="1310" cy="560" r="34" fill="white"/>
+    <text x="1310" y="574" font-size="40" fill="#D8A800" text-anchor="middle">2</text>
+    <!-- ③ bottom -->
+    <circle cx="1170" cy="700" r="34" fill="white"/>
+    <text x="1170" y="714" font-size="40" fill="#D8A800" text-anchor="middle">3</text>
+    <!-- ④ left -->
+    <circle cx="1030" cy="560" r="34" fill="white"/>
+    <text x="1030" y="574" font-size="40" fill="#D8A800" text-anchor="middle">4</text>
+  </g>
+</svg>
