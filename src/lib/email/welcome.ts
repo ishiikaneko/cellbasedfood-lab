@@ -8,13 +8,13 @@ export function welcomeEmailHtml(unsubscribeUrl: string): string {
 <body style="margin:0;padding:0;background:#fafaf8;font-family:'Noto Sans JP',sans-serif">
   <div style="max-width:600px;margin:0 auto;padding:40px 24px">
     <div style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:#0F6E56;margin-bottom:28px;letter-spacing:.04em">
-      細胞培養食品ラボ ｰCellBasedFood labｰ
+      細胞培養食品ラボ｜CellBasedFood Lab
     </div>
     <h1 style="font-size:18px;font-weight:600;color:#1a1a18;margin:0 0 20px;line-height:1.6">
       メールマガジン登録を受け付けました
     </h1>
     <p style="font-size:15px;color:#333;line-height:1.8;margin:0 0 14px">
-      この度は細胞培養食品ラボ ｰCellBasedFood labｰメールマガジンへのご登録ありがとうございます。
+      この度は細胞培養食品ラボ｜CellBasedFood Labメールマガジンへのご登録ありがとうございます。
     </p>
     <p style="font-size:15px;color:#333;line-height:1.8;margin:0 0 14px">
       ご登録のメールアドレスを受け付けました。<br>
@@ -30,7 +30,7 @@ export function welcomeEmailHtml(unsubscribeUrl: string): string {
     </a>
     <hr style="margin:36px 0;border:none;border-top:0.5px solid #e5e4df">
     <p style="font-size:13px;color:#888;line-height:1.7;margin:0">
-      細胞培養食品ラボ ｰCellBasedFood labｰ<br>
+      細胞培養食品ラボ｜CellBasedFood Lab<br>
       <a href="https://cellbasedfood-lab.com/" style="color:#0F6E56;text-decoration:none">https://cellbasedfood-lab.com/</a>
     </p>
   </div>
@@ -39,7 +39,7 @@ export function welcomeEmailHtml(unsubscribeUrl: string): string {
 }
 
 export function welcomeEmailText(unsubscribeUrl: string): string {
-  return `この度は細胞培養食品ラボ ｰCellBasedFood labｰメールマガジンへのご登録ありがとうございます。
+  return `この度は細胞培養食品ラボ｜CellBasedFood Labメールマガジンへのご登録ありがとうございます。
 
 ご登録のメールアドレスを受け付けました。
 月1回程度、新着記事のまとめと書籍情報をお届けする予定です。
@@ -49,6 +49,6 @@ export function welcomeEmailText(unsubscribeUrl: string): string {
 ${unsubscribeUrl}
 
 ---
-細胞培養食品ラボ ｰCellBasedFood labｰ
+細胞培養食品ラボ｜CellBasedFood Lab
 https://cellbasedfood-lab.com/`;
 }

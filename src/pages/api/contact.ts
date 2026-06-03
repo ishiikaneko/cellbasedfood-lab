@@ -64,7 +64,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const resend = new Resend(import.meta.env.RESEND_API_KEY);
   const notifyEmail = import.meta.env.CONTACT_NOTIFICATION_EMAIL;
-  const fromEmail = import.meta.env.RESEND_FROM_EMAIL ?? '細胞培養食品ラボ ｰCellBasedFood labｰ <newsletter@cellbasedfood-lab.com>';
+  const fromEmail = import.meta.env.RESEND_FROM_EMAIL ?? '細胞培養食品ラボ｜CellBasedFood Lab <newsletter@cellbasedfood-lab.com>';
   const sentAt = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
 
   const contactData = { name, email, subject, body: message, sentAt, ip };
@@ -73,7 +73,7 @@ export const POST: APIRoute = async ({ request }) => {
     from: fromEmail,
     to: notifyEmail,
     replyTo: email,
-    subject: `【細胞培養食品ラボ ｰCellBasedFood labｰ】お問い合わせがありました：${subject}`,
+    subject: `【細胞培養食品ラボ｜CellBasedFood Lab】お問い合わせがありました：${subject}`,
     html: contactNotificationHtml(contactData),
     text: contactNotificationText(contactData),
   });
@@ -85,7 +85,7 @@ export const POST: APIRoute = async ({ request }) => {
   const { error: autoErr } = await resend.emails.send({
     from: fromEmail,
     to: email,
-    subject: '【細胞培養食品ラボ ｰCellBasedFood labｰ】お問い合わせを受け付けました',
+    subject: '【細胞培養食品ラボ｜CellBasedFood Lab】お問い合わせを受け付けました',
     html: contactAutoreplyHtml({ subject, body: message }),
     text: contactAutoreplyText({ subject, body: message }),
   });
