@@ -20,6 +20,13 @@ const popularPosts = getPopularPosts(allPosts);
 ---
 
 <BaseLayout>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "細胞培養食品ラボ",
+    "alternateName": "CellBasedFood Lab",
+    "url": "https://cellbasedfood-lab.com/"
+  })} />
   <div class="page-wrapper">
     <Header />
 

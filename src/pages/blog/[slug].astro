@@ -44,6 +44,20 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   description={post.data.description}
   ogImage={post.data.heroImage}
 >
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "datePublished": post.data.pubDate.toISOString(),
+    "url": pageUrl,
+    ...(post.data.heroImage ? { "image": new URL(post.data.heroImage, Astro.site ?? Astro.url.origin).href } : {}),
+    "publisher": {
+      "@type": "Organization",
+      "name": "細胞培養食品ラボ",
+      "alternateName": "CellBasedFood Lab"
+    }
+  })} />
   <div class="page-wrapper">
     <Header />
 
