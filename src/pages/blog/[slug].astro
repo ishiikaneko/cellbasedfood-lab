@@ -43,8 +43,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   title={post.data.title}
   description={post.data.description}
   ogImage={post.data.heroImage}
->
-  <script type="application/ld+json" set:html={JSON.stringify({
+  structuredData={{
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": post.data.title,
@@ -57,7 +56,8 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
       "name": "細胞培養食品ラボ",
       "alternateName": "CellBasedFood Lab"
     }
-  })} />
+  }}
+>
   <div class="page-wrapper">
     <Header />
 

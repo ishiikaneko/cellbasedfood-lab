@@ -6,6 +6,7 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  structuredData?: object;
 }
 
 const SITE_DEFAULT_TITLE = '細胞培養食品ラボ｜CellBasedFood Lab -現役研究員が解説する培養肉専門技術情報サイト-';
@@ -15,6 +16,7 @@ const {
   title = SITE_DEFAULT_TITLE,
   description = '現役の培養肉研究員が開発現場から解説する、培養肉専門の技術情報サイトです。',
   ogImage = '/og-default.png',
+  structuredData,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -49,6 +51,11 @@ const seoTitle = title === SITE_DEFAULT_TITLE
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- 構造化データ -->
+  {structuredData && (
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  )}
 
 </head>
 <body>
