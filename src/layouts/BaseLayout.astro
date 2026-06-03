@@ -9,7 +9,7 @@ interface Props {
 }
 
 const {
-  title = 'CellBasedFood Lab -現役研究員が解説する培養肉専門技術情報サイト-',
+  title = '細胞培養食品ラボ｜CellBasedFood Lab -現役研究員が解説する培養肉専門技術情報サイト-',
   description = '現役の培養肉研究員が開発現場から解説する、培養肉専門の技術情報サイトです。',
   ogImage = '/og-default.png',
 } = Astro.props;
@@ -30,10 +30,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta property="og:description" content={description} />
   <meta property="og:image" content={new URL(ogImage, Astro.site)} />
   <meta property="og:url" content={canonicalURL} />
-  <meta property="og:site_name" content="CellBasedFood Lab -現役研究員が解説する培養肉専門技術情報サイト-" />
+  <meta property="og:site_name" content="細胞培養食品ラボ｜CellBasedFood Lab -現役研究員が解説する培養肉専門技術情報サイト-" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <title>{title === 'CellBasedFood Lab -現役研究員が解説する培養肉専門技術情報サイト-' ? title : `${title} | CellBasedFood Lab`}</title>
+  <title>{title === '細胞培養食品ラボ｜CellBasedFood Lab -現役研究員が解説する培養肉専門技術情報サイト-' ? title : `${title} | 細胞培養食品ラボ｜CellBasedFood Lab`}</title>
 
   <!-- Google Search Console -->
   <meta name="google-site-verification" content="noQjWWgUQj3hxPLsmSsAtrc8s20luu0sq60b1PKKX8s" />
