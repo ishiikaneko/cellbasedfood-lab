@@ -9,8 +9,9 @@ interface Props {
   structuredData?: object;
 }
 
-const SITE_DEFAULT_TITLE = '細胞培養食品ラボ｜CellBasedFood Lab -現役研究員が解説する培養肉専門技術情報サイト-';
+const SITE_DEFAULT_TITLE = '細胞培養食品ラボ│CellBasedFood lab';
 const SITE_NAME = '細胞培養食品ラボ';
+const SITE_OG_NAME = '細胞培養食品ラボ│CellBasedFood lab';
 
 const {
   title = SITE_DEFAULT_TITLE,
@@ -40,7 +41,7 @@ const seoTitle = title === SITE_DEFAULT_TITLE
   <meta property="og:description" content={description} />
   <meta property="og:image" content={new URL(ogImage, Astro.site)} />
   <meta property="og:url" content={canonicalURL} />
-  <meta property="og:site_name" content="細胞培養食品ラボ" />
+  <meta property="og:site_name" content={SITE_OG_NAME} />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={seoTitle} />
 
