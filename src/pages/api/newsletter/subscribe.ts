@@ -67,12 +67,12 @@ export const POST: APIRoute = async ({ request }) => {
   const siteUrl = import.meta.env.SITE_URL ?? 'https://cellbasedfood-lab.com';
   const token = unsubscribeToken(email);
   const unsubUrl = `${siteUrl}/newsletter/unsubscribe?token=${token}&email=${encodeURIComponent(email)}`;
-  const fromEmail = import.meta.env.RESEND_FROM_EMAIL ?? '細胞培養食品ラボ｜CellBasedFood Lab <newsletter@cellbasedfood-lab.com>';
+  const fromEmail = import.meta.env.RESEND_FROM_EMAIL ?? '細胞培養食品ラボ ｰCellBasedFood labｰ <newsletter@cellbasedfood-lab.com>';
 
   const { error: sendErr } = await resend.emails.send({
     from: fromEmail,
     to: email,
-    subject: '【細胞培養食品ラボ｜CellBasedFood Lab】メールマガジン登録を受け付けました',
+    subject: '【細胞培養食品ラボ ｰCellBasedFood labｰ】メールマガジン登録を受け付けました',
     html: welcomeEmailHtml(unsubUrl),
     text: welcomeEmailText(unsubUrl),
   });

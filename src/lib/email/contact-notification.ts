@@ -18,7 +18,7 @@ export function contactNotificationHtml(data: ContactData): string {
 <body style="margin:0;padding:0;background:#fafaf8;font-family:'Noto Sans JP',sans-serif">
   <div style="max-width:600px;margin:0 auto;padding:40px 24px">
     <div style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:#0F6E56;margin-bottom:28px;letter-spacing:.04em">
-      細胞培養食品ラボ｜CellBasedFood Lab — お問い合わせ通知
+      細胞培養食品ラボ ｰCellBasedFood labｰ — お問い合わせ通知
     </div>
     <p style="font-size:15px;color:#333;line-height:1.8;margin:0 0 20px">
       お問い合わせを受信しました。

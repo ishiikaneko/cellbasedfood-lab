@@ -14,7 +14,7 @@ export function contactAutoreplyHtml(data: ContactData): string {
 <body style="margin:0;padding:0;background:#fafaf8;font-family:'Noto Sans JP',sans-serif">
   <div style="max-width:600px;margin:0 auto;padding:40px 24px">
     <div style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:#0F6E56;margin-bottom:28px;letter-spacing:.04em">
-      細胞培養食品ラボ｜CellBasedFood Lab
+      細胞培養食品ラボ ｰCellBasedFood labｰ
     </div>
     <h1 style="font-size:18px;font-weight:600;color:#1a1a18;margin:0 0 20px;line-height:1.6">
       お問い合わせを受け付けました
@@ -36,7 +36,7 @@ export function contactAutoreplyHtml(data: ContactData): string {
     </p>
     <hr style="margin:28px 0;border:none;border-top:0.5px solid #e5e4df">
     <p style="font-size:13px;color:#888;line-height:1.7;margin:0">
-      細胞培養食品ラボ｜CellBasedFood Lab<br>
+      細胞培養食品ラボ ｰCellBasedFood labｰ<br>
       <a href="https://cellbasedfood-lab.com/" style="color:#0F6E56;text-decoration:none">https://cellbasedfood-lab.com/</a>
     </p>
   </div>
@@ -57,6 +57,6 @@ ${data.body}
 返信が必要な場合は、改めて運営者よりご連絡いたします。
 
 ---
-細胞培養食品ラボ｜CellBasedFood Lab
+細胞培養食品ラボ ｰCellBasedFood labｰ
 https://cellbasedfood-lab.com/`;
 }
