@@ -1,0 +1,209 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import Footer from '../../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  // 1ページ最大9本
+  return paginate(allPosts, { pageSize: 9 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<BaseLayout
+  title={`記事一覧（${page.currentPage} / ${page.lastPage}ページ）`}
+  description="細胞培養食品ラボの記事一覧"
+>
+  <div class="page-wrapper">
+    <Header />
+
+    <main class="main-content">
+      <div class="inner">
+
+        <div class="page-head">
+          <a href="/" class="back-link">← トップへ</a>
+          <div class="page-title-row">
+            <div class="page-icon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <rect x="5" y="4" width="14" height="2" rx="1" fill="#0F6E56" opacity=".9"/>
+                <rect x="5" y="9" width="20" height="1.5" rx=".75" fill="#0F6E56" opacity=".5"/>
+                <rect x="5" y="13" width="20" height="1.5" rx=".75" fill="#0F6E56" opacity=".5"/>
+                <rect x="5" y="17" width="15" height="1.5" rx=".75" fill="#0F6E56" opacity=".5"/>
+              </svg>
+            </div>
+            <div>
+              <h1 class="page-title">記事一覧</h1>
+              <p class="page-desc">全{page.total}本 ・ {page.currentPage} / {page.lastPage}ページ</p>
+            </div>
+          </div>
+        </div>
+
+        <section class="articles-section">
+          <div class="sec-head">
+            <span class="sec-label">記事</span>
+            <span class="sec-count">{page.start + 1}〜{page.end + 1} / 全{page.total}本</span>
+          </div>
+          <div class="art-grid">
+            {page.data.map(post => (
+              <ArticleCard
+                title={post.data.title}
+                slug={post.slug}
+                pubDate={post.data.pubDate}
+                category={post.data.category}
+                heroImage={post.data.heroImage}
+                aiGenerated={post.data.aiGenerated}
+              />
+            ))}
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="ページ送り">
+          {page.url.prev
+            ? <a href={page.url.prev} class="pager-btn">← 新しい記事</a>
+            : <span class="pager-btn disabled">← 新しい記事</span>}
+
+          <div class="pager-nums">
+            {Array.from({ length: page.lastPage }).map((_, i) => {
+              const n = i + 1;
+              const href = n === 1 ? '/blog/page/1' : `/blog/page/${n}`;
+              return n === page.currentPage
+                ? <span class="pager-num cur">{n}</span>
+                : <a href={href} class="pager-num">{n}</a>;
+            })}
+          </div>
+
+          {page.url.next
+            ? <a href={page.url.next} class="pager-btn">以前の記事 →</a>
+            : <span class="pager-btn disabled">以前の記事 →</span>}
+        </nav>
+
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style>
+.page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; }
+.inner { max-width: 1200px; margin: 0 auto; }
+
+.page-head {
+  padding: 16px 24px 20px;
+  border-bottom: 0.5px solid #e5e4df;
+}
+.back-link {
+  font-size: 12px;
+  color: #888;
+  text-decoration: none;
+  font-family: 'Space Mono', monospace;
+  display: inline-block;
+  margin-bottom: 14px;
+  transition: color .15s;
+}
+.back-link:hover { color: #0F6E56; }
+.page-title-row { display: flex; align-items: center; gap: 14px; }
+.page-icon {
+  width: 56px;
+  height: 56px;
+  background: #E1F5EE;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.page-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: #1a1a18;
+  margin-bottom: 4px;
+}
+.page-desc { font-size: 13px; color: #888; line-height: 1.6; }
+
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 8px;
+}
+.sec-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.sec-count { font-size: 12px; color: #888; }
+
+.art-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 0.5px solid #e5e4df;
+}
+.art-grid > :nth-child(3n) { border-right: none; }
+.art-grid > :nth-last-child(-n+3):nth-child(3n+1),
+.art-grid > :nth-last-child(-n+3):nth-child(3n+2),
+.art-grid > :nth-last-child(-n+3):nth-child(3n)  { border-bottom: none; }
+
+/* ── PAGER ── */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 24px;
+  border-top: 0.5px solid #e5e4df;
+  flex-wrap: wrap;
+}
+.pager-btn {
+  font-size: 13px;
+  color: #0F6E56;
+  padding: 6px 16px;
+  border: 0.5px solid #0F6E56;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.pager-btn:hover { background: #E1F5EE; }
+.pager-btn.disabled {
+  color: #c4c2bb;
+  border-color: #e5e4df;
+  pointer-events: none;
+}
+.pager-nums { display: flex; align-items: center; gap: 4px; }
+.pager-num {
+  min-width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: #888;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background .15s, color .15s;
+}
+.pager-num:hover { background: #f5f4f0; color: #0F6E56; }
+.pager-num.cur { background: #0F6E56; color: #fff; }
+
+@media (max-width: 768px) {
+  .page-head { padding: 14px 16px 16px; }
+  .art-grid { grid-template-columns: 1fr; }
+  .art-grid > * { border-right: none !important; }
+  .sec-head { padding: 10px 16px 6px; }
+  .pager { padding: 16px; }
+  .inner { max-width: 100%; }
+}
+</style>
