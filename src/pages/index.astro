@@ -12,8 +12,10 @@ import { getPopularPosts } from '../utils/popular.js';
 const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-// ── 表示対象（最大50本） ──
-const displayPosts = allPosts.slice(0, 50);
+// ── 表示対象（1ページ最大9本） ──
+const PAGE_SIZE = 9;
+const displayPosts = allPosts.slice(0, PAGE_SIZE);
+const totalPages = Math.ceil(allPosts.length / PAGE_SIZE);
 
 // ── 人気記事（popular.json があれば analytics から、なければ最新3本） ──
 const popularPosts = getPopularPosts(allPosts);
@@ -103,17 +105,15 @@ const popularPosts = getPopularPosts(allPosts);
         </section>
 
         <!-- ── PAGINATION / MORE ── -->
-        {allPosts.length > 50 && (
+        {allPosts.length > PAGE_SIZE && (
           <div class="more-zone">
             <div class="page-dots" aria-hidden="true">
-              <span class="pdot cur"></span>
-              <span class="pdot"></span>
-              <span class="pdot"></span>
-              <span class="pdot"></span>
-              <span class="pdot"></span>
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <span class={`pdot${i === 0 ? ' cur' : ''}`}></span>
+              ))}
             </div>
-            <a href="/blog" class="more-btn">以前の記事はこちら →</a>
-            <span class="page-sub">50本 / ページ</span>
+            <a href="/blog/page/2" class="more-btn">以前の記事はこちら →</a>
+            <span class="page-sub">{PAGE_SIZE}本 / ページ</span>
           </div>
         )}
 
