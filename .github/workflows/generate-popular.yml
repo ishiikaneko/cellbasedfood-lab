@@ -23,11 +23,19 @@ jobs:
       - name: Install content-os dependencies
         run: npm install
         working-directory: ./content-os
+      - name: Diagnose Vercel API (temporary)
+        env:
+          VERCEL_API_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VERCEL_ANALYTICS_DOMAIN: ${{ secrets.VERCEL_ANALYTICS_DOMAIN }}
+        run: npm run diagnose-vercel
       - name: Generate popular.json
         env:
           VERCEL_API_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VERCEL_ANALYTICS_DOMAIN: ${{ secrets.VERCEL_ANALYTICS_DOMAIN }}
         run: npm run generate-popular
       - name: Commit and push if changed
         run: |
