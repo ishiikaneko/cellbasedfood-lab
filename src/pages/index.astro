@@ -105,16 +105,16 @@ const popularPosts = getPopularPosts(allPosts);
         </section>
 
         <!-- ── PAGINATION / MORE ── -->
-        {allPosts.length > PAGE_SIZE && (
-          <div class="more-zone">
-            <div class="page-dots" aria-hidden="true">
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <span class={`pdot${i === 0 ? ' cur' : ''}`}></span>
+        {totalPages > 1 && (
+          <nav class="more-zone" aria-label="ページ送り">
+            <div class="pager-nums">
+              <span class="pager-num cur" aria-current="page">1</span>
+              {Array.from({ length: totalPages - 1 }).map((_, i) => (
+                <a href={`/blog/page/${i + 2}`} class="pager-num">{i + 2}</a>
               ))}
             </div>
-            <a href="/blog/page/2" class="more-btn">以前の記事はこちら →</a>
             <span class="page-sub">{PAGE_SIZE}本 / ページ</span>
-          </div>
+          </nav>
         )}
 
         <!-- ── POPULAR ── -->
@@ -361,19 +361,22 @@ const popularPosts = getPopularPosts(allPosts);
   align-items: center;
   gap: 7px;
 }
-.page-dots { display: flex; gap: 4px; }
-.pdot { width: 6px; height: 6px; border-radius: 50%; background: #dddbd4; }
-.pdot.cur { background: #0F6E56; }
-.more-btn {
+.pager-nums { display: flex; align-items: center; gap: 4px; }
+.pager-num {
+  min-width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
   font-size: 13px;
-  color: #0F6E56;
-  padding: 6px 20px;
-  border: 0.5px solid #0F6E56;
-  border-radius: 20px;
+  color: #888;
   text-decoration: none;
-  transition: background .15s;
+  border-radius: 8px;
+  transition: background .15s, color .15s;
 }
-.more-btn:hover { background: #E1F5EE; }
+.pager-num:hover { background: #f5f4f0; color: #0F6E56; }
+.pager-num.cur { background: #0F6E56; color: #fff; }
 .page-sub { font-size: 12px; color: #888; font-family: 'Space Mono', monospace; }
 
 /* ── POPULAR ── */
