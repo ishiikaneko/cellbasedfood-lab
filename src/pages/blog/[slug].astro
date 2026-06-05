@@ -329,6 +329,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   color: #1a1a18;
   margin: 0 0 1.8em;
   letter-spacing: 0.03em;
+  overflow-wrap: anywhere;
 }
 
 :global(.prose h2) {
@@ -389,6 +390,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
   transition: opacity .15s;
+  overflow-wrap: anywhere;
 }
 
 :global(.prose a:hover) {
@@ -409,6 +411,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   margin-bottom: 0.8em;
   padding-left: 0.3em;
   letter-spacing: 0.03em;
+  overflow-wrap: anywhere;
 }
 
 :global(.prose li:last-child) {
@@ -448,6 +451,17 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
   background: #f5f4f0;
   font-weight: 600;
   text-align: left;
+}
+
+/* スマホでは表自体を横スクロール領域にして、ページ全体がはみ出さないようにする */
+@media (max-width: 600px) {
+  :global(.prose table) {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
 }
 
 /* ── X SHARE BUTTON ── */
