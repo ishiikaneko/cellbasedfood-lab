@@ -224,8 +224,10 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
 <style>
 /* ── LAYOUT ── */
 .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
-.main-content { flex: 1; }
-.inner { max-width: 1200px; margin: 0 auto; }
+/* min-width: 0 で flex/grid アイテムが中身の最小幅まで縮まない既定を解除し、
+   幅広な子要素があってもビューポート幅を超えないようにする */
+.main-content { flex: 1; min-width: 0; }
+.inner { max-width: 1200px; margin: 0 auto; min-width: 0; }
 
 /* ── BREADCRUMB ── */
 .breadcrumb {
@@ -244,11 +246,13 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
 /* ── ARTICLE + SIDEBAR GRID ── */
 .article-wrap {
   display: grid;
-  grid-template-columns: 1fr 240px;
+  grid-template-columns: minmax(0, 1fr) 240px;
 }
 
 /* ── MAIN ── */
-.article-main { border-right: 0.5px solid #e5e4df; }
+/* min-width: 0 でグリッドアイテムが min-content 幅まで縮まない既定を解除する。
+   これがないと表などの幅広要素が 1fr トラックを押し広げ、本文全体がはみ出す。 */
+.article-main { border-right: 0.5px solid #e5e4df; min-width: 0; }
 
 /* ── HERO IMAGE ── */
 .art-hero-img {
@@ -598,7 +602,7 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .article-wrap { grid-template-columns: 1fr; }
+  .article-wrap { grid-template-columns: minmax(0, 1fr); }
   .article-main { border-right: none; }
   /* サイドバーを非表示にしてモバイル専用セクションを表示 */
   .sidebar { display: none; }
