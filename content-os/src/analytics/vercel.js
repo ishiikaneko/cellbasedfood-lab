@@ -10,7 +10,7 @@ export async function fetchVercelStats({ days = 7, topN = 10 } = {}) {
 
   const params = new URLSearchParams({
     projectId:   config.VERCEL_PROJECT_ID,
-    domain:      'cellbasedfood-lab.com',
+    domain:      config.VERCEL_ANALYTICS_DOMAIN || 'cellbasedfood-lab.com',
     from:        from.toISOString(),
     to:          to.toISOString(),
     limit:       String(topN),
@@ -23,7 +23,18 @@ export async function fetchVercelStats({ days = 7, topN = 10 } = {}) {
     headers: { Authorization: `Bearer ${config.VERCEL_API_TOKEN}` },
   });
 
-  if (!res.ok) throw new Error(`Vercel Analytics API ${res.status}: ${await res.text()}`);
+  if (!res.ok) {
+    const body = await res.text();
+    // 404 not_found はプロジェクトがスコープ外で見つからないケースが大半。
+    // チーム配下のプロジェクトは teamId 必須なので、未設定なら明示的に案内する。
+    if (res.status === 404 && !config.VERCEL_TEAM_ID) {
+      throw new Error(
+        `Vercel Analytics API 404 (not_found). プロジェクトがチーム配下にある場合は ` +
+        `VERCEL_TEAM_ID の設定が必須です（GitHub Secrets / .env）。response: ${body}`
+      );
+    }
+    throw new Error(`Vercel Analytics API ${res.status}: ${body}`);
+  }
 
   const json = await res.json();
   const paths = (json?.data ?? json ?? []).map((item) => ({

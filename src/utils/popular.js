@@ -9,7 +9,13 @@ export function getPopularPosts(allPosts, limit = 3) {
   try {
     if (existsSync(POPULAR_JSON_PATH)) {
       const popularData = JSON.parse(readFileSync(POPULAR_JSON_PATH, 'utf-8'));
-      const slugOrder = popularData.slugs ?? [];
+
+      // 手動で固定したい記事（manual）を最優先、次に Analytics 由来（slugs）。
+      // 重複は先勝ちで除外し、指定順を維持する。
+      const manual = Array.isArray(popularData.manual) ? popularData.manual : [];
+      const analytics = Array.isArray(popularData.slugs) ? popularData.slugs : [];
+      const slugOrder = [...new Set([...manual, ...analytics])];
+
       const slugSet = new Set(slugOrder);
       const found = allPosts.filter((p) => slugSet.has(p.slug));
       popularPosts = slugOrder
@@ -20,6 +26,7 @@ export function getPopularPosts(allPosts, limit = 3) {
     popularPosts = [];
   }
 
+  // 指定が limit に満たない場合は最新記事で補完する。
   if (popularPosts.length < limit) {
     const existing = new Set(popularPosts.map((p) => p.slug));
     for (const post of allPosts) {

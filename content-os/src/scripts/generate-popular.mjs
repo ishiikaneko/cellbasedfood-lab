@@ -11,18 +11,27 @@ import { fetchPopularBlogSlugs } from '../analytics/vercel.js';
 // content-os/src/scripts/ → ../../.. → repo root → src/data/popular.json
 const OUTPUT_PATH = join(__dirname, '../../../src/data/popular.json');
 
+function readExisting() {
+  if (!existsSync(OUTPUT_PATH)) return {};
+  try {
+    return JSON.parse(readFileSync(OUTPUT_PATH, 'utf-8')) ?? {};
+  } catch {
+    return {};
+  }
+}
+
 function writeOutput(payload) {
-  writeFileSync(OUTPUT_PATH, JSON.stringify(payload, null, 2) + '\n', 'utf-8');
+  // 手動キュレーション (manual) はサイト側で最優先表示されるため、
+  // Analytics の自動更新で消えないよう常に保持する。
+  const existing = readExisting();
+  const manual = Array.isArray(existing.manual) ? existing.manual : [];
+  const out = { manual, ...payload };
+  writeFileSync(OUTPUT_PATH, JSON.stringify(out, null, 2) + '\n', 'utf-8');
 }
 
 function readExistingSlugs() {
-  if (!existsSync(OUTPUT_PATH)) return [];
-  try {
-    const cur = JSON.parse(readFileSync(OUTPUT_PATH, 'utf-8'));
-    return Array.isArray(cur?.slugs) ? cur.slugs : [];
-  } catch {
-    return [];
-  }
+  const cur = readExisting();
+  return Array.isArray(cur?.slugs) ? cur.slugs : [];
 }
 
 async function main() {

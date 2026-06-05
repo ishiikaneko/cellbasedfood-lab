@@ -58,6 +58,15 @@ const seoTitle = title === SITE_DEFAULT_TITLE
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   )}
 
+  <!-- Google Analytics (GA4) -->
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-6LS5WRVW8J"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6LS5WRVW8J');
+  </script>
+
 </head>
 <body>
   <slot />
