@@ -18,10 +18,11 @@ export const config = {
 
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 
-  VERCEL_API_TOKEN:        process.env.VERCEL_API_TOKEN,
-  VERCEL_PROJECT_ID:       process.env.VERCEL_PROJECT_ID,
-  VERCEL_TEAM_ID:          process.env.VERCEL_TEAM_ID,
-  VERCEL_ANALYTICS_DOMAIN: process.env.VERCEL_ANALYTICS_DOMAIN,
+  // Google Analytics (GA4) Data API — 人気記事の集計に使用
+  GA4_PROPERTY_ID:        process.env.GA4_PROPERTY_ID,
+  GA_OAUTH_CLIENT_ID:     process.env.GA_OAUTH_CLIENT_ID,
+  GA_OAUTH_CLIENT_SECRET: process.env.GA_OAUTH_CLIENT_SECRET,
+  GA_OAUTH_REFRESH_TOKEN: process.env.GA_OAUTH_REFRESH_TOKEN,
 };
 
 export function requireConfig(...keys) {

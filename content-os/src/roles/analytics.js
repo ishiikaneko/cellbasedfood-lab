@@ -1,10 +1,10 @@
 import { fetchTwitterStats } from '../analytics/twitter.js';
 import { fetchWordPressStats } from '../analytics/wordpress.js';
-import { fetchVercelStats } from '../analytics/vercel.js';
+import { fetchTopPages } from '../analytics/ga4.js';
 import { log } from '../utils/logger.js';
 import chalk from 'chalk';
 
-export async function runAnalytics({ platforms = ['twitter', 'wordpress', 'vercel'] } = {}) {
+export async function runAnalytics({ platforms = ['twitter', 'wordpress', 'ga4'] } = {}) {
   log.step('Fetching analytics...');
   const results = {};
 
@@ -49,19 +49,20 @@ export async function runAnalytics({ platforms = ['twitter', 'wordpress', 'verce
     }
   }
 
-  if (platforms.includes('vercel')) {
+  if (platforms.includes('ga4')) {
     try {
-      const vk = await fetchVercelStats({ days: 7, topN: 10 });
-      results.vercel = vk;
+      const pages = await fetchTopPages({ days: 7, topN: 10 });
+      const totalViews = pages.reduce((s, p) => s + p.views, 0);
+      results.ga4 = { totalViews, topPaths: pages };
 
-      console.log(chalk.bold('\n--- Vercel Web Analytics (last 7 days) ---'));
-      console.log(`Total page views: ${chalk.green(vk.totalViews)}`);
+      console.log(chalk.bold('\n--- Google Analytics (GA4, last 7 days) ---'));
+      console.log(`Total page views: ${chalk.green(totalViews)}`);
       console.log(chalk.dim('\nTop pages:'));
-      vk.topPaths.forEach((p) => {
+      pages.forEach((p) => {
         console.log(`  ${chalk.cyan(p.path.padEnd(50))} ${p.views} views`);
       });
     } catch (err) {
-      log.error(`Vercel analytics failed: ${err.message}`);
+      log.error(`GA4 analytics failed: ${err.message}`);
     }
   }
 
