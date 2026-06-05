@@ -6,7 +6,7 @@ import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: join(__dirname, '../../.env') });
 
-import { fetchPopularBlogSlugs } from '../analytics/vercel.js';
+import { fetchPopularBlogSlugs } from '../analytics/ga4.js';
 
 // content-os/src/scripts/ → ../../.. → repo root → src/data/popular.json
 const OUTPUT_PATH = join(__dirname, '../../../src/data/popular.json');
@@ -35,11 +35,11 @@ function readExistingSlugs() {
 }
 
 async function main() {
-  console.log('Fetching popular blog posts from Vercel Analytics...');
+  console.log('Fetching popular blog posts from Google Analytics (GA4)...');
   try {
     const result = await fetchPopularBlogSlugs({ days: 30, topN: 3 });
     if (result.blogPaths.length === 0) {
-      console.warn('No blog paths found in analytics. Keeping previous slugs.');
+      console.warn('No blog paths found in GA4. Keeping previous slugs.');
       writeOutput({
         generatedAt: new Date().toISOString(),
         period:      result.period,

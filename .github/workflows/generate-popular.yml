@@ -25,10 +25,10 @@ jobs:
         working-directory: ./content-os
       - name: Generate popular.json
         env:
-          VERCEL_API_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
-          VERCEL_ANALYTICS_DOMAIN: ${{ secrets.VERCEL_ANALYTICS_DOMAIN }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA_OAUTH_CLIENT_ID: ${{ secrets.GA_OAUTH_CLIENT_ID }}
+          GA_OAUTH_CLIENT_SECRET: ${{ secrets.GA_OAUTH_CLIENT_SECRET }}
+          GA_OAUTH_REFRESH_TOKEN: ${{ secrets.GA_OAUTH_REFRESH_TOKEN }}
         run: npm run generate-popular
       - name: Commit and push if changed
         run: |
