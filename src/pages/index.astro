@@ -82,7 +82,7 @@ const popularPosts = getPopularPosts(allPosts);
         <section class="articles-section" aria-labelledby="latest-heading">
           <div class="sec-head">
             <h2 id="latest-heading" class="sec-label">最新記事</h2>
-            <span class="sec-count" id="art-count">{displayPosts.length} / 全{allPosts.length}本</span>
+            <span class="sec-count" id="art-count" data-total={allPosts.length}>{displayPosts.length}本 / 全{allPosts.length}本</span>
           </div>
 
           {displayPosts.length > 0 ? (
@@ -202,7 +202,10 @@ const popularPosts = getPopularPosts(allPosts);
         });
 
         if (filterEmpty) filterEmpty.style.display = visibleCount === 0 ? '' : 'none';
-        if (countEl) countEl.textContent = visibleCount + ' / 全' + cards.length + '本';
+        if (countEl) {
+          const total = countEl.dataset.total ?? cards.length;
+          countEl.textContent = visibleCount + '本 / 全' + total + '本';
+        }
       }
 
       document.querySelectorAll('[data-cat]').forEach(function (el) {
