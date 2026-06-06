@@ -7,7 +7,7 @@ tags:
   - 培養肉
   - 細胞性食品
   - 名称問題
-pubDate: 2026-06-04
+pubDate: 2026-06-06
 heroImage: /images/2026-06-04-cultivated-meat-name.svg
 references:
   - title: "細胞性食品に係るコミュニケーションポリシー策定のお知らせ"
