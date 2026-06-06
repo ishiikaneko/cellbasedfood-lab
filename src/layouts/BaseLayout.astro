@@ -16,9 +16,17 @@ const SITE_OG_NAME = '細胞培養食品ラボ│CellBasedFood lab';
 const {
   title = SITE_DEFAULT_TITLE,
   description = '現役の培養肉研究員が開発現場から解説する、培養肉専門の技術情報サイトです。',
-  ogImage = '/og-default.png',
+  ogImage = '/og/og-default.png',
   structuredData,
 } = Astro.props;
+
+// X や Facebook のカードクローラーは og:image に SVG を指定しても画像と認識しない
+// （PNG/JPEG/WebP/GIF のみ対応）。記事のヒーロー画像は SVG なので、
+// scripts/generate-og-images.mjs がビルド時に焼き込む /og/*.png を OGP に使う。
+const ogImageRaster = ogImage.startsWith('/images/') && ogImage.endsWith('.svg')
+  ? ogImage.replace(/^\/images\//, '/og/').replace(/\.svg$/, '.png')
+  : ogImage;
+const ogImageURL = new URL(ogImageRaster, Astro.site);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -39,11 +47,13 @@ const seoTitle = title === SITE_DEFAULT_TITLE
   <meta property="og:type" content="website" />
   <meta property="og:title" content={seoTitle} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+  <meta property="og:image" content={ogImageURL} />
   <meta property="og:url" content={canonicalURL} />
   <meta property="og:site_name" content={SITE_OG_NAME} />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={seoTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageURL} />
 
   <title>{seoTitle}</title>
 
