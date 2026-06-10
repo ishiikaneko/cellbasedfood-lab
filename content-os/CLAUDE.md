@@ -50,7 +50,7 @@ The `run` command chains `transform` then `publish` in one call. The `transform`
 
 ### Key modules
 
-- **`src/utils/claude.js`** — Singleton Anthropic client. `callClaude(systemPrompt, content)` streams the response using `claude-opus-4-7` with adaptive thinking. The system prompt is marked `cache_control: ephemeral` so repeated calls with the same transformer skip re-tokenization. `callClaudeJSON` wraps that and parses the JSON response. Cache hits are logged to console; verify caching is working by checking that `cache_read_input_tokens` appears after the first call.
+- **`src/utils/claude.js`** — Singleton Anthropic client. `callClaude(systemPrompt, content)` streams the response using `claude-opus-4-8` with adaptive thinking. The system prompt is marked `cache_control: ephemeral` so repeated calls with the same transformer skip re-tokenization. `callClaudeJSON` wraps that and parses the JSON response. Cache hits are logged to console; verify caching is working by checking that `cache_read_input_tokens` appears after the first call.
 
 - **`src/transformers/*.js`** — Each file exports one async function that calls `callClaudeJSON` with a large, stable system prompt and the article as the user message. The system prompt encodes all platform rules (tweet character limits, HTML structure for WordPress, script pacing for YouTube). Output is a typed JSON object saved to `output/<slug>/<platform>.json`.
 
@@ -68,7 +68,7 @@ The `run` command chains `transform` then `publish` in one call. The `transform`
 
 ### Prompt caching
 
-The transformer system prompts are cached with `cache_control: ephemeral` (5-minute TTL). For `claude-opus-4-7`, caching requires the prompt to be ≥4096 tokens. If `cache_read_input_tokens` stays at 0 across repeated calls, expand the system prompt in the transformer file. Runs within the same 5-minute window will see the biggest savings (~90% cost reduction on the system prompt tokens).
+The transformer system prompts are cached with `cache_control: ephemeral` (5-minute TTL). For `claude-opus-4-8`, caching requires the prompt to be ≥4096 tokens. If `cache_read_input_tokens` stays at 0 across repeated calls, expand the system prompt in the transformer file. Runs within the same 5-minute window will see the biggest savings (~90% cost reduction on the system prompt tokens).
 
 ### Adding a new platform
 

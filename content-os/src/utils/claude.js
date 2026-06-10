@@ -17,7 +17,7 @@ function client() {
  *
  * The system prompt is marked cache_control: ephemeral so repeated calls with the
  * same prompt skip re-tokenization. Cache hits require the system prompt to be at
- * least 4096 tokens for claude-opus-4-7 — expand prompts if cache_read_input_tokens
+ * least 4096 tokens for claude-opus-4-8 — expand prompts if cache_read_input_tokens
  * stays at zero across repeated calls.
  *
  * Returns the full text response and usage stats.
@@ -29,7 +29,7 @@ export async function callClaude(systemPrompt, userContent) {
   process.stdout.write('\n');
 
   const stream = c.messages.stream({
-    model: 'claude-opus-4-7',
+    model: 'claude-opus-4-8',
     max_tokens: 8192,
     thinking: { type: 'adaptive' },
     system: [

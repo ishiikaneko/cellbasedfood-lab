@@ -94,7 +94,7 @@ function parseFm(content) {
 async function generateTweet(article) {
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const res = await client.messages.create({
-    model: 'claude-opus-4-7',
+    model: 'claude-opus-4-8',
     max_tokens: 200,
     messages: [{
       role: 'user',

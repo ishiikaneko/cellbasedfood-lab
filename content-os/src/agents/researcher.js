@@ -42,7 +42,7 @@ Output ONLY a JSON object with this structure, no code blocks, no other text:
 {"topic":"${topic}","searched_at":"${today}","sources":[{"title":"...","url":"https://...","type":"academic","publisher":"...","date":"YYYY-MM-DD","summary":"...","key_facts":["fact1","fact2","fact3","fact4","fact5"]}]}`;
 
   const response = await c.messages.create({
-    model: 'claude-opus-4-7',
+    model: 'claude-opus-4-8',
     max_tokens: 4000,
     messages: [{ role: 'user', content: prompt }]
   });
