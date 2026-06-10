@@ -1,9 +1,14 @@
-name: Generate Missing Thumbnails
+name: Generate Missing Thumbnails & OG Images
+
+# 記事 md の追加でヒーロー SVG が未設定なら自動生成し、ヒーロー SVG から
+# OGP 用の PNG を焼き込む。これにより CLAUDE.md の「generate-og の commit 漏れで
+# X のカード画像が出ない」事故を構造的に防ぐ。
 on:
   push:
     branches: [main]
     paths:
       - 'src/content/blog/**.md'
+      - 'public/images/**.svg'
 
 jobs:
   generate:
@@ -18,22 +23,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install root dependencies
+        run: npm install
       - name: Install content-os dependencies
         run: npm install
         working-directory: ./content-os
-      - name: Generate missing thumbnails
+      - name: Generate missing hero thumbnails (SVG)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           NODE_PATH: ${{ github.workspace }}/content-os/node_modules
         run: node scripts/generate-missing-thumbnails.mjs
+      - name: Generate OGP raster images (PNG from hero SVG)
+        run: npm run generate-og
       - name: Commit and push if changed
         run: |
           git config user.name "Bot"
           git config user.email "bot@example.com"
-          git add src/content/blog/ public/images/
+          git add src/content/blog/ public/images/ public/og/
           if git diff --staged --quiet; then
-            echo "No thumbnails generated."
+            echo "No new thumbnails or OG images."
           else
-            git commit -m "auto: generate missing thumbnails"
+            git commit -m "auto: generate missing thumbnails and OG images"
             git push origin HEAD
           fi

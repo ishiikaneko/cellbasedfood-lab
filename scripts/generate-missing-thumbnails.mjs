@@ -14,12 +14,15 @@ const BLOG_DIR   = path.join(REPO_ROOT, 'src/content/blog');
 const IMAGES_DIR = path.join(REPO_ROOT, 'public/images');
 
 // ── SVG スタイル定義 ─────────────────────────────────────────
+// カテゴリーは src/content/config.ts の enum と一致させる。配色は global.css の
+// タグ色（.tag-<category>）のアクセントに合わせ、白アイコンが映える濃色を背景にする。
 const SVG_CATEGORY_STYLES = {
-  '技術':       { bg: '#0F6E56' },
-  '規制・政策': { bg: '#1A3A5C' },
-  '市場・投資': { bg: '#00AA55' },
-  'ニュース':   { bg: '#CC5200' },
-  'その他':     { bg: '#5B3A8C' },
+  '細胞':           { bg: '#0F6E56' },
+  '培養液':         { bg: '#993556' },
+  '培養方法':       { bg: '#185FA5' },
+  'その他培養資材': { bg: '#8A5BB5' },
+  '細胞培養食品':   { bg: '#B5611A' },
+  'コラム':         { bg: '#9A7A18' },
 };
 
 const ICON_SHAPES = {
@@ -88,11 +91,12 @@ const ICON_SHAPES = {
 };
 
 const FALLBACK_ICON_BY_CATEGORY = {
-  '技術':       'DNA double helix',
-  '規制・政策': 'document with official seal',
-  '市場・投資': 'rising bar chart',
-  'ニュース':   'megaphone',
-  'その他':     'lightbulb',
+  '細胞':           'animal cell',
+  '培養液':         'culture flask',
+  '培養方法':       'bioreactor tank',
+  'その他培養資材': 'scaffold matrix',
+  '細胞培養食品':   'cultured food cell',
+  'コラム':         'document page',
 };
 
 function selectIconKey(iconConcept) {
@@ -198,7 +202,7 @@ async function main() {
 
     const title       = meta.title ?? file;
     const description = meta.description ?? '';
-    const category    = meta.category ?? '技術';
+    const category    = meta.category ?? '細胞';
     const pubDate     = meta.pubDate ?? new Date().toISOString().split('T')[0];
 
     // スラッグ: ファイル名から .md を除いたもの（日付プレフィックスがあれば除去）
@@ -212,7 +216,7 @@ async function main() {
     console.log(`   Icon concept: ${iconConcept}`);
 
     const iconKey = selectIconKey(iconConcept);
-    const { bg }  = SVG_CATEGORY_STYLES[category] ?? SVG_CATEGORY_STYLES['その他'];
+    const { bg }  = SVG_CATEGORY_STYLES[category] ?? SVG_CATEGORY_STYLES['細胞'];
     const svg     = generateSvg(bg, iconKey);
 
     writeFileSync(imgPath, svg, 'utf-8');

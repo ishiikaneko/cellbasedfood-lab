@@ -1,0 +1,23 @@
+name: Build Check
+
+# 壊れたビルドが main / 本番デプロイに入る前に検出する。
+# main は Vercel がビルド・デプロイするため、ここでは PR と main 以外への push を検証する。
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build site (generate-og + astro build)
+        run: npm run build
