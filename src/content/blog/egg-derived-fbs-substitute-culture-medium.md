@@ -7,6 +7,15 @@ tags:
   - 培養肉
   - 培地
   - FBS代替
+references:
+  - title: "Refined production of egg-derived media additives enhances proliferation and differentiation of skeletal muscle satellite cell culture"
+    url: "https://link.springer.com/article/10.1007/s44463-026-00062-z"
+    type: "原著論文"
+    note: "卵由来培地添加物の製造方法、筋衛星細胞での増殖・分化評価、FBS置換効果、コスト試算の根拠として使用。"
+  - title: "Simple and effective serum-free medium for sustained expansion of bovine satellite cells for cell cultured meat"
+    url: "https://www.nature.com/articles/s42003-022-03423-8"
+    type: "原著論文"
+    note: "牛筋芽細胞に対する完全に成分が明らかな無血清培地Beefy-9の例として使用。"
 heroImage: /images/2026-05-11-egg-derived-fbs-substitute-culture-medium.svg
 ---
 

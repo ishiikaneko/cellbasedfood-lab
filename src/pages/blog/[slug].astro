@@ -37,20 +37,40 @@ const dateStr = post.data.pubDate.toLocaleDateString('ja-JP', {
 
 const pageUrl = new URL(`/blog/${post.slug}`, Astro.site ?? Astro.url.origin).href;
 const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.data.title)}&url=${encodeURIComponent(pageUrl)}`;
+
+// 一次ソース（frontmatter references）を schema.org の citation に流す。
+// 本文の「引用文献」セクションは人間可読の表示、こちらは検索エンジン向けの機械可読。
+const citations = (post.data.references ?? []).map((r) => ({
+  "@type": "CreativeWork",
+  "name": r.title,
+  "url": r.url,
+}));
 ---
 
 <BaseLayout
   title={post.data.title}
   description={post.data.description}
   ogImage={post.data.heroImage}
+  ogType="article"
+  publishedTime={post.data.pubDate.toISOString()}
   structuredData={{
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": post.data.title,
     "description": post.data.description,
     "datePublished": post.data.pubDate.toISOString(),
+    "dateModified": post.data.pubDate.toISOString(),
     "url": pageUrl,
+    "mainEntityOfPage": { "@type": "WebPage", "@id": pageUrl },
+    "articleSection": post.data.category,
+    "keywords": post.data.tags,
     ...(post.data.heroImage ? { "image": new URL(post.data.heroImage, Astro.site ?? Astro.url.origin).href } : {}),
+    ...(citations.length ? { "citation": citations } : {}),
+    "author": {
+      "@type": "Organization",
+      "name": "細胞培養食品ラボ",
+      "alternateName": "CellBasedFood Lab"
+    },
     "publisher": {
       "@type": "Organization",
       "name": "細胞培養食品ラボ",
@@ -105,7 +125,6 @@ const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(po
                     </svg>
                   </div>
               }
-              {post.data.heroImage && post.data.heroImage.endsWith('.png') && <span class="gen-badge">DALL-E 3</span>}
             </div>
 
             <!-- 記事ヘッダー -->

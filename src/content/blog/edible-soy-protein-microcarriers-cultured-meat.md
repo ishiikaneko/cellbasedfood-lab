@@ -7,6 +7,11 @@ tags:
   - 培養肉
   - マイクロキャリア
   - 大豆タンパク質
+references:
+  - title: "Animal-free edible scaffolds from soy protein isolate for the scalable production of cultured meat"
+    url: "https://www.sciencedirect.com/science/article/pii/S2665927125001601"
+    type: "原著論文"
+    note: "大豆タンパク質分離物による動物由来成分フリーの可食性マイクロキャリアについて、C2C12細胞および牛筋芽細胞の接着・増殖・分化、バイオリアクター培養の結果を示した主軸ソース。"
 heroImage: /images/2026-05-07-edible-soy-protein-microcarriers-cultured-meat.svg
 ---
 

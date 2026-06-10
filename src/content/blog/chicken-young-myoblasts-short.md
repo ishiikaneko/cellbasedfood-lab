@@ -7,6 +7,11 @@ tags:
   - 培養肉
   - 筋芽細胞
   - 鶏細胞
+references:
+  - title: "Effect of Chicken Age on Proliferation and Differentiation Abilities of Muscle Stem Cells and Nutritional Characteristics of Cultured Meat Tissue"
+    url: "https://link.springer.com/article/10.5851/kosfa.2024.e72"
+    type: "原著論文"
+    note: "19日胚と5週齢の鶏筋芽細胞を比較し、若い個体の細胞の増殖・分化能の優位性を示した主軸ソース。"
 heroImage: /images/2026-05-07-chicken-young-myoblasts-short.svg
 ---
 
