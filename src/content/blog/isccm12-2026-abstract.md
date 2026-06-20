@@ -15,9 +15,13 @@ references:
     type: "公式イベントページ"
     note: "開催地・回数・会議の位置づけの根拠として使用。"
   - title: "Submit an Abstract – ISCCM"
-    url: "https://culturedmeatconference.com/new-page/"
+    url: "https://culturedmeatconference.com/submit-abstract/"
     type: "公式イベントページ"
     note: "発表形式・対象分野・演題募集の根拠として使用。"
+  - title: "ISCCM 2025 Program"
+    url: "https://culturedmeatconference.com/2025-program/"
+    type: "公式イベントページ"
+    note: "昨年度の発表・出展企業（味の素ほか）の根拠として使用。"
   - title: "Cellular Agriculture – Precision fermentation and cultured meat | Biotech Delft"
     url: "https://biotechdelft.com/courses/cellular-agriculture/"
     type: "公式講習ページ"
@@ -27,7 +31,7 @@ references:
     type: "公式イベントページ"
     note: "Inhouse Farming / EuroTier の日程・開催地・取扱トピックの根拠として使用。"
   - title: "味の素、細胞性食品用培地のコスト削減に貢献する、植物由来の成分を活用した新技術を開発"
-    url: "https://bio.nikkeibp.co.jp/atcl/release/26/04/16/27888/"
+    url: "https://news.ajinomoto.co.jp/2026/04/20260416.html"
     type: "企業プレスリリース"
     note: "味の素のヒノキチオール活用による培地コスト削減技術（2026年4月発表）の根拠として使用。"
 ---
@@ -48,7 +52,7 @@ references:
 
 そして今年も、オランダのマーストリヒトで「ISCCM12 2026」が開催されます。開催日程は2026年11月15〜17日の3日間です。
 
-参加登録はまだですが、先に演題登録が開始されています。発表形式は、口頭発表（15分）、ポスター発表、そして3分間のステージピッチが付くポスター発表から選べます。
+参加登録はまだですが、[先に演題登録が開始されています](https://culturedmeatconference.com/submit-abstract/)。発表形式は、口頭発表（15分）、ポスター発表、そして3分間のステージピッチが付くポスター発表から選べます。
 
 発表内容としては、培養肉関連の「組織工学」「培養液開発」「細胞株開発」「社会的・環境的・経済的側面」「培養肉の栄養特性や嗜好性」「製造プロセス開発」や、その他の関連基盤技術（遺伝子編集やAIなど）が対象です。
 
@@ -60,9 +64,9 @@ references:
 
 ただ、培養肉業界への参画を考えている研究者や企業担当者であれば、技術トレンドを把握する場として参加する価値はあると思います。私自身も未参加なので説得力に欠けますが、昨年度の参加者やプログラムを見るだけでも、かなり濃い場であることは分かります。
 
-昨年度は、27人の日本人が参加したとのことです。ISCCM2025のプログラムを見ると、味の素、インテグリカルチャー、住友理工、東京大学、東京農業大学、弘前大学などからの発表・出展が確認できます。
+昨年度は、27人の日本人が参加したとのことです。[ISCCM2025のプログラム](https://culturedmeatconference.com/2025-program/)を見ると、味の素、インテグリカルチャー、住友理工、東京大学、東京農業大学、弘前大学などからの発表・出展が確認できます。
 
-特に味の素は、2026年4月に植物由来成分「ヒノキチオール」を活用した培地コスト削減技術を発表しています。前年のISCCMプログラムで発表済みと記載があるため、企業発表より前の技術動向を追う場としても意味があります。
+特に味の素は、2026年4月に植物由来成分「ヒノキチオール」を活用した[培地コスト削減技術を発表しています](https://news.ajinomoto.co.jp/2026/04/20260416.html)。前年のISCCMプログラムで発表済みと記載があるため、企業発表より前の技術動向を追う場としても意味があります。
 
 培養肉業界では、どの技術が実装に近づいているのか、逆にどこがボトルネックとして残っているのかが見えづらいところがあります。細胞株、培地、足場材、スケールアップ、規制、消費者受容が同時に動いているからです。
 
@@ -118,7 +122,10 @@ ISCCMは、培養肉の技術トレンドを直接追える貴重な国際会議
   https://culturedmeatconference.com/
 
 - Submit an Abstract – ISCCM  
-  https://culturedmeatconference.com/new-page/
+  https://culturedmeatconference.com/submit-abstract/
+
+- ISCCM 2025 Program  
+  https://culturedmeatconference.com/2025-program/
 
 - Cellular Agriculture – Precision fermentation and cultured meat | Biotech Delft  
   https://biotechdelft.com/courses/cellular-agriculture/
@@ -127,4 +134,4 @@ ISCCMは、培養肉の技術トレンドを直接追える貴重な国際会議
   https://www.inhouse-farming.com/en/
 
 - 味の素、細胞性食品用培地のコスト削減に貢献する、植物由来の成分を活用した新技術を開発  
-  https://bio.nikkeibp.co.jp/atcl/release/26/04/16/27888/
+  https://news.ajinomoto.co.jp/2026/04/20260416.html
