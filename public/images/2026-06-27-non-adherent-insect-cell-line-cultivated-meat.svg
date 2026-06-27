@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B8D67A"/>
+      <stop offset="100%" stop-color="#7BA838"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+  <!-- Moth (Tobacco hornworm adult) silhouette -->
+  <g transform="translate(560,300) scale(3.4)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2">
+    <!-- Body -->
+    <ellipse cx="60" cy="60" rx="7" ry="34"/>
+    <!-- Body segment lines -->
+    <line x1="53" y1="48" x2="67" y2="48"/>
+    <line x1="53" y1="60" x2="67" y2="60"/>
+    <line x1="53" y1="72" x2="67" y2="72"/>
+    <!-- Head -->
+    <circle cx="60" cy="22" r="7"/>
+    <!-- Antennae -->
+    <path d="M57,17 Q46,4 40,8"/>
+    <path d="M63,17 Q74,4 80,8"/>
+    <!-- Left forewing -->
+    <path d="M53,38 C18,26 2,46 8,66 C14,82 42,74 53,62 Z"/>
+    <!-- Right forewing -->
+    <path d="M67,38 C102,26 118,46 112,66 C106,82 78,74 67,62 Z"/>
+    <!-- Left hindwing -->
+    <path d="M53,64 C30,66 22,82 32,94 C42,102 53,86 55,76 Z"/>
+    <!-- Right hindwing -->
+    <path d="M67,64 C90,66 98,82 88,94 C78,102 67,86 65,76 Z"/>
+  </g>
+  <!-- Suspension cells (right side) -->
+  <g transform="translate(1080,360) scale(3.0)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2">
+    <circle cx="24" cy="22" r="20"/>
+    <circle cx="24" cy="22" r="8" fill="white" opacity="0.55" stroke="none"/>
+    <circle cx="66" cy="52" r="14"/>
+    <circle cx="66" cy="52" r="5.5" fill="white" opacity="0.5" stroke="none"/>
+    <circle cx="20" cy="68" r="11"/>
+    <circle cx="20" cy="68" r="4.5" fill="white" opacity="0.5" stroke="none"/>
+  </g>
+</svg>
