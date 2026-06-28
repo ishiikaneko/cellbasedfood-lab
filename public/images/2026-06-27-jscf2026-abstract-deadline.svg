@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5C800"/>
+      <stop offset="100%" stop-color="#E0B500"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+
+  <!-- Speaker at podium (left) -->
+  <g transform="translate(420,300) scale(3.4)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <!-- Speaker head -->
+    <circle cx="50" cy="20" r="10"/>
+    <!-- Speaker shoulders/body -->
+    <path d="M30,52 Q30,36 50,36 Q70,36 70,52"/>
+    <!-- Podium top -->
+    <path d="M22,68 L78,68 L74,80 L26,80 Z"/>
+    <!-- Podium base -->
+    <path d="M30,80 L30,108"/>
+    <path d="M70,80 L70,108"/>
+    <path d="M22,108 L78,108"/>
+    <!-- Microphone stand -->
+    <path d="M50,52 L50,64"/>
+    <!-- Microphone head -->
+    <ellipse cx="50" cy="50" rx="3.5" ry="5"/>
+  </g>
+
+  <!-- Presentation screen (right) showing a slide with a cell + bar chart -->
+  <g transform="translate(1000,250)" fill="none" stroke="white" stroke-linejoin="round" stroke-linecap="round">
+    <!-- screen frame -->
+    <rect x="0" y="0" width="560" height="350" rx="14" stroke-width="6"/>
+    <!-- screen stand -->
+    <path d="M280,350 L280,400 M210,420 L350,420" stroke-width="6"/>
+    <!-- cell motif on slide -->
+    <circle cx="150" cy="180" r="78" stroke-width="5"/>
+    <circle cx="150" cy="180" r="26" fill="white" stroke="none" opacity="0.85"/>
+    <!-- bar chart on slide -->
+    <g stroke-width="5">
+      <path d="M330,250 L330,250 L330,250"/>
+      <line x1="330" y1="100" x2="330" y2="270"/>
+      <line x1="330" y1="270" x2="500" y2="270"/>
+    </g>
+    <g fill="white" opacity="0.85" stroke="none">
+      <rect x="350" y="210" width="30" height="60" rx="3"/>
+      <rect x="395" y="175" width="30" height="95" rx="3"/>
+      <rect x="440" y="140" width="30" height="130" rx="3"/>
+    </g>
+  </g>
+
+  <!-- Audience heads (bottom center) -->
+  <g transform="translate(700,800) scale(2.6)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" opacity="0.9">
+    <circle cx="12" cy="20" r="7"/>
+    <path d="M2,42 Q2,32 12,32 Q22,32 22,42"/>
+    <circle cx="44" cy="20" r="7"/>
+    <path d="M34,42 Q34,32 44,32 Q54,32 54,42"/>
+    <circle cx="76" cy="20" r="7"/>
+    <path d="M66,42 Q66,32 76,32 Q86,32 86,42"/>
+    <circle cx="108" cy="20" r="7"/>
+    <path d="M98,42 Q98,32 108,32 Q118,32 118,42"/>
+    <circle cx="140" cy="20" r="7"/>
+    <path d="M130,42 Q130,32 140,32 Q150,32 150,42"/>
+  </g>
+
+  <!-- Small cell motif (bottom left, ties to cellular agriculture theme) -->
+  <g transform="translate(180,840) scale(2.0)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" opacity="0.85">
+    <circle cx="20" cy="20" r="18"/>
+    <circle cx="20" cy="20" r="6" fill="white" opacity="0.7"/>
+  </g>
+  <g transform="translate(270,880) scale(1.4)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" opacity="0.75">
+    <circle cx="20" cy="20" r="18"/>
+    <circle cx="20" cy="20" r="6" fill="white" opacity="0.7"/>
+  </g>
+</svg>
