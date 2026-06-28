@@ -9,8 +9,8 @@ tags:
   - 培養肉
   - 学会
   - イベント
-pubDate: 2026-06-27
-heroImage: /images/2026-06-27-jscf2026-abstract-deadline.svg
+pubDate: 2026-06-28
+heroImage: /images/2026-06-28-jscf2026-abstract-deadline.svg
 references:
   - title: "第2回日本培養食料学会大会 大会概要"
     url: "https://www.cultivatedfood.net/%E5%A4%A7%E4%BC%9A%E6%A6%82%E8%A6%81"
