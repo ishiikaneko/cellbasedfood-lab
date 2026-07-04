@@ -35,13 +35,13 @@ references:
     note: "2026年5月のFood Standards Australia New Zealandによるリスク評価完了の確認に使用。"
 ---
 
-PARIMAは2026年7月2日、Vowの22,000L生産ラインを用いて、培養アヒル肉の生産を実証したと発表しました。
+仏培養肉スタートアップのPARIMAは2026年7月2日、Vowの22,000L生産ラインを用いて、[培養アヒル肉の生産を実証したと発表](https://www.linkedin.com/posts/parimabio_a-vision-weve-chased-for-7-years-multi-tonne-scale-activity-7478342203266863104-7kYq)しました。
 
 この発表内容をまとめていきます。
 
 ## 22,000L生産ラインでの培養アヒル肉生産
 
-PARIMAは、シドニーに拠点を置くVowと協業し、Vowが保有する22,000Lの生産ラインで培養アヒル肉を生産しました。
+[PARIMA](https://parima.bio)は、シドニーに拠点を置く[Vow](https://www.eatvow.com)と協業し、Vowが保有する22,000Lの生産ラインで培養アヒル肉を生産しました。
 
 Vowは、これまでに建設された中で最大規模とされる商業用の培養肉生産施設を運営しており、同施設には22,000Lの商業ラインを含む複数の撹拌槽型バイオリアクターが設置されています。
 
