@@ -13,12 +13,12 @@ tags:
   - "受託生産"
 heroImage: "/images/2026-07-04-parima-vow-22000l-cultivated-duck.svg"
 references:
-  - title: "PARIMA hits multi-tonne-scale cultivated meat production at viable unit economics"
-    url: "https://presskit.parima.bio"
+  - title: "A vision we've chased for 7 years: multi-tonne-scale cultivated meat production"
+    url: "https://www.linkedin.com/posts/parimabio_a-vision-weve-chased-for-7-years-multi-tonne-scale-activity-7478342203266863104-7kYq"
     type: "プレスリリース"
     note: "PARIMAによる22,000Lスケールでの培養アヒル肉生産実証、製造コスト削減、Arthur D. LittleのClément Santander氏コメントの確認に使用。"
-  - title: "Cultivated meat: A sustainable & profitable protein revolution?"
-    url: "https://www.adlittle.com/en/insights/viewpoints/cultivated-meat-sustainable-profitable-protein-revolution"
+  - title: "Cultivated meat: One year on"
+    url: "https://www.adlittle.com/en/insights/viewpoints/cultivated-meat-one-year"
     type: "コンサルティングレポート"
     note: "Arthur D. Littleによる培養肉のバリューチェーン変化、コスト見通し（低€40台→約€10/kg）に関する記述の確認に使用。"
   - title: "PARIMA Becomes the First European Company to Obtain Approval for Cultivated Meat"
@@ -99,7 +99,7 @@ PARIMAのCTOであるDr. Victor Sayous氏は、今回のプロセスが初回の
 
 しかし、今回のPARIMAとVowの協業は、培養肉産業においても、専業化されたバリューチェーンが形成されつつあることを示しています。
 
-プレスリリースでは、[Arthur D. Little](https://www.adlittle.com/en/insights/viewpoints/cultivated-meat-sustainable-profitable-protein-revolution)のClément Santander氏のコメントとして、以下のような産業構造の変化が紹介されています。
+プレスリリースでは、[Arthur D. Little](https://www.adlittle.com/en/insights/viewpoints/cultivated-meat-one-year)のClément Santander氏のコメントとして、以下のような産業構造の変化が紹介されています。
 
 - 培地は専業サプライヤーから購入する製品になりつつある
 - バイオ生産は受託施設を通じたサービスになりつつある
@@ -152,9 +152,9 @@ PARIMAは、規制面でも進展があったとしています。
 
 ## 引用文献
 
-1. PARIMA「[PARIMA hits multi-tonne-scale cultivated meat production at viable unit economics](https://presskit.parima.bio)」2026年7月2日。
+1. PARIMA「[A vision we've chased for 7 years: multi-tonne-scale cultivated meat production](https://www.linkedin.com/posts/parimabio_a-vision-weve-chased-for-7-years-multi-tonne-scale-activity-7478342203266863104-7kYq)」2026年7月2日。
 
-2. Arthur D. Little「[Cultivated meat: A sustainable & profitable protein revolution?](https://www.adlittle.com/en/insights/viewpoints/cultivated-meat-sustainable-profitable-protein-revolution)」。
+2. Arthur D. Little「[Cultivated meat: One year on](https://www.adlittle.com/en/insights/viewpoints/cultivated-meat-one-year)」。
 
 3. PARIMA「[PARIMA Becomes the First European Company to Obtain Approval for Cultivated Meat](https://parima.bio/blog/parima-becomes-the-first-european-company-to-obtain-approval-for-cultivated-meat)」2025年10月。
 
