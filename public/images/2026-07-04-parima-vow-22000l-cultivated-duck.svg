@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E89C5C"/>
+      <stop offset="100%" stop-color="#D87A35"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+
+  <!-- Stirred-tank bioreactor -->
+  <g transform="translate(620,190) scale(3.5)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2">
+    <!-- Motor housing -->
+    <rect x="34" y="0" width="24" height="14" rx="3"/>
+    <!-- Shaft -->
+    <line x1="46" y1="14" x2="46" y2="46"/>
+    <!-- Tank body -->
+    <path d="M14,30 L14,110 Q14,124 28,130 L64,130 Q78,124 78,110 L78,30 Z"/>
+    <!-- Tank top ellipse -->
+    <ellipse cx="46" cy="30" rx="32" ry="10"/>
+    <!-- Liquid fill line -->
+    <path d="M14,74 Q46,84 78,74" opacity="0.55"/>
+    <!-- Baffles -->
+    <line x1="24" y1="36" x2="24" y2="118" opacity="0.4"/>
+    <line x1="68" y1="36" x2="68" y2="118" opacity="0.4"/>
+    <!-- Impeller blades -->
+    <path d="M32,90 L60,86 M32,98 L60,102" opacity="0.85"/>
+    <!-- Outlet pipe -->
+    <path d="M78,104 L98,104 L98,118"/>
+  </g>
+
+  <!-- Scale label -->
+  <g transform="translate(900,250)" fill="white" opacity="0.92">
+    <text x="0" y="0" font-family="Helvetica, Arial, sans-serif" font-size="64" font-weight="700">22,000L</text>
+  </g>
+
+  <!-- Duck silhouette -->
+  <g transform="translate(1160,470) scale(3.0)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <ellipse cx="46" cy="60" rx="28" ry="17"/>
+    <circle cx="70" cy="32" r="10"/>
+    <path d="M64,40 Q60,46 56,50"/>
+    <path d="M78,29 L92,31 L78,38 Z" fill="white"/>
+    <circle cx="72" cy="30" r="1.6" fill="white"/>
+    <path d="M34,54 Q46,46 60,52 Q56,62 44,64"/>
+    <path d="M20,55 L12,47"/>
+    <path d="M20,62 L11,60"/>
+    <g opacity="0.6">
+      <path d="M16,82 Q34,78 52,82" stroke-width="2.5"/>
+      <path d="M28,90 Q46,86 64,90" stroke-width="2.5"/>
+    </g>
+  </g>
+</svg>
