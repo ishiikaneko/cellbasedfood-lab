@@ -17,6 +17,22 @@ references:
     url: "https://presskit.parima.bio"
     type: "プレスリリース"
     note: "PARIMAによる22,000Lスケールでの培養アヒル肉生産実証、製造コスト削減、Arthur D. LittleのClément Santander氏コメントの確認に使用。"
+  - title: "Cultivated meat: A sustainable & profitable protein revolution?"
+    url: "https://www.adlittle.com/en/insights/viewpoints/cultivated-meat-sustainable-profitable-protein-revolution"
+    type: "コンサルティングレポート"
+    note: "Arthur D. Littleによる培養肉のバリューチェーン変化、コスト見通し（低€40台→約€10/kg）に関する記述の確認に使用。"
+  - title: "PARIMA Becomes the First European Company to Obtain Approval for Cultivated Meat"
+    url: "https://parima.bio/blog/parima-becomes-the-first-european-company-to-obtain-approval-for-cultivated-meat"
+    type: "企業発表"
+    note: "2025年10月のシンガポール食品庁による培養鶏肉の承認確認に使用。"
+  - title: "PARIMA Becomes the First Company to Obtain Cultivated Food Approval Across Two Species"
+    url: "https://parima.bio/blog/parima-becomes-the-first-european-company-to-obtain-culitvated-food-approval-across-two-species"
+    type: "企業発表"
+    note: "2026年4月のシンガポール食品庁による培養アヒル肉の承認（2種目）確認に使用。"
+  - title: "Parima cell cultured duck passes FSANZ safety assessment"
+    url: "https://www.foodanddrinkbusiness.com.au/news/parima-cell-cultured-duck-passes-fsanz-safety-assessment"
+    type: "報道記事"
+    note: "2026年5月のFood Standards Australia New Zealandによるリスク評価完了の確認に使用。"
 ---
 
 PARIMAは2026年7月2日、Vowの22,000L生産ラインを用いて、培養アヒル肉の生産を実証したと発表しました。
@@ -83,7 +99,7 @@ PARIMAのCTOであるDr. Victor Sayous氏は、今回のプロセスが初回の
 
 しかし、今回のPARIMAとVowの協業は、培養肉産業においても、専業化されたバリューチェーンが形成されつつあることを示しています。
 
-プレスリリースでは、Arthur D. LittleのClément Santander氏のコメントとして、以下のような産業構造の変化が紹介されています。
+プレスリリースでは、[Arthur D. Little](https://www.adlittle.com/en/insights/viewpoints/cultivated-meat-sustainable-profitable-protein-revolution)のClément Santander氏のコメントとして、以下のような産業構造の変化が紹介されています。
 
 - 培地は専業サプライヤーから購入する製品になりつつある
 - バイオ生産は受託施設を通じたサービスになりつつある
@@ -110,11 +126,11 @@ Arthur D. LittleのSantander氏は、培養肉の技術面について、初期�
 
 PARIMAは、規制面でも進展があったとしています。
 
-同社は2025年10月に、シンガポール食品庁から培養鶏肉の承認を取得しました。その6か月後には、培養アヒル肉についても承認を取得しています。
+同社は2025年10月に、シンガポール食品庁から[培養鶏肉の承認](https://parima.bio/blog/parima-becomes-the-first-european-company-to-obtain-approval-for-cultivated-meat)を取得しました。その6か月後には、[培養アヒル肉についても承認](https://parima.bio/blog/parima-becomes-the-first-european-company-to-obtain-culitvated-food-approval-across-two-species)を取得しています。
 
 これにより、PARIMAは2種の培養食品について承認を得た世界初の企業になったと説明されています。
 
-また、2026年5月には、2025年に提出していた申請について、Food Standards Australia New Zealandによるリスク評価を完了したとされています。
+また、2026年5月には、2025年に提出していた申請について、[Food Standards Australia New Zealandによるリスク評価を完了](https://www.foodanddrinkbusiness.com.au/news/parima-cell-cultured-duck-passes-fsanz-safety-assessment)したとされています。
 
 ## まとめ：培養肉産業にとっての進展
 
@@ -137,3 +153,11 @@ PARIMAは、規制面でも進展があったとしています。
 ## 引用文献
 
 1. PARIMA「[PARIMA hits multi-tonne-scale cultivated meat production at viable unit economics](https://presskit.parima.bio)」2026年7月2日。
+
+2. Arthur D. Little「[Cultivated meat: A sustainable & profitable protein revolution?](https://www.adlittle.com/en/insights/viewpoints/cultivated-meat-sustainable-profitable-protein-revolution)」。
+
+3. PARIMA「[PARIMA Becomes the First European Company to Obtain Approval for Cultivated Meat](https://parima.bio/blog/parima-becomes-the-first-european-company-to-obtain-approval-for-cultivated-meat)」2025年10月。
+
+4. PARIMA「[PARIMA Becomes the First Company to Obtain Cultivated Food Approval Across Two Species](https://parima.bio/blog/parima-becomes-the-first-european-company-to-obtain-culitvated-food-approval-across-two-species)」2026年4月。
+
+5. Food & Drink Business「[Parima cell cultured duck passes FSANZ safety assessment](https://www.foodanddrinkbusiness.com.au/news/parima-cell-cultured-duck-passes-fsanz-safety-assessment)」2026年。
