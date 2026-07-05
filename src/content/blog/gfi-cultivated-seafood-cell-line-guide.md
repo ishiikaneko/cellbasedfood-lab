@@ -26,7 +26,7 @@ references:
     note: "培養シーフード分野における細胞株不足と研究ツール不足の背景確認に使用。"
 ---
 
-GFI（The Good Food Institute）は、培養シーフード向けに「Developing continuous cell lines for cultivated seafood」というガイドを公開しています。
+GFI（The Good Food Institute）は、培養シーフード向けに「[Developing continuous cell lines for cultivated seafood](https://gfi.org/resource/developing-continuous-cell-lines-for-cultivated-seafood/)」というガイドを公開しています。
 
 最近更新されたので、本記事で紹介していこうと思います。
 
@@ -54,7 +54,7 @@ GFI（The Good Food Institute）は、培養シーフード向けに「Developin
 
 そのため、細胞を取ってきたとしても、「この細胞は本当に目的の細胞なのか」を確認する手段が限られるわけです。
 
-これは昆虫細胞での記事でも言及しましたが、実は大きな問題です。細胞株開発では、細胞が増えることに加え、何が増えているのかを確認することが重要になります。
+これは[昆虫細胞での記事](https://cellbasedfood-lab.com/blog/non-adherent-insect-cell-line-cultivated-meat)でも言及しましたが、実は大きな問題です。細胞株開発では、細胞が増えることに加え、何が増えているのかを確認することが重要になります。
 
 ## 最初の壁は、不死化よりもコンタミ
 
