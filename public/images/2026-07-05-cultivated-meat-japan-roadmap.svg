@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5C800"/>
+      <stop offset="100%" stop-color="#E0B500"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+
+  <!-- Roadmap: a single road forking into two futures at the 5-year mark -->
+  <g fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+    <!-- road bed -->
+    <g stroke-width="26" stroke-opacity="0.92">
+      <path d="M120,700 C 260,700 300,640 440,640 C 590,640 630,392 780,392 C 940,392 980,616 1110,616"/>
+      <path d="M1110,616 C 1300,616 1400,372 1600,372"/>
+      <path d="M1110,616 C 1300,616 1400,832 1600,832"/>
+    </g>
+    <!-- dashed centre line -->
+    <g stroke-width="4" stroke-opacity="0.85" stroke-dasharray="14 22">
+      <path d="M120,700 C 260,700 300,640 440,640 C 590,640 630,392 780,392 C 940,392 980,616 1110,616"/>
+      <path d="M1110,616 C 1300,616 1400,372 1600,372"/>
+      <path d="M1110,616 C 1300,616 1400,832 1600,832"/>
+    </g>
+  </g>
+
+  <!-- Milestone nodes -->
+  <g stroke="white" stroke-width="9" stroke-opacity="0.95">
+    <!-- 1yr -->
+    <circle cx="440" cy="640" r="30" fill="#E0B500"/>
+    <!-- 3yr -->
+    <circle cx="780" cy="392" r="34" fill="#E0B500"/>
+    <!-- 5yr (fork point) -->
+    <circle cx="1110" cy="616" r="40" fill="#E0B500"/>
+    <!-- 10yr, two futures -->
+    <circle cx="1600" cy="372" r="44" fill="#E0B500"/>
+    <circle cx="1600" cy="832" r="44" fill="#E0B500"/>
+  </g>
+
+  <!-- Start marker -->
+  <circle cx="120" cy="700" r="14" fill="white" fill-opacity="0.95"/>
+</svg>
