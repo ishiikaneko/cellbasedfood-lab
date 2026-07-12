@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5C800"/>
+      <stop offset="100%" stop-color="#E0B500"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+  <!-- Generative-AI chat bubble with a spark, plus a caution mark: don't take it at face value -->
+  <g stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- speech bubble -->
+    <g transform="translate(560,250) scale(5.2)">
+      <path d="M24,14 H76 Q90,14 90,28 V52 Q90,66 76,66 H50 L40,82 L38,66 H24 Q10,66 10,52 V28 Q10,14 24,14 Z"/>
+      <!-- AI sparkle (four-point star) inside the bubble -->
+      <path d="M42,40 C42,33 43,32 50,32 C43,32 42,31 42,24 C42,31 41,32 34,32 C41,32 42,33 42,40 Z" fill="white" stroke="white" stroke-width="1.4"/>
+      <path d="M62,45 C62,41 62.5,40.5 66,40.5 C62.5,40.5 62,40 62,36 C62,40 61.5,40.5 58,40.5 C61.5,40.5 62,41 62,45 Z" fill="white" stroke="white" stroke-width="1"/>
+    </g>
+    <!-- caution triangle with exclamation -->
+    <g transform="translate(1120,560) scale(3.4)">
+      <path d="M40,10 L74,66 H6 Z"/>
+      <line x1="40" y1="30" x2="40" y2="48"/>
+      <circle cx="40" cy="57" r="1.4" fill="white" stroke="white"/>
+    </g>
+  </g>
+</svg>
