@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5C800"/>
+      <stop offset="100%" stop-color="#E0B500"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+
+  <!-- Industry list document (left) -->
+  <g transform="translate(300,260) scale(3.6)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2">
+    <!-- Sheet -->
+    <path d="M14,8 H86 Q92,8 92,14 V126 Q92,132 86,132 H14 Q8,132 8,126 V14 Q8,8 14,8 Z"/>
+    <!-- List rows: bullet + line -->
+    <circle cx="24" cy="32" r="3" fill="white" stroke="none"/>
+    <path d="M36,32 H78"/>
+    <circle cx="24" cy="52" r="3" fill="white" stroke="none"/>
+    <path d="M36,52 H78"/>
+    <circle cx="24" cy="72" r="3" fill="white" stroke="none"/>
+    <path d="M36,72 H70"/>
+    <circle cx="24" cy="92" r="3" fill="white" stroke="none"/>
+    <path d="M36,92 H78"/>
+    <circle cx="24" cy="112" r="3" fill="white" stroke="none"/>
+    <path d="M36,112 H62"/>
+  </g>
+
+  <!-- Arrow: list delivered via newsletter -->
+  <g transform="translate(760,560)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" opacity="0.9">
+    <path d="M0,0 H150"/>
+    <path d="M120,-26 L152,0 L120,26"/>
+  </g>
+
+  <!-- Newsletter envelope (right) -->
+  <g transform="translate(1020,320) scale(3.8)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2">
+    <path d="M8,16 H112 Q118,16 118,22 V90 Q118,96 112,96 H8 Q2,96 2,90 V22 Q2,16 8,16 Z"/>
+    <!-- Flap -->
+    <path d="M4,22 L60,60 L116,22"/>
+  </g>
+
+  <!-- Cell motifs (bottom left, cellular agriculture theme) -->
+  <g transform="translate(240,824) scale(2.0)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" opacity="0.85">
+    <circle cx="20" cy="20" r="18"/>
+    <circle cx="20" cy="20" r="6" fill="white" opacity="0.7"/>
+  </g>
+  <g transform="translate(330,864) scale(1.4)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" opacity="0.75">
+    <circle cx="20" cy="20" r="18"/>
+    <circle cx="20" cy="20" r="6" fill="white" opacity="0.7"/>
+  </g>
+</svg>
