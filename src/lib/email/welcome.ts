@@ -20,6 +20,9 @@ export function welcomeEmailHtml(unsubscribeUrl: string): string {
       ご登録のメールアドレスを受け付けました。<br>
       月1回程度、新着記事のまとめと書籍情報をお届けする予定です。
     </p>
+    <p style="font-size:15px;color:#333;line-height:1.8;margin:0 0 14px">
+      登録特典として、本メールに<strong>「国内培養肉業界リスト（2026年7月版）」</strong>（Excelファイル）を添付しております。ぜひご活用ください。
+    </p>
     <p style="font-size:15px;color:#333;line-height:1.8;margin:0 0 28px">
       なお、登録した覚えがない場合や配信を停止したい場合は、<br>
       以下のリンクから手続きをお願いします。
@@ -43,6 +46,8 @@ export function welcomeEmailText(unsubscribeUrl: string): string {
 
 ご登録のメールアドレスを受け付けました。
 月1回程度、新着記事のまとめと書籍情報をお届けする予定です。
+
+登録特典として、本メールに「国内培養肉業界リスト（2026年7月版）」（Excelファイル）を添付しております。ぜひご活用ください。
 
 なお、登録した覚えがない場合や配信を停止したい場合は、
 以下のリンクから手続きをお願いします。
