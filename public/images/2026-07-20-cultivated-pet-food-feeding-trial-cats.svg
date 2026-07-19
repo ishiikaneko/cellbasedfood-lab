@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E89C5C"/>
+      <stop offset="100%" stop-color="#D87A35"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+
+  <!-- Cultured cells in a dish (left) -->
+  <g transform="translate(300,300) scale(3.4)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.0">
+    <!-- Petri dish -->
+    <ellipse cx="60" cy="70" rx="56" ry="24"/>
+    <ellipse cx="60" cy="62" rx="56" ry="24" opacity="0.5"/>
+    <!-- Cultured cells -->
+    <circle cx="42" cy="60" r="7"/>
+    <circle cx="66" cy="66" r="9"/>
+    <circle cx="86" cy="58" r="6"/>
+    <circle cx="54" cy="72" r="5"/>
+    <circle cx="78" cy="74" r="6"/>
+    <circle cx="42" cy="60" r="2.2" fill="white" stroke="none"/>
+    <circle cx="66" cy="66" r="2.6" fill="white" stroke="none"/>
+    <circle cx="86" cy="58" r="2" fill="white" stroke="none"/>
+    <circle cx="54" cy="72" r="1.8" fill="white" stroke="none"/>
+    <circle cx="78" cy="74" r="2" fill="white" stroke="none"/>
+  </g>
+
+  <!-- Arrow -->
+  <g transform="translate(760,470)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="6" opacity="0.85">
+    <line x1="0" y1="0" x2="120" y2="0"/>
+    <path d="M96,-18 L120,0 L96,18"/>
+  </g>
+
+  <!-- Pet food bowl (center-right) -->
+  <g transform="translate(940,560) scale(3.2)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2">
+    <path d="M14,20 Q60,44 106,20 L96,52 Q60,72 24,52 Z"/>
+    <ellipse cx="60" cy="20" rx="46" ry="16"/>
+    <!-- Kibble -->
+    <circle cx="46" cy="20" r="5" fill="white" stroke="none" opacity="0.9"/>
+    <circle cx="62" cy="24" r="6" fill="white" stroke="none" opacity="0.9"/>
+    <circle cx="76" cy="18" r="5" fill="white" stroke="none" opacity="0.9"/>
+    <circle cx="56" cy="14" r="4" fill="white" stroke="none" opacity="0.9"/>
+  </g>
+
+  <!-- Cat silhouette (right) -->
+  <g transform="translate(1300,340) scale(3.2)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.4">
+    <!-- Head -->
+    <path d="M40,18 L48,4 L56,20"/>
+    <path d="M64,18 L74,2 L80,20"/>
+    <path d="M40,18 Q34,40 60,44 Q86,40 80,18" />
+    <!-- Eyes / nose -->
+    <circle cx="52" cy="28" r="1.6" fill="white" stroke="none"/>
+    <circle cx="68" cy="28" r="1.6" fill="white" stroke="none"/>
+    <path d="M58,34 L60,37 L62,34"/>
+    <!-- Whiskers -->
+    <path d="M46,33 L30,30 M46,36 L30,38" stroke-width="2" opacity="0.7"/>
+    <path d="M74,33 L90,30 M74,36 L90,38" stroke-width="2" opacity="0.7"/>
+    <!-- Body -->
+    <path d="M44,44 Q34,64 40,90 L54,90 Q52,70 60,64"/>
+    <path d="M76,44 Q90,62 82,90 L68,90 Q70,74 60,64"/>
+    <!-- Tail -->
+    <path d="M82,80 Q104,78 100,54"/>
+  </g>
+</svg>
