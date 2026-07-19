@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { createHmac } from 'crypto';
 import { welcomeEmailHtml, welcomeEmailText } from '../../../lib/email/welcome';
+import { newsletterAttachment } from '../../../lib/email/newsletter-attachment';
 
 export const prerender = false;
 
@@ -75,6 +76,13 @@ export const POST: APIRoute = async ({ request }) => {
     subject: '【細胞培養食品ラボ｜CellBasedFood Lab】メールマガジン登録を受け付けました',
     html: welcomeEmailHtml(unsubUrl),
     text: welcomeEmailText(unsubUrl),
+    attachments: [
+      {
+        filename: newsletterAttachment.filename,
+        content: newsletterAttachment.contentBase64,
+        contentType: newsletterAttachment.contentType,
+      },
+    ],
   });
   if (sendErr) {
     console.error('Welcome email send error:', sendErr);
