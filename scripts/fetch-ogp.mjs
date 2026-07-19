@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -12,6 +12,7 @@ const BANNER_URLS = [
   'https://amzn.to/4sTaNMI',
   'https://amzn.to/4uaxsFv',
   'https://amzn.to/4udSzXI',
+  'https://amzn.to/3SYURN3',
 ];
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
@@ -98,25 +99,42 @@ async function fetchOgp(url) {
     const desc     = extractNameMeta(html, 'description');
     const { title, author: titleAuthor } = parseAmazonTitle(rawTitle);
     const author = titleAuthor ?? extractAuthorFromDescription(desc);
+    const image  = html.match(/src="(https:\/\/m\.media-amazon\.com\/images\/I\/[^"]+\.jpg)"/)?.[1] ?? null;
 
     if (!html.includes('amazon')) throw new Error('Robot check page');
     console.log(`  OK  ${url} → ${title?.slice(0, 40)} / ${author ?? '著者不明'}`);
-    return { url, title: title ?? 'Amazon商品を見る', author };
+    return { ok: true, item: { url, title: title ?? 'Amazon商品を見る', author, image } };
   } catch (err) {
     console.warn(`  FAIL ${url}: ${err.message}`);
-    return { url, title: 'Amazon商品を見る', author: null };
+    return { ok: false, item: { url, title: 'Amazon商品を見る', author: null, image: null } };
   }
 }
 
 async function main() {
   console.log('Fetching OGP data for sponsored URLs...');
-  const results = [];
-  for (const url of BANNER_URLS) {
-    results.push(await fetchOgp(url));
-    await new Promise(r => setTimeout(r, 800));
-  }
   const outDir  = join(__dirname, '../src/data');
   const outPath = join(outDir, 'ogp-cache.json');
+
+  // 既存キャッシュ: 取得失敗時のフォールバック & ローカル画像(/images/...)の保持に使う
+  const prev = new Map();
+  try {
+    const cached = JSON.parse(readFileSync(outPath, 'utf-8'));
+    for (const it of cached.items ?? []) prev.set(it.url, it);
+  } catch {}
+
+  const results = [];
+  for (const url of BANNER_URLS) {
+    const { ok, item } = await fetchOgp(url);
+    const old = prev.get(url);
+    if (!ok && old) {
+      results.push(old);          // 失敗時は前回のキャッシュを維持
+    } else {
+      if (old?.image?.startsWith('/')) item.image = old.image; // リポジトリ内画像を優先
+      else if (!item.image && old?.image) item.image = old.image;
+      results.push(item);
+    }
+    await new Promise(r => setTimeout(r, 800));
+  }
   mkdirSync(outDir, { recursive: true });
   writeFileSync(outPath, JSON.stringify({ fetchedAt: new Date().toISOString(), items: results }, null, 2), 'utf-8');
   console.log(`Wrote ${results.length} entries → ${outPath}`);
