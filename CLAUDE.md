@@ -47,6 +47,17 @@ npm run build     # generate-og → astro build（OGP PNG生成を含む）
 
 > まとめ: **heroImage は SVG、OGP は SVG から生成した PNG。両方を必ずコミット。**
 
+## メルマガ配信（法令対応・必須）
+
+メルマガ／登録確認メール等、**広告・宣伝を含むメールには必ず法令フッター
+（送信者名・住所・配信停止）を本文末尾に入れる**（特定電子メール法の表示義務）。
+
+- コードから送るメールは `src/lib/email/legal-footer.ts` の
+  `legalFooterHtml()` / `legalFooterText()` を使う（送信者情報の単一の情報源）。
+- Resend ダッシュボード（Broadcasts）から送る月次メルマガは、
+  `docs/newsletter-compliance.md` の貼り付け用フッターを毎回貼る。
+- 今後、有料商品の宣伝を始める場合の追加対応も `docs/newsletter-compliance.md` を参照。
+
 ## ブランチ運用
 
 - 指定された作業ブランチで開発・コミット・push する。
