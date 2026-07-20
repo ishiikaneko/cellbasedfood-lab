@@ -51,6 +51,21 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ error: 'プライバシーポリシーへの同意が必要です。' }, 400);
   }
 
+  // 特定電子メール法：同意を証する記録を残す。
+  // DB を持たない構成のため、ホスティングのログに構造化して出力する（長期・確実な保存が
+  // 必要になった場合は DB 等への保存に切り替えること）。
+  console.info(
+    '[newsletter-consent]',
+    JSON.stringify({
+      type: 'newsletter_opt_in',
+      email,
+      consentedAt: new Date().toISOString(),
+      ip,
+      userAgent: request.headers.get('user-agent') ?? 'unknown',
+      consentText: 'プライバシーポリシーに同意し、メールマガジンの配信を受け取る',
+    }),
+  );
+
   const resend = new Resend(import.meta.env.RESEND_API_KEY);
   const audienceId = import.meta.env.RESEND_AUDIENCE_ID;
 

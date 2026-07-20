@@ -32,8 +32,11 @@ export function welcomeEmailHtml(unsubscribeUrl: string): string {
       配信停止はこちら
     </a>
     <hr style="margin:36px 0;border:none;border-top:0.5px solid #e5e4df">
-    <p style="font-size:13px;color:#888;line-height:1.7;margin:0">
-      細胞培養食品ラボ｜CellBasedFood Lab<br>
+    <p style="font-size:12px;color:#888;line-height:1.9;margin:0">
+      <strong style="color:#666">細胞培養食品ラボ｜CellBasedFood Lab</strong><br>
+      〒103-0027 東京都中央区日本橋2丁目16-4 remix日本橋 6階<br>
+      お問い合わせ：<a href="https://cellbasedfood-lab.com/contact" style="color:#0F6E56;text-decoration:none">https://cellbasedfood-lab.com/contact</a><br>
+      配信停止：<a href="${unsubscribeUrl}" style="color:#0F6E56;text-decoration:none">こちらのリンク</a>からいつでも手続きいただけます。<br>
       <a href="https://cellbasedfood-lab.com/" style="color:#0F6E56;text-decoration:none">https://cellbasedfood-lab.com/</a>
     </p>
   </div>
@@ -53,7 +56,10 @@ export function welcomeEmailText(unsubscribeUrl: string): string {
 以下のリンクから手続きをお願いします。
 ${unsubscribeUrl}
 
----
+-----------------------------------------
 細胞培養食品ラボ｜CellBasedFood Lab
+〒103-0027 東京都中央区日本橋2丁目16-4 remix日本橋 6階
+お問い合わせ：https://cellbasedfood-lab.com/contact
+配信停止：上記リンクからいつでも手続きいただけます。
 https://cellbasedfood-lab.com/`;
 }
