@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1024" width="1792" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E89C5C"/>
+      <stop offset="100%" stop-color="#D87A35"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.18"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1792" height="1024" fill="url(#bg)"/>
+  <rect width="1792" height="1024" fill="url(#sheen)"/>
+  <rect width="1792" height="1024" fill="url(#glow)"/>
+
+  <!-- Thin-cut cultivated steak slice -->
+  <g transform="translate(360,300)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="7">
+    <!-- outer marbled slice -->
+    <path d="M40,120 Q10,40 120,26 Q300,0 470,40 Q600,72 560,180 Q520,300 340,320 Q140,340 70,250 Q40,190 40,120 Z"/>
+    <!-- inner marbling / fat lines -->
+    <g opacity="0.7" stroke-width="5">
+      <path d="M120,120 Q220,90 330,120 Q420,146 470,120"/>
+      <path d="M110,190 Q230,166 350,200 Q430,222 500,196"/>
+      <path d="M160,250 Q260,232 360,258"/>
+    </g>
+    <!-- soy + wheat plant matrix dots (cell content) -->
+    <g fill="white" opacity="0.85" stroke="none">
+      <circle cx="200" cy="150" r="7"/>
+      <circle cx="300" cy="180" r="6"/>
+      <circle cx="260" cy="230" r="6"/>
+      <circle cx="380" cy="150" r="7"/>
+      <circle cx="430" cy="205" r="6"/>
+      <circle cx="170" cy="220" r="6"/>
+    </g>
+  </g>
+
+  <!-- Stirred-tank bioreactor (cell expansion) -->
+  <g transform="translate(1120,250) scale(3.1)" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2">
+    <rect x="34" y="0" width="24" height="14" rx="3"/>
+    <line x1="46" y1="14" x2="46" y2="46"/>
+    <path d="M14,30 L14,110 Q14,124 28,130 L64,130 Q78,124 78,110 L78,30 Z"/>
+    <ellipse cx="46" cy="30" rx="32" ry="10"/>
+    <path d="M14,74 Q46,84 78,74" opacity="0.55"/>
+    <path d="M32,90 L60,86 M32,98 L60,102" opacity="0.85"/>
+    <!-- suspended cell aggregates -->
+    <g fill="white" opacity="0.8" stroke="none">
+      <circle cx="30" cy="60" r="2.4"/>
+      <circle cx="52" cy="66" r="2.8"/>
+      <circle cx="40" cy="84" r="2.2"/>
+      <circle cx="60" cy="78" r="2.4"/>
+    </g>
+  </g>
+
+  <!-- Label -->
+  <g transform="translate(360,760)" fill="white" opacity="0.95">
+    <text x="0" y="0" font-family="Helvetica, Arial, sans-serif" font-size="66" font-weight="700">Cultivated Beef</text>
+    <text x="0" y="66" font-family="Helvetica, Arial, sans-serif" font-size="40" font-weight="400" opacity="0.9">Aleph Farms × Singapore</text>
+  </g>
+</svg>
